@@ -1,0 +1,11 @@
+package com.yavuzturtelekom.repository;
+
+import com.yavuzturtelekom.domain.Authority;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ * Spring Data JPA repository for the Authority entity.
+ */
+public interface AuthorityRepository extends JpaRepository<Authority, String> {
+}
