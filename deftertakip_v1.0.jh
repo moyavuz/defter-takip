@@ -1,0 +1,143 @@
+entity Calisan {
+	tckimlikno Long required, 
+	adi String required minlength(2),
+	soyadi String required minlength(2),
+	email String,
+	phoneNumber String,
+	girisTarihi Instant,
+    cikisTarihi Instant,
+	ucret BigDecimal,
+	calisanTuru CalisanTuru,
+	aktifMi Boolean
+}
+
+entity Ekip { 
+    ad String required minlength(2), 
+    telefonNo String ,
+    epostaAdresi String,
+    taseronMu Boolean,
+    aktifMi Boolean
+}
+
+entity Unvan {
+    ad String required,
+    aciklama String,
+    aktifMi Boolean
+}
+
+entity Birim {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    carpani Long,
+    aktifMi Boolean
+    
+}
+
+entity ProjeTuru {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    aktifMi Boolean
+}
+
+entity MalzemeGrubu {
+    ad String required,
+    aciklama String,
+    aktifMi Boolean 
+}
+
+entity Malzeme {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    fiyatGelis BigDecimal,
+    aktifMi Boolean
+}
+
+entity Poz {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    yil Integer,
+    fiyatTelekom BigDecimal,
+    fiyatGirisim BigDecimal,
+    fiyatTaseron BigDecimal,
+    fiyatTasere BigDecimal,
+    kdvOrani Double,
+    malzemeMi Boolean,
+    aktifMi Boolean
+}
+entity Bolge {
+	adi String required,
+	adresi String,
+	aktifMi Boolean
+	// sorumlusu Calisan
+}
+enum GorevDurumu {
+    BEKLIYOR, HAZIR, CALISILIYOR,TAMAMLANDI
+}
+ 
+enum OnemDurumu{
+	ACIL,IVEDI,NORMAL
+}
+ 
+enum CalisanTuru {
+    MAASLI,GOTURU,YEVMIYE,TASERE,GECICI
+}
+
+entity Proje {
+	isTanimi String,
+	aciklama String,
+	durumu GorevDurumu,
+	onemDurumu OnemDurumu,
+	tarih Instant,
+	baslamaTarihi Instant,
+    bitisTarihi Instant,
+	detay Blob,
+	aktifMi Boolean		
+}
+
+entity Iscilik {
+	miktar Long,
+	aciklama Blob,
+	aktifMi Boolean
+	
+} 
+ 
+relationship OneToOne {
+	Proje{turu} to ProjeTuru,
+	Proje{bolge} to Bolge,
+	Iscilik{calisanEkip} to Ekip,
+	Malzeme{birim} to Birim,
+    Malzeme{poz} to Poz{malzeme}
+	Bolge{sorumlu} to Calisan,
+	Calisan{unvan} to Unvan, 
+	Ekip{sorumlu} to Calisan
+}
+relationship OneToMany {
+  Iscilik{poz} to Poz{Iscilik},
+  Proje{iscilik} to Iscilik{Proje},
+  Iscilik{malzeme} to Malzeme{iscilik}
+}
+relationship ManyToOne {
+	Calisan{sorumlu} to Calisan,
+	Ekip{calisan} to Calisan{ekip}
+}
+relationship ManyToMany {
+	MalzemeGrubu{malzeme} to Malzeme{grup}
+}
+
+// Set pagination options
+paginate Proje,Iscilik, Poz with infinite-scroll
+paginate Calisan with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Proje, Poz, Calisan
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
+
