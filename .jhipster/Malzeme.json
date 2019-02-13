@@ -1,0 +1,69 @@
+{
+    "name": "Malzeme",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "kisaltma",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fiyatGelis",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "aktifMi",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "birim",
+            "otherEntityName": "birim",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "malzeme"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "poz",
+            "otherEntityName": "poz",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "malzeme"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "iscilik",
+            "otherEntityName": "iscilik",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "malzeme"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "grup",
+            "otherEntityName": "malzemeGrubu",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "malzeme"
+        }
+    ],
+    "changelogDate": "20190213162555",
+    "entityTableName": "malzeme",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

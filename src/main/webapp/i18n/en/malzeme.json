@@ -1,0 +1,29 @@
+{
+    "defterTakipApp": {
+        "malzeme": {
+            "home": {
+                "title": "Malzemes",
+                "createLabel": "Create a new Malzeme",
+                "createOrEditLabel": "Create or edit a Malzeme"
+            },
+            "created": "A new Malzeme is created with identifier {{ param }}",
+            "updated": "A Malzeme is updated with identifier {{ param }}",
+            "deleted": "A Malzeme is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Malzeme {{ id }}?"
+            },
+            "detail": {
+                "title": "Malzeme"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "kisaltma": "Kisaltma",
+            "fiyatGelis": "Fiyat Gelis",
+            "aktifMi": "Aktif Mi",
+            "birim": "Birim",
+            "poz": "Poz",
+            "iscilik": "Iscilik",
+            "grup": "Grup"
+        }
+    }
+}

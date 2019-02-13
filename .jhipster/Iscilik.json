@@ -1,0 +1,56 @@
+{
+    "name": "Iscilik",
+    "fields": [
+        {
+            "fieldName": "miktar",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "aktifMi",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "calisanEkip",
+            "otherEntityName": "ekip",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "iscilik"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "poz",
+            "otherEntityName": "poz",
+            "otherEntityRelationshipName": "iscilik"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "malzeme",
+            "otherEntityName": "malzeme",
+            "otherEntityRelationshipName": "iscilik"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "proje",
+            "otherEntityName": "proje",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "iscilik"
+        }
+    ],
+    "changelogDate": "20190213162559",
+    "entityTableName": "iscilik",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

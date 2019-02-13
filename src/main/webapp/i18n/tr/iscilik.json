@@ -1,0 +1,27 @@
+{
+    "defterTakipApp": {
+        "iscilik": {
+            "home": {
+                "title": "Isciliks",
+                "createLabel": "Create a new Iscilik",
+                "createOrEditLabel": "Create or edit a Iscilik"
+            },
+            "created": "A new Iscilik is created with identifier {{ param }}",
+            "updated": "A Iscilik is updated with identifier {{ param }}",
+            "deleted": "A Iscilik is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Iscilik {{ id }}?"
+            },
+            "detail": {
+                "title": "Iscilik"
+            },
+            "miktar": "Miktar",
+            "aciklama": "Aciklama",
+            "aktifMi": "Aktif Mi",
+            "calisanEkip": "Calisan Ekip",
+            "poz": "Poz",
+            "malzeme": "Malzeme",
+            "proje": "Proje"
+        }
+    }
+}

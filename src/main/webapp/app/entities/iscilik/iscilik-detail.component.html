@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="iscilik">
+            <h2><span jhiTranslate="defterTakipApp.iscilik.detail.title">Iscilik</span> {{iscilik.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.iscilik.miktar">Miktar</span></dt>
+                <dd>
+                    <span>{{iscilik.miktar}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.aciklama">Aciklama</span></dt>
+                <dd>
+                    <div *ngIf="iscilik.aciklama">
+                        <a (click)="openFile(iscilik.aciklamaContentType, iscilik.aciklama)" jhiTranslate="entity.action.open">open</a>
+                        {{iscilik.aciklamaContentType}}, {{byteSize(iscilik.aciklama)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.aktifMi">Aktif Mi</span></dt>
+                <dd>
+                    <span>{{iscilik.aktifMi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.calisanEkip">Calisan Ekip</span></dt>
+                <dd>
+                    <div *ngIf="iscilik.calisanEkip">
+                        <a [routerLink]="['/ekip', iscilik.calisanEkip?.id, 'view']">{{iscilik.calisanEkip?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.proje">Proje</span></dt>
+                <dd>
+                    <div *ngIf="iscilik.proje">
+                        <a [routerLink]="['/proje', iscilik.proje?.id, 'view']">{{iscilik.proje?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/iscilik', iscilik.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

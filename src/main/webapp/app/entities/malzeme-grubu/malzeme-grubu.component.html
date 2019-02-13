@@ -1,0 +1,64 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.malzemeGrubu.home.title">Malzeme Grubus</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-malzeme-grubu" [routerLink]="['/malzeme-grubu/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.malzemeGrubu.home.createLabel">
+            Create new Malzeme Grubu
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="malzemeGrubus">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzemeGrubu.ad">Ad</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzemeGrubu.aciklama">Aciklama</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzemeGrubu.aktifMi">Aktif Mi</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzemeGrubu.malzeme">Malzeme</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let malzemeGrubu of malzemeGrubus ;trackBy: trackId">
+                <td><a [routerLink]="['/malzeme-grubu', malzemeGrubu.id, 'view' ]">{{malzemeGrubu.id}}</a></td>
+                <td>{{malzemeGrubu.ad}}</td>
+                <td>{{malzemeGrubu.aciklama}}</td>
+                <td>{{malzemeGrubu.aktifMi}}</td>
+                <td>
+                    <span *ngFor="let malzeme of malzemeGrubu.malzemes; let last = last">
+                            <a class="form-control-static" [routerLink]="['../malzeme', malzeme?.id, 'view' ]">{{malzeme.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/malzeme-grubu', malzemeGrubu.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/malzeme-grubu', malzemeGrubu.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'malzeme-grubu', { outlets: { popup: malzemeGrubu.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

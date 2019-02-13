@@ -1,0 +1,25 @@
+{
+    "defterTakipApp": {
+        "birim": {
+            "home": {
+                "title": "Birims",
+                "createLabel": "Create a new Birim",
+                "createOrEditLabel": "Create or edit a Birim"
+            },
+            "created": "A new Birim is created with identifier {{ param }}",
+            "updated": "A Birim is updated with identifier {{ param }}",
+            "deleted": "A Birim is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Birim {{ id }}?"
+            },
+            "detail": {
+                "title": "Birim"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "kisaltma": "Kisaltma",
+            "carpani": "Carpani",
+            "aktifMi": "Aktif Mi"
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "defterTakipApp": {
+        "malzemeGrubu": {
+            "home": {
+                "title": "Malzeme Grubus",
+                "createLabel": "Create a new Malzeme Grubu",
+                "createOrEditLabel": "Create or edit a Malzeme Grubu"
+            },
+            "created": "A new Malzeme Grubu is created with identifier {{ param }}",
+            "updated": "A Malzeme Grubu is updated with identifier {{ param }}",
+            "deleted": "A Malzeme Grubu is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Malzeme Grubu {{ id }}?"
+            },
+            "detail": {
+                "title": "Malzeme Grubu"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "aktifMi": "Aktif Mi",
+            "malzeme": "Malzeme"
+        }
+    }
+}

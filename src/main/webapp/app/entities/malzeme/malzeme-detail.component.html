@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="malzeme">
+            <h2><span jhiTranslate="defterTakipApp.malzeme.detail.title">Malzeme</span> {{malzeme.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.malzeme.ad">Ad</span></dt>
+                <dd>
+                    <span>{{malzeme.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{malzeme.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.kisaltma">Kisaltma</span></dt>
+                <dd>
+                    <span>{{malzeme.kisaltma}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.fiyatGelis">Fiyat Gelis</span></dt>
+                <dd>
+                    <span>{{malzeme.fiyatGelis}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.aktifMi">Aktif Mi</span></dt>
+                <dd>
+                    <span>{{malzeme.aktifMi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.birim">Birim</span></dt>
+                <dd>
+                    <div *ngIf="malzeme.birim">
+                        <a [routerLink]="['/birim', malzeme.birim?.id, 'view']">{{malzeme.birim?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.poz">Poz</span></dt>
+                <dd>
+                    <div *ngIf="malzeme.poz">
+                        <a [routerLink]="['/poz', malzeme.poz?.id, 'view']">{{malzeme.poz?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.iscilik">Iscilik</span></dt>
+                <dd>
+                    <div *ngIf="malzeme.iscilik">
+                        <a [routerLink]="['/iscilik', malzeme.iscilik?.id, 'view']">{{malzeme.iscilik?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/malzeme', malzeme.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

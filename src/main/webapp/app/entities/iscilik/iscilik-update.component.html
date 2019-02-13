@@ -1,0 +1,66 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-iscilik-heading" jhiTranslate="defterTakipApp.iscilik.home.createOrEditLabel">Create or edit a Iscilik</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!iscilik.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="iscilik.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.miktar" for="field_miktar">Miktar</label>
+                    <input type="number" class="form-control" name="miktar" id="field_miktar"
+                        [(ngModel)]="iscilik.miktar" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.aciklama" for="field_aciklama">Aciklama</label>
+                    <div>
+                        <div *ngIf="iscilik.aciklama" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(iscilik.aciklamaContentType, iscilik.aciklama)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{iscilik.aciklamaContentType}}, {{byteSize(iscilik.aciklama)}}</span>
+                            <button type="button" (click)="iscilik.aciklama=null;iscilik.aciklamaContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_aciklama" (change)="setFileData($event, iscilik, 'aciklama', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="aciklama" id="field_aciklama"
+                        [(ngModel)]="iscilik.aciklama" />
+                    <input type="hidden" class="form-control" name="aciklamaContentType" id="field_aciklamaContentType"
+                        [(ngModel)]="iscilik.aciklamaContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.aktifMi" for="field_aktifMi">Aktif Mi</label>
+                    <input type="checkbox" class="form-control" name="aktifMi" id="field_aktifMi"
+                        [(ngModel)]="iscilik.aktifMi" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.calisanEkip" for="field_calisanEkip">Calisan Ekip</label>
+                    <select class="form-control" id="field_calisanEkip" name="calisanEkip" [(ngModel)]="iscilik.calisanEkip">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ekipOption.id === iscilik.calisanEkip?.id ? iscilik.calisanEkip : ekipOption" *ngFor="let ekipOption of calisanekips; trackBy: trackEkipById">{{ekipOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.proje" for="field_proje">Proje</label>
+                    <select class="form-control" id="field_proje" name="proje" [(ngModel)]="iscilik.proje" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="projeOption.id === iscilik.proje?.id ? iscilik.proje : projeOption" *ngFor="let projeOption of projes; trackBy: trackProjeById">{{projeOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

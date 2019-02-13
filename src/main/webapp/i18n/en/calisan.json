@@ -1,0 +1,33 @@
+{
+    "defterTakipApp": {
+        "calisan": {
+            "home": {
+                "title": "Calisans",
+                "createLabel": "Create a new Calisan",
+                "createOrEditLabel": "Create or edit a Calisan"
+            },
+            "created": "A new Calisan is created with identifier {{ param }}",
+            "updated": "A Calisan is updated with identifier {{ param }}",
+            "deleted": "A Calisan is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Calisan {{ id }}?"
+            },
+            "detail": {
+                "title": "Calisan"
+            },
+            "tckimlikno": "Tckimlikno",
+            "adi": "Adi",
+            "soyadi": "Soyadi",
+            "email": "Email",
+            "phoneNumber": "Phone Number",
+            "girisTarihi": "Giris Tarihi",
+            "cikisTarihi": "Cikis Tarihi",
+            "ucret": "Ucret",
+            "calisanTuru": "Calisan Turu",
+            "aktifMi": "Aktif Mi",
+            "unvan": "Unvan",
+            "sorumlu": "Sorumlu",
+            "ekip": "Ekip"
+        }
+    }
+}

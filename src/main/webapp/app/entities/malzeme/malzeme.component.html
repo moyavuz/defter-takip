@@ -1,0 +1,80 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.malzeme.home.title">Malzemes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-malzeme" [routerLink]="['/malzeme/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.malzeme.home.createLabel">
+            Create new Malzeme
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="malzemes">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzeme.ad">Ad</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzeme.aciklama">Aciklama</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzeme.kisaltma">Kisaltma</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzeme.fiyatGelis">Fiyat Gelis</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzeme.aktifMi">Aktif Mi</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzeme.birim">Birim</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzeme.poz">Poz</span></th>
+            <th><span jhiTranslate="defterTakipApp.malzeme.iscilik">Iscilik</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let malzeme of malzemes ;trackBy: trackId">
+                <td><a [routerLink]="['/malzeme', malzeme.id, 'view' ]">{{malzeme.id}}</a></td>
+                <td>{{malzeme.ad}}</td>
+                <td>{{malzeme.aciklama}}</td>
+                <td>{{malzeme.kisaltma}}</td>
+                <td>{{malzeme.fiyatGelis}}</td>
+                <td>{{malzeme.aktifMi}}</td>
+                <td>
+                    <div *ngIf="malzeme.birim">
+                        <a [routerLink]="['../birim', malzeme.birim?.id, 'view' ]" >{{malzeme.birim?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="malzeme.poz">
+                        <a [routerLink]="['../poz', malzeme.poz?.id, 'view' ]" >{{malzeme.poz?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="malzeme.iscilik">
+                        <a [routerLink]="['../iscilik', malzeme.iscilik?.id, 'view' ]" >{{malzeme.iscilik?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/malzeme', malzeme.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/malzeme', malzeme.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'malzeme', { outlets: { popup: malzeme.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

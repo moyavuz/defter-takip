@@ -1,0 +1,56 @@
+{
+    "name": "Ekip",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": 2
+        },
+        {
+            "fieldName": "telefonNo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "epostaAdresi",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "taseronMu",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "aktifMi",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "sorumlu",
+            "otherEntityName": "calisan",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "ekip"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "calisan",
+            "otherEntityName": "calisan",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "ekip"
+        }
+    ],
+    "changelogDate": "20190213162550",
+    "entityTableName": "ekip",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

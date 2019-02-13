@@ -1,0 +1,91 @@
+{
+    "name": "Calisan",
+    "fields": [
+        {
+            "fieldName": "tckimlikno",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "adi",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": 2
+        },
+        {
+            "fieldName": "soyadi",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": 2
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "phoneNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "girisTarihi",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "cikisTarihi",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "ucret",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "calisanTuru",
+            "fieldType": "CalisanTuru",
+            "fieldValues": "MAASLI,GOTURU,YEVMIYE,TASERE,GECICI"
+        },
+        {
+            "fieldName": "aktifMi",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "unvan",
+            "otherEntityName": "unvan",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "calisan"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "sorumlu",
+            "otherEntityName": "calisan",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "calisan"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "ekip",
+            "otherEntityName": "ekip",
+            "otherEntityRelationshipName": "calisan"
+        }
+    ],
+    "changelogDate": "20190213162549",
+    "entityTableName": "calisan",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

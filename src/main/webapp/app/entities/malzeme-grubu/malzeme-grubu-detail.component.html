@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="malzemeGrubu">
+            <h2><span jhiTranslate="defterTakipApp.malzemeGrubu.detail.title">Malzeme Grubu</span> {{malzemeGrubu.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.malzemeGrubu.ad">Ad</span></dt>
+                <dd>
+                    <span>{{malzemeGrubu.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzemeGrubu.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{malzemeGrubu.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzemeGrubu.aktifMi">Aktif Mi</span></dt>
+                <dd>
+                    <span>{{malzemeGrubu.aktifMi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzemeGrubu.malzeme">Malzeme</span></dt>
+                <dd>
+                    <span *ngFor="let malzeme of malzemeGrubu.malzemes; let last = last">
+                        <a [routerLink]="['/malzeme', malzeme?.id, 'view' ]">{{malzeme.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/malzeme-grubu', malzemeGrubu.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

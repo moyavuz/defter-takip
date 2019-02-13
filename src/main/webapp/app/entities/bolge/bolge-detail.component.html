@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="bolge">
+            <h2><span jhiTranslate="defterTakipApp.bolge.detail.title">Bolge</span> {{bolge.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.bolge.adi">Adi</span></dt>
+                <dd>
+                    <span>{{bolge.adi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.bolge.adresi">Adresi</span></dt>
+                <dd>
+                    <span>{{bolge.adresi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.bolge.aktifMi">Aktif Mi</span></dt>
+                <dd>
+                    <span>{{bolge.aktifMi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.bolge.sorumlu">Sorumlu</span></dt>
+                <dd>
+                    <div *ngIf="bolge.sorumlu">
+                        <a [routerLink]="['/calisan', bolge.sorumlu?.id, 'view']">{{bolge.sorumlu?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/bolge', bolge.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
