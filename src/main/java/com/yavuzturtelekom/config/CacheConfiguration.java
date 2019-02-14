@@ -38,6 +38,35 @@ public class CacheConfiguration {
             cm.createCache(com.yavuzturtelekom.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.yavuzturtelekom.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.yavuzturtelekom.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Calisan.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Calisan.class.getName() + ".bolgeSorumlus", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Calisan.class.getName() + ".ekips", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Ekip.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Ekip.class.getName() + ".calisanEkips", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Ekip.class.getName() + ".ekipSorumlus", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Ekip.class.getName() + ".ekipCalisans", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Unvan.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Unvan.class.getName() + ".unvans", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Birim.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Birim.class.getName() + ".malzemeBirims", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Birim.class.getName() + ".iscilikBirims", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Birim.class.getName() + ".pozBirims", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.ProjeTuru.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.ProjeTuru.class.getName() + ".turus", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.MalzemeGrubu.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.MalzemeGrubu.class.getName() + ".malzemes", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Malzeme.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Malzeme.class.getName() + ".malzemeIsciliks", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Malzeme.class.getName() + ".grups", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Poz.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Bolge.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Bolge.class.getName() + ".bolges", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Proje.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Proje.class.getName() + ".projeIsciliks", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Iscilik.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Iscilik.class.getName() + ".pozs", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Iscilik.class.getName() + ".projes", jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.Iscilik.class.getName() + ".malzemes", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
