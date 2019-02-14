@@ -1,0 +1,145 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-calisan-heading" jhiTranslate="defterTakipApp.calisan.home.createOrEditLabel">Create or edit a Calisan</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!calisan.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="calisan.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.tckimlikno" for="field_tckimlikno">Tckimlikno</label>
+                    <input type="number" class="form-control" name="tckimlikno" id="field_tckimlikno"
+                        [(ngModel)]="calisan.tckimlikno" required/>
+                    <div [hidden]="!(editForm.controls.tckimlikno?.dirty && editForm.controls.tckimlikno?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.tckimlikno?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.tckimlikno?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.ad" for="field_ad">Ad</label>
+                    <input type="text" class="form-control" name="ad" id="field_ad"
+                        [(ngModel)]="calisan.ad" required minlength="2"/>
+                    <div [hidden]="!(editForm.controls.ad?.dirty && editForm.controls.ad?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ad?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ad?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.soyad" for="field_soyad">Soyad</label>
+                    <input type="text" class="form-control" name="soyad" id="field_soyad"
+                        [(ngModel)]="calisan.soyad" required minlength="2"/>
+                    <div [hidden]="!(editForm.controls.soyad?.dirty && editForm.controls.soyad?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.soyad?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.soyad?.errors?.minlength" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: 2 }">
+                        This field is required to be at least 2 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.eposta" for="field_eposta">Eposta</label>
+                    <input type="text" class="form-control" name="eposta" id="field_eposta"
+                        [(ngModel)]="calisan.eposta" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.telefon" for="field_telefon">Telefon</label>
+                    <input type="text" class="form-control" name="telefon" id="field_telefon"
+                        [(ngModel)]="calisan.telefon" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.dogumTarihi" for="field_dogumTarihi">Dogum Tarihi</label>
+                    <div class="input-group">
+                        <input id="field_dogumTarihi" type="text" class="form-control" name="dogumTarihi" ngbDatepicker  #dogumTarihiDp="ngbDatepicker" [(ngModel)]="calisan.dogumTarihi"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dogumTarihiDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.girisTarihi" for="field_girisTarihi">Giris Tarihi</label>
+                    <div class="input-group">
+                        <input id="field_girisTarihi" type="text" class="form-control" name="girisTarihi" ngbDatepicker  #girisTarihiDp="ngbDatepicker" [(ngModel)]="calisan.girisTarihi"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="girisTarihiDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.cikisTarihi" for="field_cikisTarihi">Cikis Tarihi</label>
+                    <div class="input-group">
+                        <input id="field_cikisTarihi" type="text" class="form-control" name="cikisTarihi" ngbDatepicker  #cikisTarihiDp="ngbDatepicker" [(ngModel)]="calisan.cikisTarihi"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="cikisTarihiDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.ucret" for="field_ucret">Ucret</label>
+                    <input type="number" class="form-control" name="ucret" id="field_ucret"
+                        [(ngModel)]="calisan.ucret" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.calisanTuru" for="field_calisanTuru">Calisan Turu</label>
+                    <select class="form-control" name="calisanTuru" [(ngModel)]="calisan.calisanTuru" id="field_calisanTuru" >
+                        <option value="MAASLI">{{'defterTakipApp.CalisanTuru.MAASLI' | translate}}</option>
+                        <option value="GOTURU">{{'defterTakipApp.CalisanTuru.GOTURU' | translate}}</option>
+                        <option value="YEVMIYE">{{'defterTakipApp.CalisanTuru.YEVMIYE' | translate}}</option>
+                        <option value="TASERE">{{'defterTakipApp.CalisanTuru.TASERE' | translate}}</option>
+                        <option value="GECICI">{{'defterTakipApp.CalisanTuru.GECICI' | translate}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.sorumlu" for="field_sorumlu">Sorumlu</label>
+                    <select class="form-control" id="field_sorumlu" name="sorumlu" [(ngModel)]="calisan.sorumlu" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="calisanOption.id === calisan.sorumlu?.id ? calisan.sorumlu : calisanOption" *ngFor="let calisanOption of calisans; trackBy: trackCalisanById">{{calisanOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.ekip" for="field_ekip">Ekip</label>
+                    <select class="form-control" id="field_ekip" name="ekip" [(ngModel)]="calisan.ekip" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ekipOption.id === calisan.ekip?.id ? calisan.ekip : ekipOption" *ngFor="let ekipOption of ekips; trackBy: trackEkipById">{{ekipOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.calisan.unvan" for="field_unvan">Unvan</label>
+                    <select class="form-control" id="field_unvan" name="unvan" [(ngModel)]="calisan.unvan" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="unvanOption.id === calisan.unvan?.id ? calisan.unvan : unvanOption" *ngFor="let unvanOption of unvans; trackBy: trackUnvanById">{{unvanOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

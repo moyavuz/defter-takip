@@ -1,0 +1,53 @@
+{
+    "name": "Birim",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "kisaltma",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "carpan",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "birim",
+            "otherEntityName": "malzeme",
+            "otherEntityRelationshipName": "birim"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "birim",
+            "otherEntityName": "iscilik",
+            "otherEntityRelationshipName": "birim"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "birim",
+            "otherEntityName": "poz",
+            "otherEntityRelationshipName": "birim"
+        }
+    ],
+    "changelogDate": "20190214111241",
+    "entityTableName": "birim",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

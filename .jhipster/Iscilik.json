@@ -1,0 +1,62 @@
+{
+    "name": "Iscilik",
+    "fields": [
+        {
+            "fieldName": "miktar",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "resim",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "ekip",
+            "otherEntityName": "ekip",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "birim",
+            "otherEntityName": "birim",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "poz",
+            "otherEntityName": "poz",
+            "otherEntityRelationshipName": "iscilik"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "proje",
+            "otherEntityName": "proje",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "iscilik"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "malzeme",
+            "otherEntityName": "malzeme",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "iscilik"
+        }
+    ],
+    "changelogDate": "20190214111248",
+    "entityTableName": "iscilik",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

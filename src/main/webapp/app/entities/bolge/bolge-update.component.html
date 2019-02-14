@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-bolge-heading" jhiTranslate="defterTakipApp.bolge.home.createOrEditLabel">Create or edit a Bolge</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!bolge.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="bolge.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.bolge.ad" for="field_ad">Ad</label>
+                    <input type="text" class="form-control" name="ad" id="field_ad"
+                        [(ngModel)]="bolge.ad" required/>
+                    <div [hidden]="!(editForm.controls.ad?.dirty && editForm.controls.ad?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ad?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.bolge.adres" for="field_adres">Adres</label>
+                    <input type="text" class="form-control" name="adres" id="field_adres"
+                        [(ngModel)]="bolge.adres" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.bolge.calisan" for="field_calisan">Calisan</label>
+                    <select class="form-control" id="field_calisan" name="calisan" [(ngModel)]="bolge.calisan" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="calisanOption.id === bolge.calisan?.id ? bolge.calisan : calisanOption" *ngFor="let calisanOption of calisans; trackBy: trackCalisanById">{{calisanOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
