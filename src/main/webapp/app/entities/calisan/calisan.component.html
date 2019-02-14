@@ -1,0 +1,98 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.calisan.home.title">Calisans</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-calisan" [routerLink]="['/calisan/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.calisan.home.createLabel">
+            Create new Calisan
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="calisans">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="tckimlikno"><span jhiTranslate="defterTakipApp.calisan.tckimlikno">Tckimlikno</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ad"><span jhiTranslate="defterTakipApp.calisan.ad">Ad</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="soyad"><span jhiTranslate="defterTakipApp.calisan.soyad">Soyad</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eposta"><span jhiTranslate="defterTakipApp.calisan.eposta">Eposta</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="telefon"><span jhiTranslate="defterTakipApp.calisan.telefon">Telefon</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dogumTarihi"><span jhiTranslate="defterTakipApp.calisan.dogumTarihi">Dogum Tarihi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="girisTarihi"><span jhiTranslate="defterTakipApp.calisan.girisTarihi">Giris Tarihi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="cikisTarihi"><span jhiTranslate="defterTakipApp.calisan.cikisTarihi">Cikis Tarihi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ucret"><span jhiTranslate="defterTakipApp.calisan.ucret">Ucret</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="calisanTuru"><span jhiTranslate="defterTakipApp.calisan.calisanTuru">Calisan Turu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="sorumlu.id"><span jhiTranslate="defterTakipApp.calisan.sorumlu">Sorumlu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ekip.id"><span jhiTranslate="defterTakipApp.calisan.ekip">Ekip</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="unvan.id"><span jhiTranslate="defterTakipApp.calisan.unvan">Unvan</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let calisan of calisans ;trackBy: trackId">
+                <td><a [routerLink]="['/calisan', calisan.id, 'view' ]">{{calisan.id}}</a></td>
+                <td>{{calisan.tckimlikno}}</td>
+                <td>{{calisan.ad}}</td>
+                <td>{{calisan.soyad}}</td>
+                <td>{{calisan.eposta}}</td>
+                <td>{{calisan.telefon}}</td>
+                <td>{{calisan.dogumTarihi | date:'mediumDate'}}</td>
+                <td>{{calisan.girisTarihi | date:'mediumDate'}}</td>
+                <td>{{calisan.cikisTarihi | date:'mediumDate'}}</td>
+                <td>{{calisan.ucret}}</td>
+                <td jhiTranslate="{{'defterTakipApp.CalisanTuru.' + calisan.calisanTuru}}">{{calisan.calisanTuru}}</td>
+                <td>
+                    <div *ngIf="calisan.sorumlu">
+                        <a [routerLink]="['../calisan', calisan.sorumlu?.id, 'view' ]" >{{calisan.sorumlu?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="calisan.ekip">
+                        <a [routerLink]="['../ekip', calisan.ekip?.id, 'view' ]" >{{calisan.ekip?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="calisan.unvan">
+                        <a [routerLink]="['../unvan', calisan.unvan?.id, 'view' ]" >{{calisan.unvan?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/calisan', calisan.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/calisan', calisan.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'calisan', { outlets: { popup: calisan.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="calisans && calisans.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>
