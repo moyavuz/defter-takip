@@ -1,0 +1,37 @@
+{
+    "name": "ProjeTuru",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "kisaltma",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "turu",
+            "otherEntityName": "proje",
+            "otherEntityRelationshipName": "projeTuru"
+        }
+    ],
+    "changelogDate": "20190214115115",
+    "entityTableName": "proje_turu",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

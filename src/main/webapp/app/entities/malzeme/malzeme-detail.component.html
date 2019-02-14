@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="malzeme">
+            <h2><span jhiTranslate="defterTakipApp.malzeme.detail.title">Malzeme</span> {{malzeme.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.malzeme.ad">Ad</span></dt>
+                <dd>
+                    <span>{{malzeme.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{malzeme.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.kisaltma">Kisaltma</span></dt>
+                <dd>
+                    <span>{{malzeme.kisaltma}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.fiyatMaliyet">Fiyat Maliyet</span></dt>
+                <dd>
+                    <span>{{malzeme.fiyatMaliyet}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.birim">Birim</span></dt>
+                <dd>
+                    <div *ngIf="malzeme.birim">
+                        <a [routerLink]="['/birim', malzeme.birim?.id, 'view']">{{malzeme.birim?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.malzemeIscilik">Malzeme Iscilik</span></dt>
+                <dd>
+                    <span *ngFor="let malzemeIscilik of malzeme.malzemeIsciliks; let last = last">
+                        <a [routerLink]="['/iscilik', malzemeIscilik?.id, 'view' ]">{{malzemeIscilik.id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/malzeme', malzeme.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
