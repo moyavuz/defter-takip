@@ -1,0 +1,66 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.ekip.home.title">Ekips</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-ekip" [routerLink]="['/ekip/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.ekip.home.createLabel">
+            Create new Ekip
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="ekips">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.ekip.ad">Ad</span></th>
+            <th><span jhiTranslate="defterTakipApp.ekip.telefon">Telefon</span></th>
+            <th><span jhiTranslate="defterTakipApp.ekip.eposta">Eposta</span></th>
+            <th><span jhiTranslate="defterTakipApp.ekip.taseronMu">Taseron Mu</span></th>
+            <th><span jhiTranslate="defterTakipApp.ekip.ekipCalisan">Ekip Calisan</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let ekip of ekips ;trackBy: trackId">
+                <td><a [routerLink]="['/ekip', ekip.id, 'view' ]">{{ekip.id}}</a></td>
+                <td>{{ekip.ad}}</td>
+                <td>{{ekip.telefon}}</td>
+                <td>{{ekip.eposta}}</td>
+                <td>{{ekip.taseronMu}}</td>
+                <td>
+                    <span *ngFor="let ekipCalisan of ekip.ekipCalisans; let last = last">
+                            <a class="form-control-static" [routerLink]="['../calisan', ekipCalisan?.id, 'view' ]">{{ekipCalisan.id}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/ekip', ekip.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/ekip', ekip.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'ekip', { outlets: { popup: ekip.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

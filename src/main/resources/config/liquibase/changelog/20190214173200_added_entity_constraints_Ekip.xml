@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Ekip.
+    -->
+    <changeSet id="20190214173200-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="ekip_id"
+                                 baseTableName="ekip_ekip_calisan"
+                                 constraintName="fk_ekip_ekip_calisan_ekip_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ekip"/>
+        <addForeignKeyConstraint baseColumnNames="ekip_calisan_id"
+                                 baseTableName="ekip_ekip_calisan"
+                                 constraintName="fk_ekip_ekip_calisan_ekip_calisan_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="calisan"/>
+        
+    </changeSet>
+</databaseChangeLog>
