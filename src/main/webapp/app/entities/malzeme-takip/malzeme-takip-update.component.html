@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-malzeme-takip-heading" jhiTranslate="defterTakipApp.malzemeTakip.home.createOrEditLabel">Create or edit a Malzeme Takip</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!malzemeTakip.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="malzemeTakip.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzemeTakip.miktar" for="field_miktar">Miktar</label>
+                    <input type="number" class="form-control" name="miktar" id="field_miktar"
+                        [(ngModel)]="malzemeTakip.miktar" required/>
+                    <div [hidden]="!(editForm.controls.miktar?.dirty && editForm.controls.miktar?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.miktar?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.miktar?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzemeTakip.aciklama" for="field_aciklama">Aciklama</label>
+                    <textarea class="form-control" name="aciklama" id="field_aciklama"
+                        [(ngModel)]="malzemeTakip.aciklama" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzemeTakip.tarih" for="field_tarih">Tarih</label>
+                    <div class="input-group">
+                        <input id="field_tarih" type="text" class="form-control" name="tarih" ngbDatepicker  #tarihDp="ngbDatepicker" [(ngModel)]="malzemeTakip.tarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="tarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzemeTakip.ekip" for="field_ekip">Ekip</label>
+                    <select class="form-control" id="field_ekip" name="ekip" [(ngModel)]="malzemeTakip.ekip" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ekipOption.id === malzemeTakip.ekip?.id ? malzemeTakip.ekip : ekipOption" *ngFor="let ekipOption of ekips; trackBy: trackEkipById">{{ekipOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzemeTakip.malzeme" for="field_malzeme">Malzeme</label>
+                    <select class="form-control" id="field_malzeme" name="malzeme" [(ngModel)]="malzemeTakip.malzeme" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="malzemeOption.id === malzemeTakip.malzeme?.id ? malzemeTakip.malzeme : malzemeOption" *ngFor="let malzemeOption of malzemes; trackBy: trackMalzemeById">{{malzemeOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
