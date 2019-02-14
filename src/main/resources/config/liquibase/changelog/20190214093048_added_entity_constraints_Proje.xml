@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Proje.
+    -->
+    <changeSet id="20190214093048-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="turu_id"
+                                 baseTableName="proje"
+                                 constraintName="fk_proje_turu_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="proje_turu"/>
+
+        <addForeignKeyConstraint baseColumnNames="bolge_id"
+                                 baseTableName="proje"
+                                 constraintName="fk_proje_bolge_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bolge"/>
+
+        <addForeignKeyConstraint baseColumnNames="proje_id"
+                                 baseTableName="proje_iscilik"
+                                 constraintName="fk_proje_iscilik_proje_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="proje"/>
+        <addForeignKeyConstraint baseColumnNames="iscilik_id"
+                                 baseTableName="proje_iscilik"
+                                 constraintName="fk_proje_iscilik_iscilik_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="iscilik"/>
+        
+    </changeSet>
+</databaseChangeLog>

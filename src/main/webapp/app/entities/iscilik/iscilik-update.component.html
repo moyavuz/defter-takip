@@ -1,0 +1,80 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-iscilik-heading" jhiTranslate="defterTakipApp.iscilik.home.createOrEditLabel">Create or edit a Iscilik</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!iscilik.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="iscilik.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.miktar" for="field_miktar">Miktar</label>
+                    <input type="number" class="form-control" name="miktar" id="field_miktar"
+                        [(ngModel)]="iscilik.miktar" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.aciklama" for="field_aciklama">Aciklama</label>
+                    <textarea class="form-control" name="aciklama" id="field_aciklama"
+                        [(ngModel)]="iscilik.aciklama" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.resim" for="field_resim">Resim</label>
+                    <div>
+                        <div *ngIf="iscilik.resim" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(iscilik.resimContentType, iscilik.resim)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{iscilik.resimContentType}}, {{byteSize(iscilik.resim)}}</span>
+                            <button type="button" (click)="iscilik.resim=null;iscilik.resimContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_resim" (change)="setFileData($event, iscilik, 'resim', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="resim" id="field_resim"
+                        [(ngModel)]="iscilik.resim" />
+                    <input type="hidden" class="form-control" name="resimContentType" id="field_resimContentType"
+                        [(ngModel)]="iscilik.resimContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.calisanEkip" for="field_calisanEkip">Calisan Ekip</label>
+                    <select class="form-control" id="field_calisanEkip" name="calisanEkip" [(ngModel)]="iscilik.calisanEkip">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ekipOption.id === iscilik.calisanEkip?.id ? iscilik.calisanEkip : ekipOption" *ngFor="let ekipOption of calisanekips; trackBy: trackEkipById">{{ekipOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.birim" for="field_birim">Birim</label>
+                    <select class="form-control" id="field_birim" name="birim" [(ngModel)]="iscilik.birim">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="birimOption.id === iscilik.birim?.id ? iscilik.birim : birimOption" *ngFor="let birimOption of birims; trackBy: trackBirimById">{{birimOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.poz" for="field_poz">Poz</label>
+                    <select class="form-control" id="field_poz" name="poz" [(ngModel)]="iscilik.poz">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="pozOption.id === iscilik.poz?.id ? iscilik.poz : pozOption" *ngFor="let pozOption of pozs; trackBy: trackPozById">{{pozOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.iscilik.malzeme" for="field_malzeme">Malzeme</label>
+                    <select class="form-control" id="field_malzeme" name="malzeme" [(ngModel)]="iscilik.malzeme" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="malzemeOption.id === iscilik.malzeme?.id ? iscilik.malzeme : malzemeOption" *ngFor="let malzemeOption of malzemes; trackBy: trackMalzemeById">{{malzemeOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

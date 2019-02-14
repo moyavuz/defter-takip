@@ -1,0 +1,75 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="poz">
+            <h2><span jhiTranslate="defterTakipApp.poz.detail.title">Poz</span> {{poz.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.poz.ad">Ad</span></dt>
+                <dd>
+                    <span>{{poz.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{poz.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.kisaltma">Kisaltma</span></dt>
+                <dd>
+                    <span>{{poz.kisaltma}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.yil">Yil</span></dt>
+                <dd>
+                    <span>{{poz.yil}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.fiyatTelekom">Fiyat Telekom</span></dt>
+                <dd>
+                    <span>{{poz.fiyatTelekom}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.fiyatGirisim">Fiyat Girisim</span></dt>
+                <dd>
+                    <span>{{poz.fiyatGirisim}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.fiyatTaseron">Fiyat Taseron</span></dt>
+                <dd>
+                    <span>{{poz.fiyatTaseron}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.fiyatTasere">Fiyat Tasere</span></dt>
+                <dd>
+                    <span>{{poz.fiyatTasere}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.kdvOran">Kdv Oran</span></dt>
+                <dd>
+                    <span>{{poz.kdvOran}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.malzemeMi">Malzeme Mi</span></dt>
+                <dd>
+                    <span>{{poz.malzemeMi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.birim">Birim</span></dt>
+                <dd>
+                    <div *ngIf="poz.birim">
+                        <a [routerLink]="['/birim', poz.birim?.id, 'view']">{{poz.birim?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.poz.malzeme">Malzeme</span></dt>
+                <dd>
+                    <div *ngIf="poz.malzeme">
+                        <a [routerLink]="['/malzeme', poz.malzeme?.id, 'view']">{{poz.malzeme?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/poz', poz.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

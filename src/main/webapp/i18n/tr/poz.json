@@ -1,0 +1,32 @@
+{
+    "defterTakipApp": {
+        "poz": {
+            "home": {
+                "title": "Pozs",
+                "createLabel": "Create a new Poz",
+                "createOrEditLabel": "Create or edit a Poz"
+            },
+            "created": "A new Poz is created with identifier {{ param }}",
+            "updated": "A Poz is updated with identifier {{ param }}",
+            "deleted": "A Poz is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Poz {{ id }}?"
+            },
+            "detail": {
+                "title": "Poz"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "kisaltma": "Kisaltma",
+            "yil": "Yil",
+            "fiyatTelekom": "Fiyat Telekom",
+            "fiyatGirisim": "Fiyat Girisim",
+            "fiyatTaseron": "Fiyat Taseron",
+            "fiyatTasere": "Fiyat Tasere",
+            "kdvOran": "Kdv Oran",
+            "malzemeMi": "Malzeme Mi",
+            "birim": "Birim",
+            "malzeme": "Malzeme"
+        }
+    }
+}

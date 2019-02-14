@@ -1,0 +1,80 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.proje.home.title">Projes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-proje" [routerLink]="['/proje/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.proje.home.createLabel">
+            Create new Proje
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="projes">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="isTanimi"><span jhiTranslate="defterTakipApp.proje.isTanimi">Is Tanimi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="aciklama"><span jhiTranslate="defterTakipApp.proje.aciklama">Aciklama</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="detay"><span jhiTranslate="defterTakipApp.proje.detay">Detay</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="durumu"><span jhiTranslate="defterTakipApp.proje.durumu">Durumu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="onemDurumu"><span jhiTranslate="defterTakipApp.proje.onemDurumu">Onem Durumu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="tarih"><span jhiTranslate="defterTakipApp.proje.tarih">Tarih</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="baslamaTarihi"><span jhiTranslate="defterTakipApp.proje.baslamaTarihi">Baslama Tarihi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="bitisTarihi"><span jhiTranslate="defterTakipApp.proje.bitisTarihi">Bitis Tarihi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="turu.id"><span jhiTranslate="defterTakipApp.proje.turu">Turu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="bolge.id"><span jhiTranslate="defterTakipApp.proje.bolge">Bolge</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let proje of projes ;trackBy: trackId">
+                <td><a [routerLink]="['/proje', proje.id, 'view' ]">{{proje.id}}</a></td>
+                <td>{{proje.isTanimi}}</td>
+                <td>{{proje.aciklama}}</td>
+                <td>{{proje.detay}}</td>
+                <td jhiTranslate="{{'defterTakipApp.GorevDurumu.' + proje.durumu}}">{{proje.durumu}}</td>
+                <td jhiTranslate="{{'defterTakipApp.OnemDurumu.' + proje.onemDurumu}}">{{proje.onemDurumu}}</td>
+                <td>{{proje.tarih | date:'mediumDate'}}</td>
+                <td>{{proje.baslamaTarihi | date:'mediumDate'}}</td>
+                <td>{{proje.bitisTarihi | date:'mediumDate'}}</td>
+                <td>
+                    <div *ngIf="proje.turu">
+                        <a [routerLink]="['../proje-turu', proje.turu?.id, 'view' ]" >{{proje.turu?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="proje.bolge">
+                        <a [routerLink]="['../bolge', proje.bolge?.id, 'view' ]" >{{proje.bolge?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/proje', proje.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/proje', proje.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'proje', { outlets: { popup: proje.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
