@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="unvan">
+            <h2><span jhiTranslate="defterTakipApp.unvan.detail.title">Unvan</span> {{unvan.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.unvan.ad">Ad</span></dt>
+                <dd>
+                    <span>{{unvan.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.unvan.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{unvan.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.unvan.calisan">Calisan</span></dt>
+                <dd>
+                    <div *ngIf="unvan.calisan">
+                        <a [routerLink]="['/calisan', unvan.calisan?.id, 'view']">{{unvan.calisan?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/unvan', unvan.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

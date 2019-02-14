@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="projeTuru">
+            <h2><span jhiTranslate="defterTakipApp.projeTuru.detail.title">Proje Turu</span> {{projeTuru.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.projeTuru.ad">Ad</span></dt>
+                <dd>
+                    <span>{{projeTuru.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.projeTuru.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{projeTuru.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.projeTuru.kisaltma">Kisaltma</span></dt>
+                <dd>
+                    <span>{{projeTuru.kisaltma}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.projeTuru.proje">Proje</span></dt>
+                <dd>
+                    <div *ngIf="projeTuru.proje">
+                        <a [routerLink]="['/proje', projeTuru.proje?.id, 'view']">{{projeTuru.proje?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/proje-turu', projeTuru.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

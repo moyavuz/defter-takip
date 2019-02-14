@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="birim">
+            <h2><span jhiTranslate="defterTakipApp.birim.detail.title">Birim</span> {{birim.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.birim.ad">Ad</span></dt>
+                <dd>
+                    <span>{{birim.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.birim.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{birim.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.birim.kisaltma">Kisaltma</span></dt>
+                <dd>
+                    <span>{{birim.kisaltma}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.birim.carpan">Carpan</span></dt>
+                <dd>
+                    <span>{{birim.carpan}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.birim.malzeme">Malzeme</span></dt>
+                <dd>
+                    <div *ngIf="birim.malzeme">
+                        <a [routerLink]="['/malzeme', birim.malzeme?.id, 'view']">{{birim.malzeme?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.birim.poz">Poz</span></dt>
+                <dd>
+                    <div *ngIf="birim.poz">
+                        <a [routerLink]="['/poz', birim.poz?.id, 'view']">{{birim.poz?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.birim.iscilik">Iscilik</span></dt>
+                <dd>
+                    <div *ngIf="birim.iscilik">
+                        <a [routerLink]="['/iscilik', birim.iscilik?.id, 'view']">{{birim.iscilik?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/birim', birim.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

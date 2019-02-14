@@ -1,0 +1,79 @@
+{
+    "name": "Poz",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "kisaltma",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "yil",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fiyatTelekom",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "fiyatGirisim",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "fiyatTaseron",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "fiyatTasere",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "kdvOran",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "malzemeMi",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "malzeme",
+            "otherEntityName": "malzeme",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "poz"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "birim",
+            "otherEntityName": "birim",
+            "otherEntityRelationshipName": "poz"
+        },
+        {
+            "relationshipName": "iscilik",
+            "otherEntityName": "iscilik",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190214104821",
+    "entityTableName": "poz",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
