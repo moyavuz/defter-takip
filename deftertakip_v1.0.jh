@@ -1,0 +1,144 @@
+enum GorevDurumu {
+    BEKLIYOR, HAZIR, CALISILIYOR,TAMAMLANDI
+}
+
+enum OnemDurumu{
+	ACIL,IVEDI,NORMAL
+}
+
+enum CalisanTuru {
+    MAASLI,GOTURU,YEVMIYE,TASERE,GECICI
+}
+
+entity Calisan {
+	tckimlikno Long required,
+	ad String required minlength(2),
+	soyad String required minlength(2),
+	eposta String,
+	telefon String,
+	dogumTarihi LocalDate,
+	girisTarihi LocalDate,
+    cikisTarihi LocalDate,
+	ucret BigDecimal,
+	calisanTuru CalisanTuru
+}
+
+entity Ekip {
+    ad String required minlength(2),
+    telefon String ,
+    eposta String,
+    taseronMu Boolean
+}
+
+entity MalzemeTakip {
+	miktar Long required,
+	aciklama TextBlob,
+    tarih LocalDate
+}
+
+entity Unvan {
+    ad String required,
+    aciklama String
+}
+
+entity Birim {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    carpan Long
+}
+
+entity ProjeTuru {
+    ad String required,
+    aciklama String,
+    kisaltma String
+}
+
+entity MalzemeGrubu {
+    ad String required,
+    aciklama String
+}
+
+entity Malzeme {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    fiyatMaliyet BigDecimal
+}
+
+entity Poz {
+    ad String required,
+    aciklama String,
+    kisaltma String required,
+    yil Integer,
+    fiyatTelekom BigDecimal,
+    fiyatGirisim BigDecimal,
+    fiyatTaseron BigDecimal,
+    fiyatTasere BigDecimal,
+    kdvOran Double,
+    malzemeMi Boolean
+}
+entity Bolge {
+	ad String required,
+	adres String
+}
+
+entity Proje {
+	isTanimi String required,
+	aciklama TextBlob,
+	dosya Blob,
+	durumu GorevDurumu,
+	onemDurumu OnemDurumu,
+	tarih LocalDate,
+	baslamaTarihi LocalDate,
+    bitisTarihi LocalDate
+}
+
+entity Iscilik {
+	miktar Long required,
+	aciklama TextBlob,
+	resim Blob
+}
+
+//iliskiler
+ 
+relationship OneToMany {
+  ProjeTuru{turu} to Proje,
+  Bolge{proje} to Proje,
+
+  Birim{malzemeBirim} to Malzeme,
+  Birim{pozBirim} to Poz,
+  Unvan{unvan} to Calisan,
+  
+  Ekip{iscilikEkip} to Iscilik ,
+  Poz{poz} to Iscilik,
+  Proje{iscilik} to Iscilik
+  }
+  
+relationship OneToMany {
+  Ekip{ekipMalzemeTakip} to MalzemeTakip,
+  Malzeme{malzemeMalzemeTakip} to MalzemeTakip
+}
+
+relationship ManyToOne {
+	Calisan{yonetici} to Calisan,
+    Bolge{bolgeSorumlu} to Calisan
+}
+relationship ManyToMany {
+	MalzemeGrubu{malzemeListesi} to Malzeme{grup},
+    Ekip{ekipCalisan} to Calisan{ekip}
+}
+
+// Set pagination options
+paginate Iscilik, Poz with infinite-scroll
+paginate Calisan,Malzeme,Proje with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
+
