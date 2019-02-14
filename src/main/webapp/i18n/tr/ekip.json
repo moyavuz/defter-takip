@@ -1,0 +1,28 @@
+{
+    "defterTakipApp": {
+        "ekip": {
+            "home": {
+                "title": "Ekips",
+                "createLabel": "Create a new Ekip",
+                "createOrEditLabel": "Create or edit a Ekip"
+            },
+            "created": "A new Ekip is created with identifier {{ param }}",
+            "updated": "A Ekip is updated with identifier {{ param }}",
+            "deleted": "A Ekip is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Ekip {{ id }}?"
+            },
+            "detail": {
+                "title": "Ekip"
+            },
+            "ad": "Ad",
+            "telefon": "Telefon",
+            "eposta": "Eposta",
+            "taseronMu": "Taseron Mu",
+            "calisanEkip": "Calisan Ekip",
+            "ekip": "Ekip",
+            "ekipSorumlu": "Ekip Sorumlu",
+            "ekipCalisan": "Ekip Calisan"
+        }
+    }
+}
