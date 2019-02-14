@@ -1,0 +1,125 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-proje-heading" jhiTranslate="defterTakipApp.proje.home.createOrEditLabel">Create or edit a Proje</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!proje.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="proje.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.isTanimi" for="field_isTanimi">Is Tanimi</label>
+                    <input type="text" class="form-control" name="isTanimi" id="field_isTanimi"
+                        [(ngModel)]="proje.isTanimi" required/>
+                    <div [hidden]="!(editForm.controls.isTanimi?.dirty && editForm.controls.isTanimi?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.isTanimi?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.aciklama" for="field_aciklama">Aciklama</label>
+                    <textarea class="form-control" name="aciklama" id="field_aciklama"
+                        [(ngModel)]="proje.aciklama" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.dosya" for="field_dosya">Dosya</label>
+                    <div>
+                        <div *ngIf="proje.dosya" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(proje.dosyaContentType, proje.dosya)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{proje.dosyaContentType}}, {{byteSize(proje.dosya)}}</span>
+                            <button type="button" (click)="proje.dosya=null;proje.dosyaContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_dosya" (change)="setFileData($event, proje, 'dosya', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="dosya" id="field_dosya"
+                        [(ngModel)]="proje.dosya" />
+                    <input type="hidden" class="form-control" name="dosyaContentType" id="field_dosyaContentType"
+                        [(ngModel)]="proje.dosyaContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.durumu" for="field_durumu">Durumu</label>
+                    <select class="form-control" name="durumu" [(ngModel)]="proje.durumu" id="field_durumu" >
+                        <option value="BEKLIYOR">{{'defterTakipApp.GorevDurumu.BEKLIYOR' | translate}}</option>
+                        <option value="HAZIR">{{'defterTakipApp.GorevDurumu.HAZIR' | translate}}</option>
+                        <option value="CALISILIYOR">{{'defterTakipApp.GorevDurumu.CALISILIYOR' | translate}}</option>
+                        <option value="TAMAMLANDI">{{'defterTakipApp.GorevDurumu.TAMAMLANDI' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.onemDurumu" for="field_onemDurumu">Onem Durumu</label>
+                    <select class="form-control" name="onemDurumu" [(ngModel)]="proje.onemDurumu" id="field_onemDurumu" >
+                        <option value="ACIL">{{'defterTakipApp.OnemDurumu.ACIL' | translate}}</option>
+                        <option value="IVEDI">{{'defterTakipApp.OnemDurumu.IVEDI' | translate}}</option>
+                        <option value="NORMAL">{{'defterTakipApp.OnemDurumu.NORMAL' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.tarih" for="field_tarih">Tarih</label>
+                    <div class="input-group">
+                        <input id="field_tarih" type="text" class="form-control" name="tarih" ngbDatepicker  #tarihDp="ngbDatepicker" [(ngModel)]="proje.tarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="tarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.baslamaTarihi" for="field_baslamaTarihi">Baslama Tarihi</label>
+                    <div class="input-group">
+                        <input id="field_baslamaTarihi" type="text" class="form-control" name="baslamaTarihi" ngbDatepicker  #baslamaTarihiDp="ngbDatepicker" [(ngModel)]="proje.baslamaTarihi"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="baslamaTarihiDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.bitisTarihi" for="field_bitisTarihi">Bitis Tarihi</label>
+                    <div class="input-group">
+                        <input id="field_bitisTarihi" type="text" class="form-control" name="bitisTarihi" ngbDatepicker  #bitisTarihiDp="ngbDatepicker" [(ngModel)]="proje.bitisTarihi"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="bitisTarihiDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.projeTuru" for="field_projeTuru">Proje Turu</label>
+                    <select class="form-control" id="field_projeTuru" name="projeTuru" [(ngModel)]="proje.projeTuru" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="projeTuruOption.id === proje.projeTuru?.id ? proje.projeTuru : projeTuruOption" *ngFor="let projeTuruOption of projeturus; trackBy: trackProjeTuruById">{{projeTuruOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.proje.bolge" for="field_bolge">Bolge</label>
+                    <select class="form-control" id="field_bolge" name="bolge" [(ngModel)]="proje.bolge" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="bolgeOption.id === proje.bolge?.id ? proje.bolge : bolgeOption" *ngFor="let bolgeOption of bolges; trackBy: trackBolgeById">{{bolgeOption.id}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.iscilik?.dirty && editForm.controls.iscilik?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.iscilik?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

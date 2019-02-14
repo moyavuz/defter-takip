@@ -1,0 +1,41 @@
+{
+    "name": "Bolge",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "adres",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipValidateRules": "required",
+            "relationshipName": "bolge",
+            "otherEntityName": "proje",
+            "otherEntityRelationshipName": "bolge"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "sorumluCalisan",
+            "otherEntityName": "calisan",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "bolge"
+        }
+    ],
+    "changelogDate": "20190214140428",
+    "entityTableName": "bolge",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
