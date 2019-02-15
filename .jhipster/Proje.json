@@ -1,0 +1,77 @@
+{
+    "name": "Proje",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "detay",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "dosya",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "durumu",
+            "fieldType": "GorevDurumu",
+            "fieldValues": "BEKLIYOR,HAZIR,CALISILIYOR,TAMAMLANDI"
+        },
+        {
+            "fieldName": "onemDurumu",
+            "fieldType": "OnemDurumu",
+            "fieldValues": "ACIL,IVEDI,NORMAL"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "baslamaTarihi",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "bitisTarihi",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "projeTuru",
+            "otherEntityName": "projeTuru",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "bolge",
+            "otherEntityName": "bolge",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "iscilik",
+            "otherEntityName": "iscilik",
+            "otherEntityRelationshipName": "proje"
+        }
+    ],
+    "changelogDate": "20190215094008",
+    "entityTableName": "proje",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
