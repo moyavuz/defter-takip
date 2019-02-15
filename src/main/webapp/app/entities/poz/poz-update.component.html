@@ -1,0 +1,100 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-poz-heading" jhiTranslate="defterTakipApp.poz.home.createOrEditLabel">Create or edit a Poz</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!poz.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="poz.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.ad" for="field_ad">Ad</label>
+                    <input type="text" class="form-control" name="ad" id="field_ad"
+                        [(ngModel)]="poz.ad" required/>
+                    <div [hidden]="!(editForm.controls.ad?.dirty && editForm.controls.ad?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ad?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.aciklama" for="field_aciklama">Aciklama</label>
+                    <input type="text" class="form-control" name="aciklama" id="field_aciklama"
+                        [(ngModel)]="poz.aciklama" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.kisaltma" for="field_kisaltma">Kisaltma</label>
+                    <input type="text" class="form-control" name="kisaltma" id="field_kisaltma"
+                        [(ngModel)]="poz.kisaltma" required/>
+                    <div [hidden]="!(editForm.controls.kisaltma?.dirty && editForm.controls.kisaltma?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.kisaltma?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.yil" for="field_yil">Yil</label>
+                    <input type="number" class="form-control" name="yil" id="field_yil"
+                        [(ngModel)]="poz.yil" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.fiyatTelekom" for="field_fiyatTelekom">Fiyat Telekom</label>
+                    <input type="number" class="form-control" name="fiyatTelekom" id="field_fiyatTelekom"
+                        [(ngModel)]="poz.fiyatTelekom" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.fiyatGirisim" for="field_fiyatGirisim">Fiyat Girisim</label>
+                    <input type="number" class="form-control" name="fiyatGirisim" id="field_fiyatGirisim"
+                        [(ngModel)]="poz.fiyatGirisim" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.fiyatTaseron" for="field_fiyatTaseron">Fiyat Taseron</label>
+                    <input type="number" class="form-control" name="fiyatTaseron" id="field_fiyatTaseron"
+                        [(ngModel)]="poz.fiyatTaseron" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.fiyatTasere" for="field_fiyatTasere">Fiyat Tasere</label>
+                    <input type="number" class="form-control" name="fiyatTasere" id="field_fiyatTasere"
+                        [(ngModel)]="poz.fiyatTasere" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.kdvOran" for="field_kdvOran">Kdv Oran</label>
+                    <input type="number" class="form-control" name="kdvOran" id="field_kdvOran"
+                        [(ngModel)]="poz.kdvOran" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.malzemeMi" for="field_malzemeMi">Malzeme Mi</label>
+                    <input type="checkbox" class="form-control" name="malzemeMi" id="field_malzemeMi"
+                        [(ngModel)]="poz.malzemeMi" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.birim" for="field_birim">Birim</label>
+                    <select class="form-control" id="field_birim" name="birim" [(ngModel)]="poz.birim" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="birimOption.id === poz.birim?.id ? poz.birim : birimOption" *ngFor="let birimOption of birims; trackBy: trackBirimById">{{birimOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.poz.iscilikDetay" for="field_iscilikDetay">Iscilik Detay</label>
+                    <select class="form-control" id="field_iscilikDetay" name="iscilikDetay" [(ngModel)]="poz.iscilikDetay" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="iscilikDetayOption.id === poz.iscilikDetay?.id ? poz.iscilikDetay : iscilikDetayOption" *ngFor="let iscilikDetayOption of iscilikdetays; trackBy: trackIscilikDetayById">{{iscilikDetayOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

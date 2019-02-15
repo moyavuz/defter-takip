@@ -1,0 +1,48 @@
+{
+    "name": "Iscilik",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "resim",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "ekip",
+            "otherEntityName": "ekip",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "proje",
+            "otherEntityName": "proje",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "iscilik",
+            "otherEntityName": "iscilikDetay",
+            "otherEntityRelationshipName": "iscilik"
+        }
+    ],
+    "changelogDate": "20190215092024",
+    "entityTableName": "iscilik",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

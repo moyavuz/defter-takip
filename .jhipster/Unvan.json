@@ -1,0 +1,33 @@
+{
+    "name": "Unvan",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "unvan",
+            "otherEntityName": "calisan",
+            "otherEntityRelationshipName": "unvan"
+        }
+    ],
+    "changelogDate": "20190215092016",
+    "entityTableName": "unvan",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
