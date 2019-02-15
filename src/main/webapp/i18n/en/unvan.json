@@ -1,0 +1,23 @@
+{
+    "defterTakipApp": {
+        "unvan": {
+            "home": {
+                "title": "Unvans",
+                "createLabel": "Create a new Unvan",
+                "createOrEditLabel": "Create or edit a Unvan"
+            },
+            "created": "A new Unvan is created with identifier {{ param }}",
+            "updated": "A Unvan is updated with identifier {{ param }}",
+            "deleted": "A Unvan is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Unvan {{ id }}?"
+            },
+            "detail": {
+                "title": "Unvan"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "unvan": "Unvan"
+        }
+    }
+}

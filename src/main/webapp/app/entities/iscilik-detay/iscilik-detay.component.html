@@ -1,0 +1,60 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.iscilikDetay.home.title">Iscilik Detays</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-iscilik-detay" [routerLink]="['/iscilik-detay/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.iscilikDetay.home.createLabel">
+            Create new Iscilik Detay
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="iscilikDetays">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="miktar"><span jhiTranslate="defterTakipApp.iscilikDetay.miktar">Miktar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="iscilik.id"><span jhiTranslate="defterTakipApp.iscilikDetay.iscilik">Iscilik</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let iscilikDetay of iscilikDetays ;trackBy: trackId">
+                <td><a [routerLink]="['/iscilik-detay', iscilikDetay.id, 'view' ]">{{iscilikDetay.id}}</a></td>
+                <td>{{iscilikDetay.miktar}}</td>
+                <td>
+                    <div *ngIf="iscilikDetay.iscilik">
+                        <a [routerLink]="['../iscilik', iscilikDetay.iscilik?.id, 'view' ]" >{{iscilikDetay.iscilik?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/iscilik-detay', iscilikDetay.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/iscilik-detay', iscilikDetay.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'iscilik-detay', { outlets: { popup: iscilikDetay.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
