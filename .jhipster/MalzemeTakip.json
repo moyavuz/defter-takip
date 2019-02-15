@@ -1,0 +1,48 @@
+{
+    "name": "MalzemeTakip",
+    "fields": [
+        {
+            "fieldName": "miktar",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "ekip",
+            "otherEntityName": "ekip",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "ekip"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "malzeme",
+            "otherEntityName": "malzeme",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "malzeme"
+        }
+    ],
+    "changelogDate": "20190215133209",
+    "entityTableName": "malzeme_takip",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

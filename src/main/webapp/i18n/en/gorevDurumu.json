@@ -1,0 +1,11 @@
+{
+    "defterTakipApp": {
+        "GorevDurumu": {
+            "null": "",
+            "BEKLIYOR": "BEKLIYOR",
+            "HAZIR": "HAZIR",
+            "CALISILIYOR": "CALISILIYOR",
+            "TAMAMLANDI": "TAMAMLANDI"
+        }
+    }
+}

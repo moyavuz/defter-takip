@@ -1,0 +1,39 @@
+{
+    "name": "IscilikDetay",
+    "fields": [
+        {
+            "fieldName": "miktar",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "iscilik",
+            "otherEntityName": "iscilik",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "iscilik"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "poz",
+            "otherEntityName": "poz",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "poz"
+        }
+    ],
+    "changelogDate": "20190215133219",
+    "entityTableName": "iscilik_detay",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

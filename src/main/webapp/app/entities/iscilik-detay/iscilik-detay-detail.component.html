@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="iscilikDetay">
+            <h2><span jhiTranslate="defterTakipApp.iscilikDetay.detail.title">Iscilik Detay</span> {{iscilikDetay.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.iscilikDetay.miktar">Miktar</span></dt>
+                <dd>
+                    <span>{{iscilikDetay.miktar}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilikDetay.iscilik">Iscilik</span></dt>
+                <dd>
+                    <div *ngIf="iscilikDetay.iscilik">
+                        <a [routerLink]="['/iscilik', iscilikDetay.iscilik?.id, 'view']">{{iscilikDetay.iscilik?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilikDetay.poz">Poz</span></dt>
+                <dd>
+                    <div *ngIf="iscilikDetay.poz">
+                        <a [routerLink]="['/poz', iscilikDetay.poz?.id, 'view']">{{iscilikDetay.poz?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/iscilik-detay', iscilikDetay.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
