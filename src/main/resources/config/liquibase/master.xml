@@ -5,6 +5,30 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101026_added_entity_Calisan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101027_added_entity_Ekip.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101028_added_entity_MalzemeTakip.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101029_added_entity_Unvan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101030_added_entity_Birim.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101031_added_entity_ProjeTuru.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101032_added_entity_MalzemeGrubu.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101033_added_entity_Malzeme.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101034_added_entity_Poz.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101035_added_entity_Bolge.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101036_added_entity_Proje.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101037_added_entity_Iscilik.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101038_added_entity_IscilikDetay.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20190215101026_added_entity_constraints_Calisan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101027_added_entity_constraints_Ekip.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101028_added_entity_constraints_MalzemeTakip.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101029_added_entity_constraints_Unvan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101032_added_entity_constraints_MalzemeGrubu.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101033_added_entity_constraints_Malzeme.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101034_added_entity_constraints_Poz.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101035_added_entity_constraints_Bolge.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101036_added_entity_constraints_Proje.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101037_added_entity_constraints_Iscilik.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190215101038_added_entity_constraints_IscilikDetay.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

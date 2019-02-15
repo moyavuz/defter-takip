@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Poz.
+    -->
+    <changeSet id="20190215101034-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="birim_id"
+                                 baseTableName="poz"
+                                 constraintName="fk_poz_birim_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="birim"/>
+
+        <addForeignKeyConstraint baseColumnNames="iscilik_detay_id"
+                                 baseTableName="poz"
+                                 constraintName="fk_poz_iscilik_detay_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="iscilik_detay"/>
+
+    </changeSet>
+</databaseChangeLog>

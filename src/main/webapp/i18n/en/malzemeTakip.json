@@ -1,0 +1,25 @@
+{
+    "defterTakipApp": {
+        "malzemeTakip": {
+            "home": {
+                "title": "Malzeme Takips",
+                "createLabel": "Create a new Malzeme Takip",
+                "createOrEditLabel": "Create or edit a Malzeme Takip"
+            },
+            "created": "A new Malzeme Takip is created with identifier {{ param }}",
+            "updated": "A Malzeme Takip is updated with identifier {{ param }}",
+            "deleted": "A Malzeme Takip is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Malzeme Takip {{ id }}?"
+            },
+            "detail": {
+                "title": "Malzeme Takip"
+            },
+            "miktar": "Miktar",
+            "aciklama": "Aciklama",
+            "tarih": "Tarih",
+            "ekip": "Ekip",
+            "malzeme": "Malzeme"
+        }
+    }
+}
