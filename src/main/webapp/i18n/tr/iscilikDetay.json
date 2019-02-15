@@ -1,0 +1,23 @@
+{
+    "defterTakipApp": {
+        "iscilikDetay": {
+            "home": {
+                "title": "Iscilik Detays",
+                "createLabel": "Create a new Iscilik Detay",
+                "createOrEditLabel": "Create or edit a Iscilik Detay"
+            },
+            "created": "A new Iscilik Detay is created with identifier {{ param }}",
+            "updated": "A Iscilik Detay is updated with identifier {{ param }}",
+            "deleted": "A Iscilik Detay is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Iscilik Detay {{ id }}?"
+            },
+            "detail": {
+                "title": "Iscilik Detay"
+            },
+            "miktar": "Miktar",
+            "iscilik": "Iscilik",
+            "poz": "Poz"
+        }
+    }
+}

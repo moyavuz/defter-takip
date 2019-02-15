@@ -1,0 +1,74 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="proje">
+            <h2><span jhiTranslate="defterTakipApp.proje.detail.title">Proje</span> {{proje.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.proje.ad">Ad</span></dt>
+                <dd>
+                    <span>{{proje.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.onemDurumu">Onem Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.OnemDurumu.' + proje.onemDurumu}}">{{proje.onemDurumu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{proje.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.durumu">Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.GorevDurumu.' + proje.durumu}}">{{proje.durumu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{proje.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.detay">Detay</span></dt>
+                <dd>
+                    <span>{{proje.detay}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.dosya">Dosya</span></dt>
+                <dd>
+                    <div *ngIf="proje.dosya">
+                        <a (click)="openFile(proje.dosyaContentType, proje.dosya)" jhiTranslate="entity.action.open">open</a>
+                        {{proje.dosyaContentType}}, {{byteSize(proje.dosya)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.baslamaTarihi">Baslama Tarihi</span></dt>
+                <dd>
+                    <span>{{proje.baslamaTarihi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.bitisTarihi">Bitis Tarihi</span></dt>
+                <dd>
+                    <span>{{proje.bitisTarihi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.turu">Turu</span></dt>
+                <dd>
+                    <div *ngIf="proje.turu">
+                        <a [routerLink]="['/proje-turu', proje.turu?.id, 'view']">{{proje.turu?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.proje.bolge">Bolge</span></dt>
+                <dd>
+                    <div *ngIf="proje.bolge">
+                        <a [routerLink]="['/bolge', proje.bolge?.id, 'view']">{{proje.bolge?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/proje', proje.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
