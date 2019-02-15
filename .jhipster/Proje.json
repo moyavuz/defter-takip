@@ -1,0 +1,79 @@
+{
+    "name": "Proje",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "onemDurumu",
+            "fieldType": "OnemDurumu",
+            "fieldValues": "ACIL,IVEDI,NORMAL"
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "durumu",
+            "fieldType": "GorevDurumu",
+            "fieldValues": "BEKLIYOR,HAZIR,CALISILIYOR,TAMAMLANDI"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "detay",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "dosya",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "baslamaTarihi",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "bitisTarihi",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "iscilik",
+            "otherEntityName": "iscilik",
+            "otherEntityRelationshipName": "proje"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "turu",
+            "otherEntityName": "projeTuru",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "proje"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "bolge",
+            "otherEntityName": "bolge",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "proje"
+        }
+    ],
+    "changelogDate": "20190215120954",
+    "entityTableName": "proje",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

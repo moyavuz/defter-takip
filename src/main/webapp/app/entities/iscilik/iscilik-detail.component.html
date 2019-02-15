@@ -1,0 +1,58 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="iscilik">
+            <h2><span jhiTranslate="defterTakipApp.iscilik.detail.title">Iscilik</span> {{iscilik.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.iscilik.ad">Ad</span></dt>
+                <dd>
+                    <span>{{iscilik.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{iscilik.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.detay">Detay</span></dt>
+                <dd>
+                    <span>{{iscilik.detay}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.durumu">Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.IscilikDurumu.' + iscilik.durumu}}">{{iscilik.durumu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.resim">Resim</span></dt>
+                <dd>
+                    <div *ngIf="iscilik.resim">
+                        <a (click)="openFile(iscilik.resimContentType, iscilik.resim)" jhiTranslate="entity.action.open">open</a>
+                        {{iscilik.resimContentType}}, {{byteSize(iscilik.resim)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.ekip">Ekip</span></dt>
+                <dd>
+                    <div *ngIf="iscilik.ekip">
+                        <a [routerLink]="['/ekip', iscilik.ekip?.id, 'view']">{{iscilik.ekip?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.iscilik.proje">Proje</span></dt>
+                <dd>
+                    <div *ngIf="iscilik.proje">
+                        <a [routerLink]="['/proje', iscilik.proje?.id, 'view']">{{iscilik.proje?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/iscilik', iscilik.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

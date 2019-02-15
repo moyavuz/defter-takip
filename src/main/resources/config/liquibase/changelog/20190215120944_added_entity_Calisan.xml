@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity Calisan.
+    -->
+    <changeSet id="20190215120944-1" author="jhipster">
+        <createTable tableName="calisan">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tckimlikno" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="ad" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="telefon" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="eposta" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="calisma_turu" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="ucret" type="decimal(10,2)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="iban" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="medeni_hali" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="dogum_tarihi" type="date">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="giris_tarihi" type="date">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="cikis_tarihi" type="date">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="yonetici_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="unvan_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

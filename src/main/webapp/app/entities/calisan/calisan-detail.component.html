@@ -1,0 +1,79 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="calisan">
+            <h2><span jhiTranslate="defterTakipApp.calisan.detail.title">Calisan</span> {{calisan.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.calisan.tckimlikno">Tckimlikno</span></dt>
+                <dd>
+                    <span>{{calisan.tckimlikno}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.ad">Ad</span></dt>
+                <dd>
+                    <span>{{calisan.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.telefon">Telefon</span></dt>
+                <dd>
+                    <span>{{calisan.telefon}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.eposta">Eposta</span></dt>
+                <dd>
+                    <span>{{calisan.eposta}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.calismaTuru">Calisma Turu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.CalismaTuru.' + calisan.calismaTuru}}">{{calisan.calismaTuru}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.ucret">Ucret</span></dt>
+                <dd>
+                    <span>{{calisan.ucret}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.iban">Iban</span></dt>
+                <dd>
+                    <span>{{calisan.iban}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.medeniHali">Medeni Hali</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.MedeniHali.' + calisan.medeniHali}}">{{calisan.medeniHali}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.dogumTarihi">Dogum Tarihi</span></dt>
+                <dd>
+                    <span>{{calisan.dogumTarihi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.girisTarihi">Giris Tarihi</span></dt>
+                <dd>
+                    <span>{{calisan.girisTarihi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.cikisTarihi">Cikis Tarihi</span></dt>
+                <dd>
+                    <span>{{calisan.cikisTarihi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.yonetici">Yonetici</span></dt>
+                <dd>
+                    <div *ngIf="calisan.yonetici">
+                        <a [routerLink]="['/calisan', calisan.yonetici?.id, 'view']">{{calisan.yonetici?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.calisan.unvan">Unvan</span></dt>
+                <dd>
+                    <div *ngIf="calisan.unvan">
+                        <a [routerLink]="['/unvan', calisan.unvan?.id, 'view']">{{calisan.unvan?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/calisan', calisan.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
