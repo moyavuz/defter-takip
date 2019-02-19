@@ -1,0 +1,73 @@
+{
+    "name": "Poz",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "kisaltma",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "yil",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fiyatTelekom",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "fiyatGirisim",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "fiyatTaseron",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "fiyatTasere",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "kdv",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "malzemeMi",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "iscilikDetay",
+            "otherEntityName": "iscilikDetay",
+            "otherEntityRelationshipName": "poz"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "birim",
+            "otherEntityName": "birim",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "poz"
+        }
+    ],
+    "changelogDate": "20190219110707",
+    "entityTableName": "poz",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

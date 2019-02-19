@@ -8,6 +8,19 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Varlıklar",
+                "personel": "Personel",
+                "ekip": "Ekip",
+                "malzemeTakip": "Malzeme Takip",
+                "unvan": "Unvan",
+                "birim": "Birim",
+                "projeTuru": "Proje Turu",
+                "malzemeGrubu": "Malzeme Grubu",
+                "malzeme": "Malzeme",
+                "poz": "Poz",
+                "bolge": "Bolge",
+                "proje": "Proje",
+                "iscilik": "Iscilik",
+                "iscilikDetay": "Iscilik Detay",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

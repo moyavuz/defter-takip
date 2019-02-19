@@ -1,0 +1,33 @@
+{
+    "defterTakipApp": {
+        "proje": {
+            "home": {
+                "title": "Projes",
+                "createLabel": "Create a new Proje",
+                "createOrEditLabel": "Create or edit a Proje"
+            },
+            "created": "A new Proje is created with identifier {{ param }}",
+            "updated": "A Proje is updated with identifier {{ param }}",
+            "deleted": "A Proje is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Proje {{ id }}?"
+            },
+            "detail": {
+                "title": "Proje"
+            },
+            "ad": "Ad",
+            "onemDurumu": "Onem Durumu",
+            "aciklama": "Aciklama",
+            "durumu": "Durumu",
+            "tarih": "Tarih",
+            "detay": "Detay",
+            "resim": "Resim",
+            "dosya": "Dosya",
+            "baslamaTarihi": "Baslama Tarihi",
+            "bitisTarihi": "Bitis Tarihi",
+            "iscilik": "Iscilik",
+            "turu": "Turu",
+            "bolge": "Bolge"
+        }
+    }
+}

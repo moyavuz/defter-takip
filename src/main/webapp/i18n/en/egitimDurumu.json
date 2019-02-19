@@ -1,0 +1,13 @@
+{
+    "defterTakipApp": {
+        "EgitimDurumu": {
+            "null": "",
+            "ILKOKUL": "ILKOKUL",
+            "ORTAOKUL": "ORTAOKUL",
+            "LISE": "LISE",
+            "ONLISANS": "ONLISANS",
+            "LISANS": "LISANS",
+            "YUKSEK_LISANS": "YUKSEK_LISANS"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "defterTakipApp": {
+        "KanGrubu": {
+            "null": "",
+            "A_RH_POZITIF": "A_RH_POZITIF",
+            "A_RH_NEGATIF": "A_RH_NEGATIF",
+            "B_RH_NEGATIF": "B_RH_NEGATIF",
+            "B_RH_POZITIF": "B_RH_POZITIF",
+            "O_RH_POZITIF": "O_RH_POZITIF",
+            "O_RH_NEGATIF": "O_RH_NEGATIF",
+            "AB_RH_POZITIF": "AB_RH_POZITIF",
+            "AB_RH_NEGATIF": "AB_RH_NEGATIF"
+        }
+    }
+}

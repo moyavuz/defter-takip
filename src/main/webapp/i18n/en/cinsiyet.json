@@ -1,0 +1,9 @@
+{
+    "defterTakipApp": {
+        "Cinsiyet": {
+            "null": "",
+            "ERKEK": "ERKEK",
+            "KADIN": "KADIN"
+        }
+    }
+}

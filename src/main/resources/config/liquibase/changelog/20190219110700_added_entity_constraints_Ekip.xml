@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Ekip.
+    -->
+    <changeSet id="20190219110700-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="ekip_sorumlu_id"
+                                 baseTableName="ekip"
+                                 constraintName="fk_ekip_ekip_sorumlu_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="personel"/>
+
+        <addForeignKeyConstraint baseColumnNames="bolge_id"
+                                 baseTableName="ekip"
+                                 constraintName="fk_ekip_bolge_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bolge"/>
+
+        <addForeignKeyConstraint baseColumnNames="ekip_id"
+                                 baseTableName="ekip_ekip_personel"
+                                 constraintName="fk_ekip_ekip_personel_ekip_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ekip"/>
+        <addForeignKeyConstraint baseColumnNames="ekip_personel_id"
+                                 baseTableName="ekip_ekip_personel"
+                                 constraintName="fk_ekip_ekip_personel_ekip_personel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="personel"/>
+        
+    </changeSet>
+</databaseChangeLog>
