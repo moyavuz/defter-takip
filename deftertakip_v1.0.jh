@@ -1,0 +1,178 @@
+enum GorevDurumu {
+    BEKLIYOR, HAZIR, CALISILIYOR, TAMAMLANDI
+}
+
+enum MedeniHali {
+    BEKAR, EVLI
+}
+enum IscilikDurumu {
+    BEKLIYOR, BEKLIYOR_MALZEME, BEKLIYOR_RUHSAT, CALISILIYOR, TAMAMLANDI, TAMAMLANDI_EKSIK_VAR
+}
+enum OnemDurumu{
+	ACIL,IVEDI,NORMAL
+}
+enum PersonelTuru {
+    MAASLI,GOTURU,YEVMIYE
+}
+
+enum EgitimDurumu {
+    ILKOKUL,ORTAOKUL,LISE,ONLISANS,LISANS,YUKSEK_LISANS
+}
+
+enum KanGrubu {
+    A_RH_POZITIF,A_RH_NEGATIF,B_RH_NEGATIF,B_RH_POZITIF,O_RH_POZITIF,O_RH_NEGATIF,AB_RH_POZITIF,AB_RH_NEGATIF
+}
+enum Cinsiyet {
+    ERKEK,KADIN
+}
+entity Personel {
+	tckimlikno Long required,
+	ad String required minlength(2),
+    cepTelefon String,
+	sabitTelefon String,
+	eposta String,
+	cinsiyet Cinsiyet,
+	egitimDurumu EgitimDurumu,
+	kanGrubu KanGrubu,
+    personelTuru PersonelTuru,
+    ucret Double,
+    iban String,
+    medeniHali MedeniHali,
+	dogumTarihi LocalDate,
+	girisTarihi LocalDate,
+    cikisTarihi LocalDate,
+    resim ImageBlob,
+    dosya Blob,
+	not TextBlob
+}
+
+entity Ekip {
+    ad String required minlength(2),
+    telefon String ,
+    eposta String,
+    turu PersonelTuru
+}
+
+entity MalzemeTakip {
+	miktar Long required,
+	aciklama TextBlob,
+    tarih LocalDate
+}
+
+entity Unvan {
+    ad String required,
+    aciklama String
+}
+
+entity Birim {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    carpan Double
+}
+
+entity ProjeTuru {
+    ad String required,
+    aciklama String,
+    kisaltma String
+}
+
+entity MalzemeGrubu {
+    ad String required,
+    aciklama String
+}
+
+entity Malzeme {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    fiyatMaliyet Double
+}
+
+entity Poz {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    yil Integer,
+    fiyatTelekom Double,
+    fiyatGirisim Double,
+    fiyatTaseron Double,
+    fiyatTasere Double,
+    kdv Double,
+    malzemeMi Boolean
+}
+
+entity Bolge {
+	ad String required,
+	adres String
+}
+
+entity Proje {
+	ad String required,
+	onemDurumu OnemDurumu,
+    aciklama String,
+  	durumu GorevDurumu,	
+	tarih LocalDate,
+    detay TextBlob,
+    resim ImageBlob,
+    dosya Blob
+	baslamaTarihi LocalDate,
+    bitisTarihi LocalDate
+}
+
+entity Iscilik {
+	ad String,
+	aciklama String,
+    detay TextBlob,
+    durumu IscilikDurumu,
+    resim ImageBlob,
+    dosya Blob
+}
+
+entity IscilikDetay {
+	miktar Double required
+}
+
+//iliskiler
+ 
+relationship OneToMany {
+  Ekip to Iscilik{ekip(ad) required},
+  Proje to Iscilik{proje(ad) required} ,
+  Iscilik to IscilikDetay{iscilik required},
+  Poz to IscilikDetay{poz(ad) required}
+  }
+  
+relationship OneToMany {
+  Ekip to MalzemeTakip{ekip(ad) required},
+  Malzeme to MalzemeTakip{malzeme(ad) required}
+}
+
+relationship ManyToOne {
+	Personel{yonetici(ad)} to Personel,
+    Bolge{bolgeSorumlu(ad) required} to Personel,
+    Ekip{ekipSorumlu(ad) required} to Personel,
+    Ekip{bolge(ad)} to Bolge,
+    Personel{unvan(ad)} to Unvan,
+    Proje{turu(ad) required} to ProjeTuru,
+    Proje{bolge(ad) } to Bolge,
+    Malzeme{birim(ad) required} to Birim,
+    Poz{birim(ad) required} to Birim
+}
+relationship ManyToMany {
+	MalzemeGrubu{malzemeListesi(ad)} to Malzeme{grup},
+    Ekip{ekipPersonel(ad)} to Personel{ekip}
+}
+
+// Set pagination options
+paginate Iscilik, Poz, IscilikDetay with infinite-scroll
+paginate Personel, Malzeme, Proje, MalzemeTakip with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
+
