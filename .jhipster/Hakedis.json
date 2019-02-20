@@ -1,0 +1,90 @@
+{
+    "name": "Hakedis",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "detay",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "durumu",
+            "fieldType": "IsDurumu",
+            "fieldValues": "BEKLIYOR,BEKLIYOR_MALZEME,BEKLIYOR_RUHSAT,CALISILIYOR,TAMAMLANDI,TAMAMLANDI_EKSIK_VAR"
+        },
+        {
+            "fieldName": "seriNo",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "odemeDurumu",
+            "fieldType": "OdemeDurumu",
+            "fieldValues": "BEKLIYOR,HAZIR,HAKEDISI_YAPILDI,ODEME_BEKLIYOR,ODEME_ALINDI,TAMAMLANDI"
+        },
+        {
+            "fieldName": "odemeNo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "resim",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "dosya",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "hakedisDetay",
+            "otherEntityName": "hakedisDetay",
+            "otherEntityRelationshipName": "hakedis"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "santral",
+            "otherEntityName": "santral",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "hakedis"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "ekip",
+            "otherEntityName": "ekip",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "ekip"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "proje",
+            "otherEntityName": "proje",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "proje"
+        }
+    ],
+    "changelogDate": "20190220103125",
+    "entityTableName": "hakedis",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

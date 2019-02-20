@@ -1,0 +1,32 @@
+{
+    "defterTakipApp": {
+        "arac": {
+            "home": {
+                "title": "Aracs",
+                "createLabel": "Create a new Arac",
+                "createOrEditLabel": "Create or edit a Arac"
+            },
+            "created": "A new Arac is created with identifier {{ param }}",
+            "updated": "A Arac is updated with identifier {{ param }}",
+            "deleted": "A Arac is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Arac {{ id }}?"
+            },
+            "detail": {
+                "title": "Arac"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "detay": "Detay",
+            "modelYili": "Model Yili",
+            "yakitTuru": "Yakit Turu",
+            "tarih": "Tarih",
+            "muayeneTarih": "Muayene Tarih",
+            "kaskoTarih": "Kasko Tarih",
+            "sigortaTarih": "Sigorta Tarih",
+            "bakimTarih": "Bakim Tarih",
+            "resim": "Resim",
+            "dosya": "Dosya"
+        }
+    }
+}

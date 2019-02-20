@@ -1,0 +1,42 @@
+{
+    "name": "PersonelIzin",
+    "fields": [
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "miktar",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "turu",
+            "fieldType": "IzinTuru",
+            "fieldValues": "YILLIK_IZIN,UCRETSIZ_IZIN,SAGLIK_RAPORLU,EVLILIK_IZNI,DOGUM_IZNI"
+        },
+        {
+            "fieldName": "dosya",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "personel",
+            "otherEntityName": "personel",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "personelIzin"
+        }
+    ],
+    "changelogDate": "20190220103130",
+    "entityTableName": "personel_izin",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

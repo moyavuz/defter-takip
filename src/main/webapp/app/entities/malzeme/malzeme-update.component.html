@@ -1,0 +1,88 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-malzeme-heading" jhiTranslate="defterTakipApp.malzeme.home.createOrEditLabel">Create or edit a Malzeme</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!malzeme.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="malzeme.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.ad" for="field_ad">Ad</label>
+                    <input type="text" class="form-control" name="ad" id="field_ad"
+                        [(ngModel)]="malzeme.ad" required/>
+                    <div [hidden]="!(editForm.controls.ad?.dirty && editForm.controls.ad?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ad?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.aciklama" for="field_aciklama">Aciklama</label>
+                    <input type="text" class="form-control" name="aciklama" id="field_aciklama"
+                        [(ngModel)]="malzeme.aciklama" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.kisaltma" for="field_kisaltma">Kisaltma</label>
+                    <input type="text" class="form-control" name="kisaltma" id="field_kisaltma"
+                        [(ngModel)]="malzeme.kisaltma" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.tenzilatsizFiyat" for="field_tenzilatsizFiyat">Tenzilatsiz Fiyat</label>
+                    <input type="number" class="form-control" name="tenzilatsizFiyat" id="field_tenzilatsizFiyat"
+                        [(ngModel)]="malzeme.tenzilatsizFiyat" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.tenzilatliFiyat" for="field_tenzilatliFiyat">Tenzilatli Fiyat</label>
+                    <input type="number" class="form-control" name="tenzilatliFiyat" id="field_tenzilatliFiyat"
+                        [(ngModel)]="malzeme.tenzilatliFiyat" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.taseronFiyat" for="field_taseronFiyat">Taseron Fiyat</label>
+                    <input type="number" class="form-control" name="taseronFiyat" id="field_taseronFiyat"
+                        [(ngModel)]="malzeme.taseronFiyat" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.paraBirimi" for="field_paraBirimi">Para Birimi</label>
+                    <select class="form-control" name="paraBirimi" [(ngModel)]="malzeme.paraBirimi" id="field_paraBirimi" >
+                        <option value="TL">{{'defterTakipApp.ParaBirimi.TL' | translate}}</option>
+                        <option value="USD">{{'defterTakipApp.ParaBirimi.USD' | translate}}</option>
+                        <option value="EUR">{{'defterTakipApp.ParaBirimi.EUR' | translate}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.birim" for="field_birim">Birim</label>
+                    <select class="form-control" id="field_birim" name="birim" [(ngModel)]="malzeme.birim"  required>
+                        <option *ngIf="!editForm.value.birim" [ngValue]="null" selected></option>
+                        <option [ngValue]="birimOption.id === malzeme.birim?.id ? malzeme.birim : birimOption" *ngFor="let birimOption of birims; trackBy: trackBirimById">{{birimOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.birim?.dirty && editForm.controls.birim?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.birim?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.malzeme.depo" for="field_depo">Depo</label>
+                    <select class="form-control" id="field_depo" name="depo" [(ngModel)]="malzeme.depo" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="depoOption.id === malzeme.depo?.id ? malzeme.depo : depoOption" *ngFor="let depoOption of depos; trackBy: trackDepoById">{{depoOption.ad}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

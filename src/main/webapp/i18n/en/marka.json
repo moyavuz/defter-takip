@@ -1,0 +1,21 @@
+{
+    "defterTakipApp": {
+        "marka": {
+            "home": {
+                "title": "Markas",
+                "createLabel": "Create a new Marka",
+                "createOrEditLabel": "Create or edit a Marka"
+            },
+            "created": "A new Marka is created with identifier {{ param }}",
+            "updated": "A Marka is updated with identifier {{ param }}",
+            "deleted": "A Marka is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Marka {{ id }}?"
+            },
+            "detail": {
+                "title": "Marka"
+            },
+            "ad": "Ad"
+        }
+    }
+}

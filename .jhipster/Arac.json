@@ -1,0 +1,67 @@
+{
+    "name": "Arac",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "detay",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "modelYili",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "yakitTuru",
+            "fieldType": "YakitTuru",
+            "fieldValues": "DIZEL,BENZIN,BENZIN_LPG"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "muayeneTarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "kaskoTarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "sigortaTarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "bakimTarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "resim",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "dosya",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190220103128",
+    "entityTableName": "arac",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

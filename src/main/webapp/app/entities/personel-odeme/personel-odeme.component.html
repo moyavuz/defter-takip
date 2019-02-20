@@ -1,0 +1,66 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.personelOdeme.home.title">Personel Odemes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-personel-odeme" [routerLink]="['/personel-odeme/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.personelOdeme.home.createLabel">
+            Create new Personel Odeme
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="personelOdemes">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelOdeme.tarih">Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelOdeme.miktar">Miktar</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelOdeme.turu">Turu</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelOdeme.yontem">Yontem</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelOdeme.personel">Personel</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let personelOdeme of personelOdemes ;trackBy: trackId">
+                <td><a [routerLink]="['/personel-odeme', personelOdeme.id, 'view' ]">{{personelOdeme.id}}</a></td>
+                <td>{{personelOdeme.tarih | date:'mediumDate'}}</td>
+                <td>{{personelOdeme.miktar}}</td>
+                <td jhiTranslate="{{'defterTakipApp.OdemeTuru.' + personelOdeme.turu}}">{{personelOdeme.turu}}</td>
+                <td jhiTranslate="{{'defterTakipApp.OdemeYontemi.' + personelOdeme.yontem}}">{{personelOdeme.yontem}}</td>
+                <td>
+                    <div *ngIf="personelOdeme.personel">
+                        <a [routerLink]="['../personel', personelOdeme.personel?.id, 'view' ]" >{{personelOdeme.personel?.ad}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/personel-odeme', personelOdeme.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/personel-odeme', personelOdeme.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'personel-odeme', { outlets: { popup: personelOdeme.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

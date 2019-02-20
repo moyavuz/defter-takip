@@ -1,0 +1,59 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="personelZimmet">
+            <h2><span jhiTranslate="defterTakipApp.personelZimmet.detail.title">Personel Zimmet</span> {{personelZimmet.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.personelZimmet.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{personelZimmet.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelZimmet.durumu">Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.ZimmetDurumu.' + personelZimmet.durumu}}">{{personelZimmet.durumu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelZimmet.resim">Resim</span></dt>
+                <dd>
+                    <div *ngIf="personelZimmet.resim">
+                        <a (click)="openFile(personelZimmet.resimContentType, personelZimmet.resim)">
+                            <img [src]="'data:' + personelZimmet.resimContentType + ';base64,' + personelZimmet.resim" style="max-width: 100%;" alt="personelZimmet image"/>
+                        </a>
+                        {{personelZimmet.resimContentType}}, {{byteSize(personelZimmet.resim)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelZimmet.dosya">Dosya</span></dt>
+                <dd>
+                    <div *ngIf="personelZimmet.dosya">
+                        <a (click)="openFile(personelZimmet.dosyaContentType, personelZimmet.dosya)" jhiTranslate="entity.action.open">open</a>
+                        {{personelZimmet.dosyaContentType}}, {{byteSize(personelZimmet.dosya)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelZimmet.personel">Personel</span></dt>
+                <dd>
+                    <div *ngIf="personelZimmet.personel">
+                        <a [routerLink]="['/personel', personelZimmet.personel?.id, 'view']">{{personelZimmet.personel?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelZimmet.zimmet">Zimmet</span></dt>
+                <dd>
+                    <div *ngIf="personelZimmet.zimmet">
+                        <a [routerLink]="['/zimmet-turu', personelZimmet.zimmet?.id, 'view']">{{personelZimmet.zimmet?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/personel-zimmet', personelZimmet.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

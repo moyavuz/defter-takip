@@ -1,0 +1,34 @@
+{
+    "defterTakipApp": {
+        "hakedis": {
+            "home": {
+                "title": "Hakedis",
+                "createLabel": "Create a new Hakedis",
+                "createOrEditLabel": "Create or edit a Hakedis"
+            },
+            "created": "A new Hakedis is created with identifier {{ param }}",
+            "updated": "A Hakedis is updated with identifier {{ param }}",
+            "deleted": "A Hakedis is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Hakedis {{ id }}?"
+            },
+            "detail": {
+                "title": "Hakedis"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "detay": "Detay",
+            "durumu": "Durumu",
+            "seriNo": "Seri No",
+            "odemeDurumu": "Odeme Durumu",
+            "odemeNo": "Odeme No",
+            "resim": "Resim",
+            "tarih": "Tarih",
+            "dosya": "Dosya",
+            "hakedisDetay": "Hakedis Detay",
+            "santral": "Santral",
+            "ekip": "Ekip",
+            "proje": "Proje"
+        }
+    }
+}

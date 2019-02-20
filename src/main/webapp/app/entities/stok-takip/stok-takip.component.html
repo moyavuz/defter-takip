@@ -1,0 +1,86 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.stokTakip.home.title">Stok Takips</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-stok-takip" [routerLink]="['/stok-takip/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.stokTakip.home.createLabel">
+            Create new Stok Takip
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="stokTakips">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="miktar"><span jhiTranslate="defterTakipApp.stokTakip.miktar">Miktar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="aciklama"><span jhiTranslate="defterTakipApp.stokTakip.aciklama">Aciklama</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="tarih"><span jhiTranslate="defterTakipApp.stokTakip.tarih">Tarih</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="turu"><span jhiTranslate="defterTakipApp.stokTakip.turu">Turu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ekip.ad"><span jhiTranslate="defterTakipApp.stokTakip.ekip">Ekip</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="malzeme.ad"><span jhiTranslate="defterTakipApp.stokTakip.malzeme">Malzeme</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="depo.ad"><span jhiTranslate="defterTakipApp.stokTakip.depo">Depo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let stokTakip of stokTakips ;trackBy: trackId">
+                <td><a [routerLink]="['/stok-takip', stokTakip.id, 'view' ]">{{stokTakip.id}}</a></td>
+                <td>{{stokTakip.miktar}}</td>
+                <td>{{stokTakip.aciklama}}</td>
+                <td>{{stokTakip.tarih | date:'mediumDate'}}</td>
+                <td jhiTranslate="{{'defterTakipApp.StokHareketTuru.' + stokTakip.turu}}">{{stokTakip.turu}}</td>
+                <td>
+                    <div *ngIf="stokTakip.ekip">
+                        <a [routerLink]="['../ekip', stokTakip.ekip?.id, 'view' ]" >{{stokTakip.ekip?.ad}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="stokTakip.malzeme">
+                        <a [routerLink]="['../malzeme', stokTakip.malzeme?.id, 'view' ]" >{{stokTakip.malzeme?.ad}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="stokTakip.depo">
+                        <a [routerLink]="['../depo', stokTakip.depo?.id, 'view' ]" >{{stokTakip.depo?.ad}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/stok-takip', stokTakip.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/stok-takip', stokTakip.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'stok-takip', { outlets: { popup: stokTakip.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="stokTakips && stokTakips.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

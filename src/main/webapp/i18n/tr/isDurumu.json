@@ -1,0 +1,13 @@
+{
+    "defterTakipApp": {
+        "IsDurumu": {
+            "null": "",
+            "BEKLIYOR": "BEKLIYOR",
+            "BEKLIYOR_MALZEME": "BEKLIYOR_MALZEME",
+            "BEKLIYOR_RUHSAT": "BEKLIYOR_RUHSAT",
+            "CALISILIYOR": "CALISILIYOR",
+            "TAMAMLANDI": "TAMAMLANDI",
+            "TAMAMLANDI_EKSIK_VAR": "TAMAMLANDI_EKSIK_VAR"
+        }
+    }
+}

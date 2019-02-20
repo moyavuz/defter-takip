@@ -1,0 +1,149 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-hakedis-heading" jhiTranslate="defterTakipApp.hakedis.home.createOrEditLabel">Create or edit a Hakedis</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!hakedis.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="hakedis.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.ad" for="field_ad">Ad</label>
+                    <input type="text" class="form-control" name="ad" id="field_ad"
+                        [(ngModel)]="hakedis.ad" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.aciklama" for="field_aciklama">Aciklama</label>
+                    <input type="text" class="form-control" name="aciklama" id="field_aciklama"
+                        [(ngModel)]="hakedis.aciklama" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.detay" for="field_detay">Detay</label>
+                    <textarea class="form-control" name="detay" id="field_detay"
+                        [(ngModel)]="hakedis.detay" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.durumu" for="field_durumu">Durumu</label>
+                    <select class="form-control" name="durumu" [(ngModel)]="hakedis.durumu" id="field_durumu" >
+                        <option value="BEKLIYOR">{{'defterTakipApp.IsDurumu.BEKLIYOR' | translate}}</option>
+                        <option value="BEKLIYOR_MALZEME">{{'defterTakipApp.IsDurumu.BEKLIYOR_MALZEME' | translate}}</option>
+                        <option value="BEKLIYOR_RUHSAT">{{'defterTakipApp.IsDurumu.BEKLIYOR_RUHSAT' | translate}}</option>
+                        <option value="CALISILIYOR">{{'defterTakipApp.IsDurumu.CALISILIYOR' | translate}}</option>
+                        <option value="TAMAMLANDI">{{'defterTakipApp.IsDurumu.TAMAMLANDI' | translate}}</option>
+                        <option value="TAMAMLANDI_EKSIK_VAR">{{'defterTakipApp.IsDurumu.TAMAMLANDI_EKSIK_VAR' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.seriNo" for="field_seriNo">Seri No</label>
+                    <input type="number" class="form-control" name="seriNo" id="field_seriNo"
+                        [(ngModel)]="hakedis.seriNo" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.odemeDurumu" for="field_odemeDurumu">Odeme Durumu</label>
+                    <select class="form-control" name="odemeDurumu" [(ngModel)]="hakedis.odemeDurumu" id="field_odemeDurumu" >
+                        <option value="BEKLIYOR">{{'defterTakipApp.OdemeDurumu.BEKLIYOR' | translate}}</option>
+                        <option value="HAZIR">{{'defterTakipApp.OdemeDurumu.HAZIR' | translate}}</option>
+                        <option value="HAKEDISI_YAPILDI">{{'defterTakipApp.OdemeDurumu.HAKEDISI_YAPILDI' | translate}}</option>
+                        <option value="ODEME_BEKLIYOR">{{'defterTakipApp.OdemeDurumu.ODEME_BEKLIYOR' | translate}}</option>
+                        <option value="ODEME_ALINDI">{{'defterTakipApp.OdemeDurumu.ODEME_ALINDI' | translate}}</option>
+                        <option value="TAMAMLANDI">{{'defterTakipApp.OdemeDurumu.TAMAMLANDI' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.odemeNo" for="field_odemeNo">Odeme No</label>
+                    <input type="text" class="form-control" name="odemeNo" id="field_odemeNo"
+                        [(ngModel)]="hakedis.odemeNo" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.resim" for="field_resim">Resim</label>
+                    <div>
+                        <img [src]="'data:' + hakedis.resimContentType + ';base64,' + hakedis.resim" style="max-height: 100px;" *ngIf="hakedis.resim" alt="hakedis image"/>
+                        <div *ngIf="hakedis.resim" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{hakedis.resimContentType}}, {{byteSize(hakedis.resim)}}</span>
+                            <button type="button" (click)="clearInputImage('resim', 'resimContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_resim" (change)="setFileData($event, hakedis, 'resim', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="resim" id="field_resim"
+                        [(ngModel)]="hakedis.resim" />
+                    <input type="hidden" class="form-control" name="resimContentType" id="field_resimContentType"
+                        [(ngModel)]="hakedis.resimContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.tarih" for="field_tarih">Tarih</label>
+                    <div class="input-group">
+                        <input id="field_tarih" type="text" class="form-control" name="tarih" ngbDatepicker  #tarihDp="ngbDatepicker" [(ngModel)]="hakedis.tarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="tarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.dosya" for="field_dosya">Dosya</label>
+                    <div>
+                        <div *ngIf="hakedis.dosya" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(hakedis.dosyaContentType, hakedis.dosya)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{hakedis.dosyaContentType}}, {{byteSize(hakedis.dosya)}}</span>
+                            <button type="button" (click)="hakedis.dosya=null;hakedis.dosyaContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_dosya" (change)="setFileData($event, hakedis, 'dosya', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="dosya" id="field_dosya"
+                        [(ngModel)]="hakedis.dosya" />
+                    <input type="hidden" class="form-control" name="dosyaContentType" id="field_dosyaContentType"
+                        [(ngModel)]="hakedis.dosyaContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.santral" for="field_santral">Santral</label>
+                    <select class="form-control" id="field_santral" name="santral" [(ngModel)]="hakedis.santral" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="santralOption.id === hakedis.santral?.id ? hakedis.santral : santralOption" *ngFor="let santralOption of santrals; trackBy: trackSantralById">{{santralOption.ad}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.ekip" for="field_ekip">Ekip</label>
+                    <select class="form-control" id="field_ekip" name="ekip" [(ngModel)]="hakedis.ekip"  required>
+                        <option *ngIf="!editForm.value.ekip" [ngValue]="null" selected></option>
+                        <option [ngValue]="ekipOption.id === hakedis.ekip?.id ? hakedis.ekip : ekipOption" *ngFor="let ekipOption of ekips; trackBy: trackEkipById">{{ekipOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.ekip?.dirty && editForm.controls.ekip?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ekip?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.hakedis.proje" for="field_proje">Proje</label>
+                    <select class="form-control" id="field_proje" name="proje" [(ngModel)]="hakedis.proje"  required>
+                        <option *ngIf="!editForm.value.proje" [ngValue]="null" selected></option>
+                        <option [ngValue]="projeOption.id === hakedis.proje?.id ? hakedis.proje : projeOption" *ngFor="let projeOption of projes; trackBy: trackProjeById">{{projeOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.proje?.dirty && editForm.controls.proje?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.proje?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.arac.home.title">Aracs</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-arac" [routerLink]="['/arac/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.arac.home.createLabel">
+            Create new Arac
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="aracs">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.ad">Ad</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.aciklama">Aciklama</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.detay">Detay</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.modelYili">Model Yili</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.yakitTuru">Yakit Turu</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.tarih">Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.muayeneTarih">Muayene Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.kaskoTarih">Kasko Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.sigortaTarih">Sigorta Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.bakimTarih">Bakim Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.resim">Resim</span></th>
+            <th><span jhiTranslate="defterTakipApp.arac.dosya">Dosya</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let arac of aracs ;trackBy: trackId">
+                <td><a [routerLink]="['/arac', arac.id, 'view' ]">{{arac.id}}</a></td>
+                <td>{{arac.ad}}</td>
+                <td>{{arac.aciklama}}</td>
+                <td>{{arac.detay}}</td>
+                <td>{{arac.modelYili}}</td>
+                <td jhiTranslate="{{'defterTakipApp.YakitTuru.' + arac.yakitTuru}}">{{arac.yakitTuru}}</td>
+                <td>{{arac.tarih | date:'mediumDate'}}</td>
+                <td>{{arac.muayeneTarih | date:'mediumDate'}}</td>
+                <td>{{arac.kaskoTarih | date:'mediumDate'}}</td>
+                <td>{{arac.sigortaTarih | date:'mediumDate'}}</td>
+                <td>{{arac.bakimTarih | date:'mediumDate'}}</td>
+                <td>
+                    <a *ngIf="arac.resim" (click)="openFile(arac.resimContentType, arac.resim)">
+                        <img [src]="'data:' + arac.resimContentType + ';base64,' + arac.resim" style="max-height: 30px;" alt="arac image"/>
+                    </a>
+                    <span *ngIf="arac.resim">{{arac.resimContentType}}, {{byteSize(arac.resim)}}</span>
+                </td>
+                <td>
+                    <a *ngIf="arac.dosya" (click)="openFile(arac.dosyaContentType, arac.dosya)" jhiTranslate="entity.action.open">open</a>
+                    <span *ngIf="arac.dosya">{{arac.dosyaContentType}}, {{byteSize(arac.dosya)}}</span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/arac', arac.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/arac', arac.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'arac', { outlets: { popup: arac.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

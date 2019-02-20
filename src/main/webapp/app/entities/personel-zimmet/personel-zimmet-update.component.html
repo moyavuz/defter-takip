@@ -1,0 +1,102 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-personel-zimmet-heading" jhiTranslate="defterTakipApp.personelZimmet.home.createOrEditLabel">Create or edit a Personel Zimmet</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!personelZimmet.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="personelZimmet.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelZimmet.tarih" for="field_tarih">Tarih</label>
+                    <div class="input-group">
+                        <input id="field_tarih" type="text" class="form-control" name="tarih" ngbDatepicker  #tarihDp="ngbDatepicker" [(ngModel)]="personelZimmet.tarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="tarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelZimmet.durumu" for="field_durumu">Durumu</label>
+                    <select class="form-control" name="durumu" [(ngModel)]="personelZimmet.durumu" id="field_durumu" >
+                        <option value="YENI">{{'defterTakipApp.ZimmetDurumu.YENI' | translate}}</option>
+                        <option value="KULLANILMIS">{{'defterTakipApp.ZimmetDurumu.KULLANILMIS' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelZimmet.resim" for="field_resim">Resim</label>
+                    <div>
+                        <img [src]="'data:' + personelZimmet.resimContentType + ';base64,' + personelZimmet.resim" style="max-height: 100px;" *ngIf="personelZimmet.resim" alt="personelZimmet image"/>
+                        <div *ngIf="personelZimmet.resim" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{personelZimmet.resimContentType}}, {{byteSize(personelZimmet.resim)}}</span>
+                            <button type="button" (click)="clearInputImage('resim', 'resimContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_resim" (change)="setFileData($event, personelZimmet, 'resim', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="resim" id="field_resim"
+                        [(ngModel)]="personelZimmet.resim" />
+                    <input type="hidden" class="form-control" name="resimContentType" id="field_resimContentType"
+                        [(ngModel)]="personelZimmet.resimContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelZimmet.dosya" for="field_dosya">Dosya</label>
+                    <div>
+                        <div *ngIf="personelZimmet.dosya" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(personelZimmet.dosyaContentType, personelZimmet.dosya)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{personelZimmet.dosyaContentType}}, {{byteSize(personelZimmet.dosya)}}</span>
+                            <button type="button" (click)="personelZimmet.dosya=null;personelZimmet.dosyaContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_dosya" (change)="setFileData($event, personelZimmet, 'dosya', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="dosya" id="field_dosya"
+                        [(ngModel)]="personelZimmet.dosya" />
+                    <input type="hidden" class="form-control" name="dosyaContentType" id="field_dosyaContentType"
+                        [(ngModel)]="personelZimmet.dosyaContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelZimmet.personel" for="field_personel">Personel</label>
+                    <select class="form-control" id="field_personel" name="personel" [(ngModel)]="personelZimmet.personel"  required>
+                        <option *ngIf="!editForm.value.personel" [ngValue]="null" selected></option>
+                        <option [ngValue]="personelOption.id === personelZimmet.personel?.id ? personelZimmet.personel : personelOption" *ngFor="let personelOption of personels; trackBy: trackPersonelById">{{personelOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.personel?.dirty && editForm.controls.personel?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.personel?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelZimmet.zimmet" for="field_zimmet">Zimmet</label>
+                    <select class="form-control" id="field_zimmet" name="zimmet" [(ngModel)]="personelZimmet.zimmet"  required>
+                        <option *ngIf="!editForm.value.zimmet" [ngValue]="null" selected></option>
+                        <option [ngValue]="zimmetTuruOption.id === personelZimmet.zimmet?.id ? personelZimmet.zimmet : zimmetTuruOption" *ngFor="let zimmetTuruOption of zimmetturus; trackBy: trackZimmetTuruById">{{zimmetTuruOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.zimmet?.dirty && editForm.controls.zimmet?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.zimmet?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

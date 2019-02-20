@@ -1,0 +1,129 @@
+{
+    "name": "Personel",
+    "fields": [
+        {
+            "fieldName": "tckimlikno",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": 2
+        },
+        {
+            "fieldName": "cepTelefon",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "sabitTelefon",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "eposta",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cinsiyet",
+            "fieldType": "Cinsiyet",
+            "fieldValues": "ERKEK,KADIN"
+        },
+        {
+            "fieldName": "egitimDurumu",
+            "fieldType": "EgitimDurumu",
+            "fieldValues": "ILKOKUL,ORTAOKUL,LISE,ONLISANS,LISANS,YUKSEK_LISANS"
+        },
+        {
+            "fieldName": "kanGrubu",
+            "fieldType": "KanGrubu",
+            "fieldValues": "A_RH_POZITIF,A_RH_NEGATIF,B_RH_NEGATIF,B_RH_POZITIF,O_RH_POZITIF,O_RH_NEGATIF,AB_RH_POZITIF,AB_RH_NEGATIF"
+        },
+        {
+            "fieldName": "personelTuru",
+            "fieldType": "PersonelTuru",
+            "fieldValues": "MAASLI,GOTURU,YEVMIYE"
+        },
+        {
+            "fieldName": "ucret",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "iban",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "medeniHali",
+            "fieldType": "MedeniHali",
+            "fieldValues": "BEKAR,EVLI"
+        },
+        {
+            "fieldName": "dogumTarihi",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "girisTarihi",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "izinHakedis",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "cikisTarihi",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "resim",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "dosya",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "not",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "yonetici",
+            "otherEntityName": "personel",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "personel"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "unvan",
+            "otherEntityName": "unvan",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "personel"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "ekip",
+            "otherEntityName": "ekip",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "ekipPersonel"
+        }
+    ],
+    "changelogDate": "20190220103107",
+    "entityTableName": "personel",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

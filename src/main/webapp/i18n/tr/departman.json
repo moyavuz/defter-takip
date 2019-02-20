@@ -1,0 +1,21 @@
+{
+    "defterTakipApp": {
+        "departman": {
+            "home": {
+                "title": "Departmen",
+                "createLabel": "Create a new Departman",
+                "createOrEditLabel": "Create or edit a Departman"
+            },
+            "created": "A new Departman is created with identifier {{ param }}",
+            "updated": "A Departman is updated with identifier {{ param }}",
+            "deleted": "A Departman is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Departman {{ id }}?"
+            },
+            "detail": {
+                "title": "Departman"
+            },
+            "ad": "Ad"
+        }
+    }
+}

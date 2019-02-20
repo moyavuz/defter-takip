@@ -1,0 +1,31 @@
+{
+    "defterTakipApp": {
+        "malzeme": {
+            "home": {
+                "title": "Malzemes",
+                "createLabel": "Create a new Malzeme",
+                "createOrEditLabel": "Create or edit a Malzeme"
+            },
+            "created": "A new Malzeme is created with identifier {{ param }}",
+            "updated": "A Malzeme is updated with identifier {{ param }}",
+            "deleted": "A Malzeme is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Malzeme {{ id }}?"
+            },
+            "detail": {
+                "title": "Malzeme"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "kisaltma": "Kisaltma",
+            "tenzilatsizFiyat": "Tenzilatsiz Fiyat",
+            "tenzilatliFiyat": "Tenzilatli Fiyat",
+            "taseronFiyat": "Taseron Fiyat",
+            "paraBirimi": "Para Birimi",
+            "stokTakip": "Stok Takip",
+            "birim": "Birim",
+            "depo": "Depo",
+            "grup": "Grup"
+        }
+    }
+}

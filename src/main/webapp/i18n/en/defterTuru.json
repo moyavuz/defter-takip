@@ -1,0 +1,22 @@
+{
+    "defterTakipApp": {
+        "defterTuru": {
+            "home": {
+                "title": "Defter Turus",
+                "createLabel": "Create a new Defter Turu",
+                "createOrEditLabel": "Create or edit a Defter Turu"
+            },
+            "created": "A new Defter Turu is created with identifier {{ param }}",
+            "updated": "A Defter Turu is updated with identifier {{ param }}",
+            "deleted": "A Defter Turu is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Defter Turu {{ id }}?"
+            },
+            "detail": {
+                "title": "Defter Turu"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama"
+        }
+    }
+}
