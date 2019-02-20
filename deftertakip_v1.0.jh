@@ -1,0 +1,277 @@
+enum OdemeDurumu {
+    BEKLIYOR, HAKEDISE_HAZIR,HAKEDISI_YAPILDI,ODEME TAMAMLANDI
+}
+enum MedeniHali {
+    BEKAR, EVLI
+}
+enum IsDurumu {
+    BEKLIYOR, BEKLIYOR_MALZEME, BEKLIYOR_RUHSAT, CALISILIYOR, TAMAMLANDI, TAMAMLANDI_EKSIK_VAR
+}
+enum OnemDurumu{
+	ACIL,IVEDI,NORMAL
+}
+enum PersonelTuru {
+    MAASLI,GOTURU,YEVMIYE
+}
+enum EgitimDurumu {
+    ILKOKUL,ORTAOKUL,LISE,ONLISANS,LISANS,YUKSEK_LISANS
+}
+enum KanGrubu {
+    A_RH_POZITIF,A_RH_NEGATIF,B_RH_NEGATIF,B_RH_POZITIF,O_RH_POZITIF,O_RH_NEGATIF,AB_RH_POZITIF,AB_RH_NEGATIF
+}
+enum Cinsiyet {
+    ERKEK,KADIN
+}
+enum MalzemeTeminUsulu{
+    MUTEAHHIT, TURK_TELEKOM
+}
+enum DepoTuru {
+    MERKEZ_DEPO, BOLGE_DEPO
+}
+enum ZimmetDurumu{
+    YENI, KULLANILMIS
+}
+enum ParaBirimi{
+    TL, USD, EUR
+}
+enum IzinTuru{
+    YILLIK_IZIN, UCRETSIZ_IZIN, SAGLIK_RAPORLU,EVLILIK_IZNI,DOGUM_IZNI
+}
+enum OdemeYontemi{
+    NAKIT, BANKA, CEK, SENET, DIGER
+}
+enum OdemeTuru{
+    MAAS, AVANS, HIBE, DIGER
+}
+enum StokHareketTuru{
+    GIRIS,CIKIS
+}
+entity DovizKur {
+	paraBirimi ParaBirimi,
+	deger Double,
+	tarih LocalDate	
+}
+
+entity Personel {
+	tckimlikno Long required,
+	ad String required minlength(2),
+    cepTelefon String,
+	sabitTelefon String,
+	eposta String,
+	cinsiyet Cinsiyet,
+	egitimDurumu EgitimDurumu,
+	kanGrubu KanGrubu,
+    personelTuru PersonelTuru,
+    ucret Double,
+    iban String,
+    medeniHali MedeniHali,
+	dogumTarihi LocalDate,
+	girisTarihi LocalDate,
+	izinHakedis Double,
+    cikisTarihi LocalDate,
+    resim ImageBlob,
+    dosya Blob,
+	not TextBlob
+}
+entity Ekip {
+    ad String required minlength(2),
+    telefon String,
+    eposta String,
+    turu PersonelTuru
+}
+entity StokTakip {
+	miktar Long required,
+	aciklama TextBlob,
+    tarih LocalDate,
+	turu StokHareketTuru
+}
+entity Unvan {
+    ad String required,
+    aciklama String
+}
+entity Depo {
+    ad String required,
+    adres String,
+	turu DepoTuru
+}
+entity Birim {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    carpan Double
+}
+entity ProjeTuru {
+    ad String required,
+    aciklama String,
+    kisaltma String
+}
+entity DefterTuru {
+    ad String required,
+    aciklama String
+}
+entity ZimmetTuru {
+    ad String required,
+    aciklama String
+}
+entity MalzemeGrubu {
+    ad String required,
+    aciklama String
+}
+entity Malzeme {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+    tenzilatsizFiyat Double,
+    tenzilatliFiyat Double,
+    taseronFiyat Double,
+	paraBirimi ParaBirimi
+}
+entity Poz {
+    ad String required,
+    aciklama String,
+    kisaltma String,
+	ihaleSahasi String,
+    yil Integer,
+    tenzilatsizFiyat Double,
+    tenzilatliFiyat Double,
+    taseronFiyat Double,
+    tasereFiyat Double,
+    malzemeMi Boolean
+}
+entity Departman {
+	ad String required
+}
+entity Bolge {
+	ad String required,
+	adres String
+}
+entity Santral {
+	ad String required 
+}
+entity Proje {
+	ad String required,
+	onemDurumu OnemDurumu,
+    aciklama String,
+	protokolNo Long,
+	cizimNo Long,
+  	durumu IsDurumu,	
+	tarih LocalDate,
+    detay TextBlob,
+    resim ImageBlob,
+    dosya Blob,
+	baslamaTarihi LocalDate,
+    bitisTarihi LocalDate
+}
+
+entity Hakedis {
+	ad String,
+	aciklama String,
+    detay TextBlob,
+    durumu IsDurumu,
+	seriNo Long,
+	odemeDurumu OdemeDurumu,
+	odemeNo String,
+    resim ImageBlob,
+	tarih LocalDate,
+    dosya Blob
+}
+
+entity HakedisDetay {
+	miktar Double required
+}
+
+entity PersonelZimmet {
+	tarih LocalDate,
+    durumu ZimmetDurumu,
+    resim ImageBlob,
+    dosya Blob
+}
+entity Arac {
+	ad String,
+	aciklama String,
+    detay TextBlob,
+	modelYili Long,
+    durumu AracDurumu,
+	tarih LocalDate,
+	muayeneTarih LocalDate,
+	kaskoTarih LocalDate,
+	sigortaTarih LocalDate,
+	bakimTarih LocalDate,
+	resim ImageBlob,
+    dosya Blob
+}
+entity PersonelArac {
+	tarih LocalDate, 
+	detay TextBlob,
+    resim ImageBlob,
+    dosya Blob
+}
+
+entity PersonelIzin {
+	tarih LocalDate, 
+    miktar Double,
+	turu IzinTuru,
+    dosya Blob
+}
+entity PersonelOdeme {
+	tarih LocalDate, 
+    miktar Double,
+	turu OdemeTuru,
+	yontem OdemeYontemi
+} 
+
+//iliskiler
+ 
+relationship OneToMany {
+  Ekip to Hakedis{ekip(ad) required},
+  Proje to Hakedis{proje(ad) required} ,
+  Hakedis to HakedisDetay{hakedis required},
+  Poz to HakedisDetay{poz(ad) required}
+  }
+  
+relationship OneToMany {
+  Ekip to StokTakip{ekip(ad) required},
+  Malzeme to StokTakip{malzeme(ad) required},
+  Depo to StokTakip{depo(ad)}
+}
+
+relationship ManyToOne {
+	Personel{yonetici(ad)} to Personel,
+    Bolge{bolgeSorumlu(ad) required} to Personel,
+    Ekip{ekipSorumlu(ad) required} to Personel,
+    Bolge{bolge(ad) required} to Departman,
+	Ekip{bolge(ad)} to Bolge,
+    Personel{unvan(ad)} to Unvan,
+    Proje{turu(ad) required} to ProjeTuru,
+    Proje{bolge(ad) } to Bolge,
+    Malzeme{birim(ad) required} to Birim,
+    Poz{birim(ad) required} to Birim,
+	Hakedis{santral(ad)} to Santral,
+	Malzeme{depo(ad)} to Depo,
+	Depo{sorumlu(ad)} to Personel,
+	PersonelZimmet{personel(ad)} to Personel,
+	PersonelZimmet{zimmet(ad)} to Zimmet,
+	PersonelArac{arac(ad)} to Arac,
+	PersonelArac{personel(ad)} to Personel,
+	PersonelIzin{personel(ad)} to Personel, 
+	PersonelOdeme{personel(ad)} to Personel
+}
+
+relationship ManyToMany {
+	MalzemeGrubu{malzemeListesi(ad)} to Malzeme{grup},
+    Ekip{ekipPersonel(ad)} to Personel{ekip}
+}
+
+// Set pagination options
+paginate Hakedis, Poz, HakedisDetay with infinite-scroll
+paginate Personel, Malzeme, Proje, StokTakip with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
+
