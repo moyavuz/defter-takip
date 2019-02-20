@@ -1,0 +1,80 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-personel-izin-heading" jhiTranslate="defterTakipApp.personelIzin.home.createOrEditLabel">Create or edit a Personel Izin</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!personelIzin.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="personelIzin.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelIzin.tarih" for="field_tarih">Tarih</label>
+                    <div class="input-group">
+                        <input id="field_tarih" type="text" class="form-control" name="tarih" ngbDatepicker  #tarihDp="ngbDatepicker" [(ngModel)]="personelIzin.tarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="tarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelIzin.miktar" for="field_miktar">Miktar</label>
+                    <input type="number" class="form-control" name="miktar" id="field_miktar"
+                        [(ngModel)]="personelIzin.miktar" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelIzin.turu" for="field_turu">Turu</label>
+                    <select class="form-control" name="turu" [(ngModel)]="personelIzin.turu" id="field_turu" >
+                        <option value="YILLIK_IZIN">{{'defterTakipApp.IzinTuru.YILLIK_IZIN' | translate}}</option>
+                        <option value="UCRETSIZ_IZIN">{{'defterTakipApp.IzinTuru.UCRETSIZ_IZIN' | translate}}</option>
+                        <option value="SAGLIK_RAPORLU">{{'defterTakipApp.IzinTuru.SAGLIK_RAPORLU' | translate}}</option>
+                        <option value="EVLILIK_IZNI">{{'defterTakipApp.IzinTuru.EVLILIK_IZNI' | translate}}</option>
+                        <option value="DOGUM_IZNI">{{'defterTakipApp.IzinTuru.DOGUM_IZNI' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelIzin.dosya" for="field_dosya">Dosya</label>
+                    <div>
+                        <div *ngIf="personelIzin.dosya" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(personelIzin.dosyaContentType, personelIzin.dosya)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{personelIzin.dosyaContentType}}, {{byteSize(personelIzin.dosya)}}</span>
+                            <button type="button" (click)="personelIzin.dosya=null;personelIzin.dosyaContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_dosya" (change)="setFileData($event, personelIzin, 'dosya', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="dosya" id="field_dosya"
+                        [(ngModel)]="personelIzin.dosya" />
+                    <input type="hidden" class="form-control" name="dosyaContentType" id="field_dosyaContentType"
+                        [(ngModel)]="personelIzin.dosyaContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelIzin.personel" for="field_personel">Personel</label>
+                    <select class="form-control" id="field_personel" name="personel" [(ngModel)]="personelIzin.personel"  required>
+                        <option *ngIf="!editForm.value.personel" [ngValue]="null" selected></option>
+                        <option [ngValue]="personelOption.id === personelIzin.personel?.id ? personelIzin.personel : personelOption" *ngFor="let personelOption of personels; trackBy: trackPersonelById">{{personelOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.personel?.dirty && editForm.controls.personel?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.personel?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

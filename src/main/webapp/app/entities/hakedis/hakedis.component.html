@@ -1,0 +1,110 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.hakedis.home.title">Hakedis</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-hakedis" [routerLink]="['/hakedis/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.hakedis.home.createLabel">
+            Create new Hakedis
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="hakedis">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ad"><span jhiTranslate="defterTakipApp.hakedis.ad">Ad</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="tarih"><span jhiTranslate="defterTakipApp.hakedis.tarih">Tarih</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="seriNo"><span jhiTranslate="defterTakipApp.hakedis.seriNo">Seri No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="defterNo"><span jhiTranslate="defterTakipApp.hakedis.defterNo">Defter No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="cizimNo"><span jhiTranslate="defterTakipApp.hakedis.cizimNo">Cizim No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="onemDerecesi"><span jhiTranslate="defterTakipApp.hakedis.onemDerecesi">Onem Derecesi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="isDurumu"><span jhiTranslate="defterTakipApp.hakedis.isDurumu">Is Durumu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="odemeDurumu"><span jhiTranslate="defterTakipApp.hakedis.odemeDurumu">Odeme Durumu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="odemeNo"><span jhiTranslate="defterTakipApp.hakedis.odemeNo">Odeme No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="aciklama"><span jhiTranslate="defterTakipApp.hakedis.aciklama">Aciklama</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="detay"><span jhiTranslate="defterTakipApp.hakedis.detay">Detay</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="resim"><span jhiTranslate="defterTakipApp.hakedis.resim">Resim</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dosya"><span jhiTranslate="defterTakipApp.hakedis.dosya">Dosya</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="santral.ad"><span jhiTranslate="defterTakipApp.hakedis.santral">Santral</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="turu.ad"><span jhiTranslate="defterTakipApp.hakedis.turu">Turu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ekip.ad"><span jhiTranslate="defterTakipApp.hakedis.ekip">Ekip</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="proje.ad"><span jhiTranslate="defterTakipApp.hakedis.proje">Proje</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let hakedis of hakedis ;trackBy: trackId">
+                <td><a [routerLink]="['/hakedis', hakedis.id, 'view' ]">{{hakedis.id}}</a></td>
+                <td>{{hakedis.ad}}</td>
+                <td>{{hakedis.tarih | date:'mediumDate'}}</td>
+                <td>{{hakedis.seriNo}}</td>
+                <td>{{hakedis.defterNo}}</td>
+                <td>{{hakedis.cizimNo}}</td>
+                <td jhiTranslate="{{'defterTakipApp.OnemDurumu.' + hakedis.onemDerecesi}}">{{hakedis.onemDerecesi}}</td>
+                <td jhiTranslate="{{'defterTakipApp.IsDurumu.' + hakedis.isDurumu}}">{{hakedis.isDurumu}}</td>
+                <td jhiTranslate="{{'defterTakipApp.OdemeDurumu.' + hakedis.odemeDurumu}}">{{hakedis.odemeDurumu}}</td>
+                <td>{{hakedis.odemeNo}}</td>
+                <td>{{hakedis.aciklama}}</td>
+                <td>{{hakedis.detay}}</td>
+                <td>
+                    <a *ngIf="hakedis.resim" (click)="openFile(hakedis.resimContentType, hakedis.resim)">
+                        <img [src]="'data:' + hakedis.resimContentType + ';base64,' + hakedis.resim" style="max-height: 30px;" alt="hakedis image"/>
+                    </a>
+                    <span *ngIf="hakedis.resim">{{hakedis.resimContentType}}, {{byteSize(hakedis.resim)}}</span>
+                </td>
+                <td>
+                    <a *ngIf="hakedis.dosya" (click)="openFile(hakedis.dosyaContentType, hakedis.dosya)" jhiTranslate="entity.action.open">open</a>
+                    <span *ngIf="hakedis.dosya">{{hakedis.dosyaContentType}}, {{byteSize(hakedis.dosya)}}</span>
+                </td>
+                <td>
+                    <div *ngIf="hakedis.santral">
+                        <a [routerLink]="['../santral', hakedis.santral?.id, 'view' ]" >{{hakedis.santral?.ad}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="hakedis.turu">
+                        <a [routerLink]="['../hakedis-turu', hakedis.turu?.id, 'view' ]" >{{hakedis.turu?.ad}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="hakedis.ekip">
+                        <a [routerLink]="['../ekip', hakedis.ekip?.id, 'view' ]" >{{hakedis.ekip?.ad}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="hakedis.proje">
+                        <a [routerLink]="['../proje', hakedis.proje?.id, 'view' ]" >{{hakedis.proje?.ad}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/hakedis', hakedis.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/hakedis', hakedis.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'hakedis', { outlets: { popup: hakedis.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

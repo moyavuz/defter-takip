@@ -1,0 +1,26 @@
+{
+    "defterTakipApp": {
+        "personelZimmet": {
+            "home": {
+                "title": "Personel Zimmets",
+                "createLabel": "Create a new Personel Zimmet",
+                "createOrEditLabel": "Create or edit a Personel Zimmet"
+            },
+            "created": "A new Personel Zimmet is created with identifier {{ param }}",
+            "updated": "A Personel Zimmet is updated with identifier {{ param }}",
+            "deleted": "A Personel Zimmet is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Personel Zimmet {{ id }}?"
+            },
+            "detail": {
+                "title": "Personel Zimmet"
+            },
+            "tarih": "Tarih",
+            "durumu": "Durumu",
+            "resim": "Resim",
+            "dosya": "Dosya",
+            "personel": "Personel",
+            "zimmet": "Zimmet"
+        }
+    }
+}

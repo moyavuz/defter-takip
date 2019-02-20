@@ -1,0 +1,100 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-personel-arac-heading" jhiTranslate="defterTakipApp.personelArac.home.createOrEditLabel">Create or edit a Personel Arac</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!personelArac.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="personelArac.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelArac.tarih" for="field_tarih">Tarih</label>
+                    <div class="input-group">
+                        <input id="field_tarih" type="text" class="form-control" name="tarih" ngbDatepicker  #tarihDp="ngbDatepicker" [(ngModel)]="personelArac.tarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="tarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelArac.detay" for="field_detay">Detay</label>
+                    <textarea class="form-control" name="detay" id="field_detay"
+                        [(ngModel)]="personelArac.detay" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelArac.resim" for="field_resim">Resim</label>
+                    <div>
+                        <img [src]="'data:' + personelArac.resimContentType + ';base64,' + personelArac.resim" style="max-height: 100px;" *ngIf="personelArac.resim" alt="personelArac image"/>
+                        <div *ngIf="personelArac.resim" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{personelArac.resimContentType}}, {{byteSize(personelArac.resim)}}</span>
+                            <button type="button" (click)="clearInputImage('resim', 'resimContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_resim" (change)="setFileData($event, personelArac, 'resim', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="resim" id="field_resim"
+                        [(ngModel)]="personelArac.resim" />
+                    <input type="hidden" class="form-control" name="resimContentType" id="field_resimContentType"
+                        [(ngModel)]="personelArac.resimContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelArac.dosya" for="field_dosya">Dosya</label>
+                    <div>
+                        <div *ngIf="personelArac.dosya" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(personelArac.dosyaContentType, personelArac.dosya)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{personelArac.dosyaContentType}}, {{byteSize(personelArac.dosya)}}</span>
+                            <button type="button" (click)="personelArac.dosya=null;personelArac.dosyaContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_dosya" (change)="setFileData($event, personelArac, 'dosya', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="dosya" id="field_dosya"
+                        [(ngModel)]="personelArac.dosya" />
+                    <input type="hidden" class="form-control" name="dosyaContentType" id="field_dosyaContentType"
+                        [(ngModel)]="personelArac.dosyaContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelArac.arac" for="field_arac">Arac</label>
+                    <select class="form-control" id="field_arac" name="arac" [(ngModel)]="personelArac.arac"  required>
+                        <option *ngIf="!editForm.value.arac" [ngValue]="null" selected></option>
+                        <option [ngValue]="aracOption.id === personelArac.arac?.id ? personelArac.arac : aracOption" *ngFor="let aracOption of aracs; trackBy: trackAracById">{{aracOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.arac?.dirty && editForm.controls.arac?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.arac?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelArac.personel" for="field_personel">Personel</label>
+                    <select class="form-control" id="field_personel" name="personel" [(ngModel)]="personelArac.personel"  required>
+                        <option *ngIf="!editForm.value.personel" [ngValue]="null" selected></option>
+                        <option [ngValue]="personelOption.id === personelArac.personel?.id ? personelArac.personel : personelOption" *ngFor="let personelOption of personels; trackBy: trackPersonelById">{{personelOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.personel?.dirty && editForm.controls.personel?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.personel?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

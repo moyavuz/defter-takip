@@ -1,0 +1,42 @@
+{
+    "name": "PersonelOdeme",
+    "fields": [
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "miktar",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "turu",
+            "fieldType": "OdemeTuru",
+            "fieldValues": "MAAS,AVANS,HIBE,DIGER"
+        },
+        {
+            "fieldName": "yontem",
+            "fieldType": "OdemeYontemi",
+            "fieldValues": "NAKIT,BANKA,CEK,SENET,DIGER"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "personel",
+            "otherEntityName": "personel",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "personelOdeme"
+        }
+    ],
+    "changelogDate": "20190220122134",
+    "entityTableName": "personel_odeme",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
