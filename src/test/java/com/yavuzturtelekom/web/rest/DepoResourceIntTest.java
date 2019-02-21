@@ -49,7 +49,7 @@ public class DepoResourceIntTest {
     private static final String UPDATED_ADRES = "BBBBBBBBBB";
 
     private static final DepoTuru DEFAULT_TURU = DepoTuru.MERKEZ_DEPO;
-    private static final DepoTuru UPDATED_TURU = DepoTuru.Mudurluk_DEPO;
+    private static final DepoTuru UPDATED_TURU = DepoTuru.MUDURLUK_DEPO;
 
     @Autowired
     private DepoRepository depoRepository;
@@ -179,7 +179,7 @@ public class DepoResourceIntTest {
             .andExpect(jsonPath("$.[*].adres").value(hasItem(DEFAULT_ADRES.toString())))
             .andExpect(jsonPath("$.[*].turu").value(hasItem(DEFAULT_TURU.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getDepo() throws Exception {

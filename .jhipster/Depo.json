@@ -15,7 +15,7 @@
         {
             "fieldName": "turu",
             "fieldType": "DepoTuru",
-            "fieldValues": "MERKEZ_DEPO,Mudurluk_DEPO"
+            "fieldValues": "MERKEZ_DEPO,MUDURLUK_DEPO"
         }
     ],
     "relationships": [

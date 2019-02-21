@@ -3,7 +3,7 @@ import { IPersonel } from 'app/shared/model/personel.model';
 
 export const enum DepoTuru {
     MERKEZ_DEPO = 'MERKEZ_DEPO',
-    Mudurluk_DEPO = 'Mudurluk_DEPO'
+    MUDURLUK_DEPO = 'MUDURLUK_DEPO'
 }
 
 export interface IDepo {
