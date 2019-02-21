@@ -118,8 +118,8 @@ jhipster:
         from: DefterTakip@localhost
     swagger:
         default-include-pattern: /api/.*
-        title: DefterTakip API
-        description: DefterTakip API documentation
+        title: Yavuztur Telekom ERP API
+        description: Yavuztur Telekom ERP API documentation
         version: 0.0.1
         terms-of-service-url:
         contact-name:

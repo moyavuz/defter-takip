@@ -87,6 +87,14 @@ Generic styles
 
 .footer {
     border-top: 1px solid rgba(0, 0, 0, 0.125);
+    color: #ccc;
+}
+
+#footer {
+    float: left;
+}
+#version {
+    float: right;
 }
 
 .hand,

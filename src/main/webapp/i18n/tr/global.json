@@ -1,13 +1,13 @@
 {
     "global": {
-        "title": "DefterTakip",
-        "browsehappy":
-            "<strong>Çok eski</strong> bir tarayıcı kullanıyorsunuz. Lütfen kullanım kalitenizi arttırmak için <a href=\"http://browsehappy.com/?locale=tr\">tarayıcınızı yükseltin</a>.",
+        "title": "Yavuztur Telekom ERP",
+        "browsehappy": "<strong>Çok eski</strong> bir tarayıcı kullanıyorsunuz. Lütfen kullanım kalitenizi arttırmak için <a href=\"http://browsehappy.com/?locale=tr\">tarayıcınızı yükseltin</a>.",
         "menu": {
             "home": "Ana Sayfa",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
-                "main": "Varlıklar",
+                "main": "Ana Menü",
+                "tanimlamalar": "Tanımlamalar",
                 "dovizKur": "Doviz Kur",
                 "personel": "Personel",
                 "ekip": "Ekip",
@@ -80,8 +80,7 @@
                 "authenticated": {
                     "prefix": "",
                     "link": "Giriş",
-                    "suffix":
-                        " yapmak istiyorsanız, varsayılan hesaplardan birini deneyebilirsiniz:<br/>- Yönetici (kullanıcı adı=\"admin\" ve şifre=\"admin\") <br/>- Kullanıcı (kullanıcı adı=\"user\" and şifre=\"user\")."
+                    "suffix": " yapmak istiyorsanız, varsayılan hesaplardan birini deneyebilirsiniz:<br/>- Yönetici (kullanıcı adı=\"admin\" ve şifre=\"admin\") <br/>- Kullanıcı (kullanıcı adı=\"user\" and şifre=\"user\")."
                 },
                 "register": {
                     "noaccount": "Henüz bir hesabınız yok mu?",
@@ -163,5 +162,5 @@
         "idexists": "A new {{entityName}} cannot already have an ID",
         "idnull": "Invalid ID"
     },
-    "footer": "Burası sayfa alt bilgisi"
+    "footer": "© 2019 Mehmet Özkan YAVUZ"
 }
