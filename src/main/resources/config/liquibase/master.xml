@@ -55,5 +55,7 @@
     <include file="config/liquibase/changelog/20190221095643_added_entity_constraints_PersonelArac.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190221095644_added_entity_constraints_PersonelIzin.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190221095645_added_entity_constraints_PersonelOdeme.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190214173211_initial_data.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
