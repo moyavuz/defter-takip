@@ -1,0 +1,35 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="dovizKur">
+            <h2><span jhiTranslate="defterTakipApp.dovizKur.detail.title">Doviz Kur</span> {{dovizKur.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.dovizKur.paraBirimi">Para Birimi</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.ParaBirimi.' + dovizKur.paraBirimi}}">{{dovizKur.paraBirimi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.dovizKur.deger">Deger</span></dt>
+                <dd>
+                    <span>{{dovizKur.deger}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.dovizKur.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{dovizKur.tarih}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/doviz-kur', dovizKur.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

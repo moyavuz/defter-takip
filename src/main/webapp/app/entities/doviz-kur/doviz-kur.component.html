@@ -1,0 +1,58 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.dovizKur.home.title">Doviz Kurs</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-doviz-kur" [routerLink]="['/doviz-kur/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.dovizKur.home.createLabel">
+            Create new Doviz Kur
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="dovizKurs">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.dovizKur.paraBirimi">Para Birimi</span></th>
+            <th><span jhiTranslate="defterTakipApp.dovizKur.deger">Deger</span></th>
+            <th><span jhiTranslate="defterTakipApp.dovizKur.tarih">Tarih</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let dovizKur of dovizKurs ;trackBy: trackId">
+                <td><a [routerLink]="['/doviz-kur', dovizKur.id, 'view' ]">{{dovizKur.id}}</a></td>
+                <td jhiTranslate="{{'defterTakipApp.ParaBirimi.' + dovizKur.paraBirimi}}">{{dovizKur.paraBirimi}}</td>
+                <td>{{dovizKur.deger}}</td>
+                <td>{{dovizKur.tarih | date:'mediumDate'}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/doviz-kur', dovizKur.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/doviz-kur', dovizKur.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'doviz-kur', { outlets: { popup: dovizKur.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

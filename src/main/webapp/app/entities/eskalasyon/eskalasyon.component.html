@@ -1,0 +1,62 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.eskalasyon.home.title">Eskalasyons</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-eskalasyon" [routerLink]="['/eskalasyon/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.eskalasyon.home.createLabel">
+            Create new Eskalasyon
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="eskalasyons">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.eskalasyon.deger">Deger</span></th>
+            <th><span jhiTranslate="defterTakipApp.eskalasyon.tarih">Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.eskalasyon.turu">Turu</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let eskalasyon of eskalasyons ;trackBy: trackId">
+                <td><a [routerLink]="['/eskalasyon', eskalasyon.id, 'view' ]">{{eskalasyon.id}}</a></td>
+                <td>{{eskalasyon.deger}}</td>
+                <td>{{eskalasyon.tarih | date:'mediumDate'}}</td>
+                <td>
+                    <div *ngIf="eskalasyon.turu">
+                        <a [routerLink]="['../eskalasyon-turu', eskalasyon.turu?.id, 'view' ]" >{{eskalasyon.turu?.ad}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/eskalasyon', eskalasyon.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/eskalasyon', eskalasyon.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'eskalasyon', { outlets: { popup: eskalasyon.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

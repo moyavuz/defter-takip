@@ -1,0 +1,39 @@
+{
+    "name": "PozGrubu",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "kisaltma",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "grup",
+            "relationshipName": "pozListesi",
+            "otherEntityName": "poz",
+            "otherEntityField": "ad",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20190221095629",
+    "entityTableName": "poz_grubu",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

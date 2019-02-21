@@ -1,0 +1,24 @@
+{
+    "defterTakipApp": {
+        "mudurluk": {
+            "home": {
+                "title": "Mudurluks",
+                "createLabel": "Create a new Mudurluk",
+                "createOrEditLabel": "Create or edit a Mudurluk"
+            },
+            "created": "A new Mudurluk is created with identifier {{ param }}",
+            "updated": "A Mudurluk is updated with identifier {{ param }}",
+            "deleted": "A Mudurluk is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Mudurluk {{ id }}?"
+            },
+            "detail": {
+                "title": "Mudurluk"
+            },
+            "ad": "Ad",
+            "adres": "Adres",
+            "mudurlukSorumlu": "Mudurluk Sorumlu",
+            "il": "Il"
+        }
+    }
+}

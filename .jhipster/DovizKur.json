@@ -1,0 +1,28 @@
+{
+    "name": "DovizKur",
+    "fields": [
+        {
+            "fieldName": "paraBirimi",
+            "fieldType": "ParaBirimi",
+            "fieldValues": "TL,USD,EUR"
+        },
+        {
+            "fieldName": "deger",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190221095617",
+    "entityTableName": "doviz_kur",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

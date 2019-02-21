@@ -1,0 +1,26 @@
+{
+    "defterTakipApp": {
+        "personelArac": {
+            "home": {
+                "title": "Personel Aracs",
+                "createLabel": "Create a new Personel Arac",
+                "createOrEditLabel": "Create or edit a Personel Arac"
+            },
+            "created": "A new Personel Arac is created with identifier {{ param }}",
+            "updated": "A Personel Arac is updated with identifier {{ param }}",
+            "deleted": "A Personel Arac is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Personel Arac {{ id }}?"
+            },
+            "detail": {
+                "title": "Personel Arac"
+            },
+            "tarih": "Tarih",
+            "detay": "Detay",
+            "resim": "Resim",
+            "dosya": "Dosya",
+            "arac": "Arac",
+            "personel": "Personel"
+        }
+    }
+}

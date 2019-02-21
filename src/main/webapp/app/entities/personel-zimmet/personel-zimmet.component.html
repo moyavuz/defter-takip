@@ -1,0 +1,80 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.personelZimmet.home.title">Personel Zimmets</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-personel-zimmet" [routerLink]="['/personel-zimmet/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.personelZimmet.home.createLabel">
+            Create new Personel Zimmet
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="personelZimmets">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelZimmet.tarih">Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelZimmet.durumu">Durumu</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelZimmet.resim">Resim</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelZimmet.dosya">Dosya</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelZimmet.personel">Personel</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelZimmet.zimmet">Zimmet</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let personelZimmet of personelZimmets ;trackBy: trackId">
+                <td><a [routerLink]="['/personel-zimmet', personelZimmet.id, 'view' ]">{{personelZimmet.id}}</a></td>
+                <td>{{personelZimmet.tarih | date:'mediumDate'}}</td>
+                <td jhiTranslate="{{'defterTakipApp.ZimmetDurumu.' + personelZimmet.durumu}}">{{personelZimmet.durumu}}</td>
+                <td>
+                    <a *ngIf="personelZimmet.resim" (click)="openFile(personelZimmet.resimContentType, personelZimmet.resim)">
+                        <img [src]="'data:' + personelZimmet.resimContentType + ';base64,' + personelZimmet.resim" style="max-height: 30px;" alt="personelZimmet image"/>
+                    </a>
+                    <span *ngIf="personelZimmet.resim">{{personelZimmet.resimContentType}}, {{byteSize(personelZimmet.resim)}}</span>
+                </td>
+                <td>
+                    <a *ngIf="personelZimmet.dosya" (click)="openFile(personelZimmet.dosyaContentType, personelZimmet.dosya)" jhiTranslate="entity.action.open">open</a>
+                    <span *ngIf="personelZimmet.dosya">{{personelZimmet.dosyaContentType}}, {{byteSize(personelZimmet.dosya)}}</span>
+                </td>
+                <td>
+                    <div *ngIf="personelZimmet.personel">
+                        <a [routerLink]="['../personel', personelZimmet.personel?.id, 'view' ]" >{{personelZimmet.personel?.ad}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="personelZimmet.zimmet">
+                        <a [routerLink]="['../zimmet-turu', personelZimmet.zimmet?.id, 'view' ]" >{{personelZimmet.zimmet?.ad}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/personel-zimmet', personelZimmet.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/personel-zimmet', personelZimmet.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'personel-zimmet', { outlets: { popup: personelZimmet.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

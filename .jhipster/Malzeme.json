@@ -1,0 +1,80 @@
+{
+    "name": "Malzeme",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "malzemeNo",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "kisaltma",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tenzilatsizFiyat",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "tenzilatliFiyat",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "taseronFiyat",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "paraBirimi",
+            "fieldType": "ParaBirimi",
+            "fieldValues": "TL,USD,EUR"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "stokTakip",
+            "otherEntityName": "stokTakip",
+            "otherEntityRelationshipName": "malzeme"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "birim",
+            "otherEntityName": "birim",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "malzeme"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "depo",
+            "otherEntityName": "depo",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "malzeme"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "grup",
+            "otherEntityName": "malzemeGrubu",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "malzemeListesi"
+        }
+    ],
+    "changelogDate": "20190221095628",
+    "entityTableName": "malzeme",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

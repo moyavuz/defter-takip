@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="mudurluk">
+            <h2><span jhiTranslate="defterTakipApp.mudurluk.detail.title">Mudurluk</span> {{mudurluk.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.mudurluk.ad">Ad</span></dt>
+                <dd>
+                    <span>{{mudurluk.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.mudurluk.adres">Adres</span></dt>
+                <dd>
+                    <span>{{mudurluk.adres}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.mudurluk.mudurlukSorumlu">Mudurluk Sorumlu</span></dt>
+                <dd>
+                    <div *ngIf="mudurluk.mudurlukSorumlu">
+                        <a [routerLink]="['/personel', mudurluk.mudurlukSorumlu?.id, 'view']">{{mudurluk.mudurlukSorumlu?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.mudurluk.il">Il</span></dt>
+                <dd>
+                    <div *ngIf="mudurluk.il">
+                        <a [routerLink]="['/il', mudurluk.il?.id, 'view']">{{mudurluk.il?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/mudurluk', mudurluk.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

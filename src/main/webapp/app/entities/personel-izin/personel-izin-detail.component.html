@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="personelIzin">
+            <h2><span jhiTranslate="defterTakipApp.personelIzin.detail.title">Personel Izin</span> {{personelIzin.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.personelIzin.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{personelIzin.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelIzin.miktar">Miktar</span></dt>
+                <dd>
+                    <span>{{personelIzin.miktar}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelIzin.turu">Turu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.IzinTuru.' + personelIzin.turu}}">{{personelIzin.turu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelIzin.dosya">Dosya</span></dt>
+                <dd>
+                    <div *ngIf="personelIzin.dosya">
+                        <a (click)="openFile(personelIzin.dosyaContentType, personelIzin.dosya)" jhiTranslate="entity.action.open">open</a>
+                        {{personelIzin.dosyaContentType}}, {{byteSize(personelIzin.dosya)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelIzin.personel">Personel</span></dt>
+                <dd>
+                    <div *ngIf="personelIzin.personel">
+                        <a [routerLink]="['/personel', personelIzin.personel?.id, 'view']">{{personelIzin.personel?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/personel-izin', personelIzin.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

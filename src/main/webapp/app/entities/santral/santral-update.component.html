@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-santral-heading" jhiTranslate="defterTakipApp.santral.home.createOrEditLabel">Create or edit a Santral</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!santral.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="santral.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.santral.ad" for="field_ad">Ad</label>
+                    <input type="text" class="form-control" name="ad" id="field_ad"
+                        [(ngModel)]="santral.ad" required/>
+                    <div [hidden]="!(editForm.controls.ad?.dirty && editForm.controls.ad?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ad?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.santral.mudurluk" for="field_mudurluk">Mudurluk</label>
+                    <select class="form-control" id="field_mudurluk" name="mudurluk" [(ngModel)]="santral.mudurluk" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="mudurlukOption.id === santral.mudurluk?.id ? santral.mudurluk : mudurlukOption" *ngFor="let mudurlukOption of mudurluks; trackBy: trackMudurlukById">{{mudurlukOption.ad}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.santral.santralSorumlu" for="field_santralSorumlu">Santral Sorumlu</label>
+                    <select class="form-control" id="field_santralSorumlu" name="santralSorumlu" [(ngModel)]="santral.santralSorumlu"  required>
+                        <option *ngIf="!editForm.value.santralSorumlu" [ngValue]="null" selected></option>
+                        <option [ngValue]="personelOption.id === santral.santralSorumlu?.id ? santral.santralSorumlu : personelOption" *ngFor="let personelOption of personels; trackBy: trackPersonelById">{{personelOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.santralSorumlu?.dirty && editForm.controls.santralSorumlu?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.santralSorumlu?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

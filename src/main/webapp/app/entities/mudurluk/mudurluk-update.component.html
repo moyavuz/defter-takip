@@ -1,0 +1,66 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-mudurluk-heading" jhiTranslate="defterTakipApp.mudurluk.home.createOrEditLabel">Create or edit a Mudurluk</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!mudurluk.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="mudurluk.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.mudurluk.ad" for="field_ad">Ad</label>
+                    <input type="text" class="form-control" name="ad" id="field_ad"
+                        [(ngModel)]="mudurluk.ad" required/>
+                    <div [hidden]="!(editForm.controls.ad?.dirty && editForm.controls.ad?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.ad?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.mudurluk.adres" for="field_adres">Adres</label>
+                    <input type="text" class="form-control" name="adres" id="field_adres"
+                        [(ngModel)]="mudurluk.adres" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.mudurluk.mudurlukSorumlu" for="field_mudurlukSorumlu">Mudurluk Sorumlu</label>
+                    <select class="form-control" id="field_mudurlukSorumlu" name="mudurlukSorumlu" [(ngModel)]="mudurluk.mudurlukSorumlu"  required>
+                        <option *ngIf="!editForm.value.mudurlukSorumlu" [ngValue]="null" selected></option>
+                        <option [ngValue]="personelOption.id === mudurluk.mudurlukSorumlu?.id ? mudurluk.mudurlukSorumlu : personelOption" *ngFor="let personelOption of personels; trackBy: trackPersonelById">{{personelOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.mudurlukSorumlu?.dirty && editForm.controls.mudurlukSorumlu?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.mudurlukSorumlu?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.mudurluk.il" for="field_il">Il</label>
+                    <select class="form-control" id="field_il" name="il" [(ngModel)]="mudurluk.il"  required>
+                        <option *ngIf="!editForm.value.il" [ngValue]="null" selected></option>
+                        <option [ngValue]="ilOption.id === mudurluk.il?.id ? mudurluk.il : ilOption" *ngFor="let ilOption of ils; trackBy: trackIlById">{{ilOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.il?.dirty && editForm.controls.il?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.il?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

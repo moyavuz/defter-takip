@@ -5,6 +5,55 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095617_added_entity_DovizKur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095618_added_entity_Personel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095619_added_entity_Ekip.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095620_added_entity_StokTakip.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095621_added_entity_Unvan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095622_added_entity_Depo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095623_added_entity_Birim.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095624_added_entity_ProjeTuru.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095625_added_entity_HakedisTuru.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095626_added_entity_ZimmetTuru.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095627_added_entity_MalzemeGrubu.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095628_added_entity_Malzeme.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095629_added_entity_PozGrubu.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095630_added_entity_Poz.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095631_added_entity_Il.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095632_added_entity_Mudurluk.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095633_added_entity_Santral.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095634_added_entity_Marka.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095635_added_entity_Model.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095636_added_entity_Proje.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095637_added_entity_Hakedis.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095638_added_entity_HakedisDetay.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095639_added_entity_EskalasyonTuru.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095640_added_entity_Eskalasyon.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095641_added_entity_PersonelZimmet.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095642_added_entity_Arac.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095643_added_entity_PersonelArac.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095644_added_entity_PersonelIzin.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095645_added_entity_PersonelOdeme.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20190221095618_added_entity_constraints_Personel.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095619_added_entity_constraints_Ekip.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095620_added_entity_constraints_StokTakip.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095622_added_entity_constraints_Depo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095627_added_entity_constraints_MalzemeGrubu.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095628_added_entity_constraints_Malzeme.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095629_added_entity_constraints_PozGrubu.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095630_added_entity_constraints_Poz.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095632_added_entity_constraints_Mudurluk.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095633_added_entity_constraints_Santral.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095635_added_entity_constraints_Model.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095636_added_entity_constraints_Proje.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095637_added_entity_constraints_Hakedis.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095638_added_entity_constraints_HakedisDetay.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095640_added_entity_constraints_Eskalasyon.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095641_added_entity_constraints_PersonelZimmet.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095642_added_entity_constraints_Arac.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095643_added_entity_constraints_PersonelArac.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095644_added_entity_constraints_PersonelIzin.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190221095645_added_entity_constraints_PersonelOdeme.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

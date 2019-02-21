@@ -1,0 +1,38 @@
+{
+    "name": "Santral",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "mudurluk",
+            "otherEntityName": "mudurluk",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "santral"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "santralSorumlu",
+            "otherEntityName": "personel",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "santral"
+        }
+    ],
+    "changelogDate": "20190221095633",
+    "entityTableName": "santral",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

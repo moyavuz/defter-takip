@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="santral">
+            <h2><span jhiTranslate="defterTakipApp.santral.detail.title">Santral</span> {{santral.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.santral.ad">Ad</span></dt>
+                <dd>
+                    <span>{{santral.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.santral.mudurluk">Mudurluk</span></dt>
+                <dd>
+                    <div *ngIf="santral.mudurluk">
+                        <a [routerLink]="['/mudurluk', santral.mudurluk?.id, 'view']">{{santral.mudurluk?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.santral.santralSorumlu">Santral Sorumlu</span></dt>
+                <dd>
+                    <div *ngIf="santral.santralSorumlu">
+                        <a [routerLink]="['/personel', santral.santralSorumlu?.id, 'view']">{{santral.santralSorumlu?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/santral', santral.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

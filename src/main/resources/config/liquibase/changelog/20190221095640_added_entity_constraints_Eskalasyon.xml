@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Eskalasyon.
+    -->
+    <changeSet id="20190221095640-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="turu_id"
+                                 baseTableName="eskalasyon"
+                                 constraintName="fk_eskalasyon_turu_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="eskalasyon_turu"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,10 @@
+{
+    "defterTakipApp": {
+        "OnemDurumu": {
+            "null": "",
+            "ACIL": "ACIL",
+            "IVEDI": "IVEDI",
+            "NORMAL": "NORMAL"
+        }
+    }
+}

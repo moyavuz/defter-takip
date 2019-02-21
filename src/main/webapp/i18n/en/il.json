@@ -1,0 +1,21 @@
+{
+    "defterTakipApp": {
+        "il": {
+            "home": {
+                "title": "Ils",
+                "createLabel": "Create a new Il",
+                "createOrEditLabel": "Create or edit a Il"
+            },
+            "created": "A new Il is created with identifier {{ param }}",
+            "updated": "A Il is updated with identifier {{ param }}",
+            "deleted": "A Il is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Il {{ id }}?"
+            },
+            "detail": {
+                "title": "Il"
+            },
+            "ad": "Ad"
+        }
+    }
+}

@@ -1,0 +1,60 @@
+{
+    "name": "StokTakip",
+    "fields": [
+        {
+            "fieldName": "miktar",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "hareketTuru",
+            "fieldType": "StokHareketTuru",
+            "fieldValues": "GIRIS,CIKIS"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "ekip",
+            "otherEntityName": "ekip",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "ekip"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "malzeme",
+            "otherEntityName": "malzeme",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "malzeme"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "depo",
+            "otherEntityName": "depo",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "depo"
+        }
+    ],
+    "changelogDate": "20190221095620",
+    "entityTableName": "stok_takip",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
