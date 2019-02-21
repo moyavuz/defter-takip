@@ -1,0 +1,33 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="model">
+            <h2><span jhiTranslate="defterTakipApp.model.detail.title">Model</span> {{model.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.model.ad">Ad</span></dt>
+                <dd>
+                    <span>{{model.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.model.marka">Marka</span></dt>
+                <dd>
+                    <div *ngIf="model.marka">
+                        <a [routerLink]="['/marka', model.marka?.id, 'view']">{{model.marka?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/model', model.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

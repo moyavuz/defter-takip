@@ -1,0 +1,73 @@
+{
+    "name": "Ekip",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": 2
+        },
+        {
+            "fieldName": "telefon",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "eposta",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "turu",
+            "fieldType": "PersonelTuru",
+            "fieldValues": "MAASLI,GOTURU,YEVMIYE"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "hakedis",
+            "otherEntityName": "hakedis",
+            "otherEntityRelationshipName": "ekip"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "stokTakip",
+            "otherEntityName": "stokTakip",
+            "otherEntityRelationshipName": "ekip"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "ekipSorumlu",
+            "otherEntityName": "personel",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "ekip"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "mudurluk",
+            "otherEntityName": "mudurluk",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "ekip"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "ekip",
+            "relationshipName": "ekipPersonel",
+            "otherEntityName": "personel",
+            "otherEntityField": "ad",
+            "ownerSide": true
+        }
+    ],
+    "changelogDate": "20190221093329",
+    "entityTableName": "ekip",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

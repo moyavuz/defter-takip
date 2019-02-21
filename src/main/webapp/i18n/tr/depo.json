@@ -1,0 +1,25 @@
+{
+    "defterTakipApp": {
+        "depo": {
+            "home": {
+                "title": "Depos",
+                "createLabel": "Create a new Depo",
+                "createOrEditLabel": "Create or edit a Depo"
+            },
+            "created": "A new Depo is created with identifier {{ param }}",
+            "updated": "A Depo is updated with identifier {{ param }}",
+            "deleted": "A Depo is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Depo {{ id }}?"
+            },
+            "detail": {
+                "title": "Depo"
+            },
+            "ad": "Ad",
+            "adres": "Adres",
+            "turu": "Turu",
+            "stokTakip": "Stok Takip",
+            "sorumlu": "Sorumlu"
+        }
+    }
+}

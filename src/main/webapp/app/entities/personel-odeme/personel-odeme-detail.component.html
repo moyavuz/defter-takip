@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="personelOdeme">
+            <h2><span jhiTranslate="defterTakipApp.personelOdeme.detail.title">Personel Odeme</span> {{personelOdeme.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.personelOdeme.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{personelOdeme.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelOdeme.miktar">Miktar</span></dt>
+                <dd>
+                    <span>{{personelOdeme.miktar}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelOdeme.turu">Turu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.OdemeTuru.' + personelOdeme.turu}}">{{personelOdeme.turu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelOdeme.yontem">Yontem</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.OdemeYontemi.' + personelOdeme.yontem}}">{{personelOdeme.yontem}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelOdeme.personel">Personel</span></dt>
+                <dd>
+                    <div *ngIf="personelOdeme.personel">
+                        <a [routerLink]="['/personel', personelOdeme.personel?.id, 'view']">{{personelOdeme.personel?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/personel-odeme', personelOdeme.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

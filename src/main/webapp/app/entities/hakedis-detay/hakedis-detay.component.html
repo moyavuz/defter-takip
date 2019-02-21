@@ -1,0 +1,66 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.hakedisDetay.home.title">Hakedis Detays</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-hakedis-detay" [routerLink]="['/hakedis-detay/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.hakedisDetay.home.createLabel">
+            Create new Hakedis Detay
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="hakedisDetays">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="miktar"><span jhiTranslate="defterTakipApp.hakedisDetay.miktar">Miktar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="hakedis.id"><span jhiTranslate="defterTakipApp.hakedisDetay.hakedis">Hakedis</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="poz.ad"><span jhiTranslate="defterTakipApp.hakedisDetay.poz">Poz</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let hakedisDetay of hakedisDetays ;trackBy: trackId">
+                <td><a [routerLink]="['/hakedis-detay', hakedisDetay.id, 'view' ]">{{hakedisDetay.id}}</a></td>
+                <td>{{hakedisDetay.miktar}}</td>
+                <td>
+                    <div *ngIf="hakedisDetay.hakedis">
+                        <a [routerLink]="['../hakedis', hakedisDetay.hakedis?.id, 'view' ]" >{{hakedisDetay.hakedis?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="hakedisDetay.poz">
+                        <a [routerLink]="['../poz', hakedisDetay.poz?.id, 'view' ]" >{{hakedisDetay.poz?.ad}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/hakedis-detay', hakedisDetay.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/hakedis-detay', hakedisDetay.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'hakedis-detay', { outlets: { popup: hakedisDetay.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

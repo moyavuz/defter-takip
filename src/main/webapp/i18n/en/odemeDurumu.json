@@ -1,0 +1,13 @@
+{
+    "defterTakipApp": {
+        "OdemeDurumu": {
+            "null": "",
+            "BEKLIYOR": "BEKLIYOR",
+            "HAZIR": "HAZIR",
+            "HAKEDISI_YAPILDI": "HAKEDISI_YAPILDI",
+            "ODEME_BEKLIYOR": "ODEME_BEKLIYOR",
+            "ODEME_ALINDI": "ODEME_ALINDI",
+            "TAMAMLANDI": "TAMAMLANDI"
+        }
+    }
+}

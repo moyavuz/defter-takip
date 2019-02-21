@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="stokTakip">
+            <h2><span jhiTranslate="defterTakipApp.stokTakip.detail.title">Stok Takip</span> {{stokTakip.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.stokTakip.miktar">Miktar</span></dt>
+                <dd>
+                    <span>{{stokTakip.miktar}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.stokTakip.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{stokTakip.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.stokTakip.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{stokTakip.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.stokTakip.hareketTuru">Hareket Turu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.StokHareketTuru.' + stokTakip.hareketTuru}}">{{stokTakip.hareketTuru}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.stokTakip.ekip">Ekip</span></dt>
+                <dd>
+                    <div *ngIf="stokTakip.ekip">
+                        <a [routerLink]="['/ekip', stokTakip.ekip?.id, 'view']">{{stokTakip.ekip?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.stokTakip.malzeme">Malzeme</span></dt>
+                <dd>
+                    <div *ngIf="stokTakip.malzeme">
+                        <a [routerLink]="['/malzeme', stokTakip.malzeme?.id, 'view']">{{stokTakip.malzeme?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.stokTakip.depo">Depo</span></dt>
+                <dd>
+                    <div *ngIf="stokTakip.depo">
+                        <a [routerLink]="['/depo', stokTakip.depo?.id, 'view']">{{stokTakip.depo?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/stok-takip', stokTakip.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

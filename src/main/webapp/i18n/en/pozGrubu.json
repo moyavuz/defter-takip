@@ -1,0 +1,24 @@
+{
+    "defterTakipApp": {
+        "pozGrubu": {
+            "home": {
+                "title": "Poz Grubus",
+                "createLabel": "Create a new Poz Grubu",
+                "createOrEditLabel": "Create or edit a Poz Grubu"
+            },
+            "created": "A new Poz Grubu is created with identifier {{ param }}",
+            "updated": "A Poz Grubu is updated with identifier {{ param }}",
+            "deleted": "A Poz Grubu is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Poz Grubu {{ id }}?"
+            },
+            "detail": {
+                "title": "Poz Grubu"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama",
+            "kisaltma": "Kisaltma",
+            "pozListesi": "Poz Listesi"
+        }
+    }
+}

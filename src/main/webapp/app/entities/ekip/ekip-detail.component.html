@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="ekip">
+            <h2><span jhiTranslate="defterTakipApp.ekip.detail.title">Ekip</span> {{ekip.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.ekip.ad">Ad</span></dt>
+                <dd>
+                    <span>{{ekip.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.ekip.telefon">Telefon</span></dt>
+                <dd>
+                    <span>{{ekip.telefon}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.ekip.eposta">Eposta</span></dt>
+                <dd>
+                    <span>{{ekip.eposta}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.ekip.turu">Turu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.PersonelTuru.' + ekip.turu}}">{{ekip.turu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.ekip.ekipSorumlu">Ekip Sorumlu</span></dt>
+                <dd>
+                    <div *ngIf="ekip.ekipSorumlu">
+                        <a [routerLink]="['/personel', ekip.ekipSorumlu?.id, 'view']">{{ekip.ekipSorumlu?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.ekip.mudurluk">Mudurluk</span></dt>
+                <dd>
+                    <div *ngIf="ekip.mudurluk">
+                        <a [routerLink]="['/mudurluk', ekip.mudurluk?.id, 'view']">{{ekip.mudurluk?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.ekip.ekipPersonel">Ekip Personel</span></dt>
+                <dd>
+                    <span *ngFor="let ekipPersonel of ekip.ekipPersonels; let last = last">
+                        <a [routerLink]="['/personel', ekipPersonel?.id, 'view' ]">{{ekipPersonel.ad}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/ekip', ekip.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

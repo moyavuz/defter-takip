@@ -1,0 +1,12 @@
+{
+    "defterTakipApp": {
+        "IzinTuru": {
+            "null": "",
+            "YILLIK_IZIN": "YILLIK_IZIN",
+            "UCRETSIZ_IZIN": "UCRETSIZ_IZIN",
+            "SAGLIK_RAPORLU": "SAGLIK_RAPORLU",
+            "EVLILIK_IZNI": "EVLILIK_IZNI",
+            "DOGUM_IZNI": "DOGUM_IZNI"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "defterTakipApp": {
+        "OdemeTuru": {
+            "null": "",
+            "MAAS": "MAAS",
+            "AVANS": "AVANS",
+            "HIBE": "HIBE",
+            "DIGER": "DIGER"
+        }
+    }
+}

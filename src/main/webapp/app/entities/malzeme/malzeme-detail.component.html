@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="malzeme">
+            <h2><span jhiTranslate="defterTakipApp.malzeme.detail.title">Malzeme</span> {{malzeme.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.malzeme.ad">Ad</span></dt>
+                <dd>
+                    <span>{{malzeme.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.malzemeNo">Malzeme No</span></dt>
+                <dd>
+                    <span>{{malzeme.malzemeNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{malzeme.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.kisaltma">Kisaltma</span></dt>
+                <dd>
+                    <span>{{malzeme.kisaltma}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.tenzilatsizFiyat">Tenzilatsiz Fiyat</span></dt>
+                <dd>
+                    <span>{{malzeme.tenzilatsizFiyat}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.tenzilatliFiyat">Tenzilatli Fiyat</span></dt>
+                <dd>
+                    <span>{{malzeme.tenzilatliFiyat}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.taseronFiyat">Taseron Fiyat</span></dt>
+                <dd>
+                    <span>{{malzeme.taseronFiyat}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.paraBirimi">Para Birimi</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.ParaBirimi.' + malzeme.paraBirimi}}">{{malzeme.paraBirimi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.birim">Birim</span></dt>
+                <dd>
+                    <div *ngIf="malzeme.birim">
+                        <a [routerLink]="['/birim', malzeme.birim?.id, 'view']">{{malzeme.birim?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.malzeme.depo">Depo</span></dt>
+                <dd>
+                    <div *ngIf="malzeme.depo">
+                        <a [routerLink]="['/depo', malzeme.depo?.id, 'view']">{{malzeme.depo?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/malzeme', malzeme.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

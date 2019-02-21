@@ -1,0 +1,30 @@
+{
+    "name": "Model",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "marka",
+            "otherEntityName": "marka",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "model"
+        }
+    ],
+    "changelogDate": "20190221093345",
+    "entityTableName": "model",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
