@@ -20,8 +20,9 @@ export class HakedisDetayUpdateComponent implements OnInit {
     isSaving: boolean;
 
     hakedis: IHakedis[];
-
+    hakedisOptions: any[];
     pozs: IPoz[];
+    pozOptions: any[];
 
     constructor(
         protected jhiAlertService: JhiAlertService,
@@ -50,6 +51,14 @@ export class HakedisDetayUpdateComponent implements OnInit {
                 map((response: HttpResponse<IPoz[]>) => response.body)
             )
             .subscribe((res: IPoz[]) => (this.pozs = res), (res: HttpErrorResponse) => this.onError(res.message));
+    }
+
+    searchPoz(event) {
+        this.pozOptions = this.pozs.filter(poz => poz.ad.toLocaleUpperCase().includes(event.query.toLocaleUpperCase()));
+    }
+
+    searchHakedis(event) {
+        this.hakedisOptions = this.hakedis.filter(is => is.ad.toLocaleUpperCase().includes(event.query.toLocaleUpperCase()));
     }
 
     previousState() {

@@ -27,10 +27,13 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="defterTakipApp.hakedisDetay.hakedis" for="field_hakedis">Hakedis</label>
-                    <select class="form-control" id="field_hakedis" name="hakedis" [(ngModel)]="hakedisDetay.hakedis"  required>
+
+                    <p-autoComplete  id="field_hakedis" name="hakedis" [(ngModel)]="hakedisDetay.hakedis" [suggestions]="hakedisOptions" (completeMethod)="searchHakedis($event)" field="ad" placeholder="Hakedis"></p-autoComplete>
+
+                   <!-- <select class="form-control" id="field_hakedis" name="hakedis" [(ngModel)]="hakedisDetay.hakedis"  required>
                         <option *ngIf="!editForm.value.hakedis" [ngValue]="null" selected></option>
                         <option [ngValue]="hakedisOption.id === hakedisDetay.hakedis?.id ? hakedisDetay.hakedis : hakedisOption" *ngFor="let hakedisOption of hakedis; trackBy: trackHakedisById">{{hakedisOption.id}}</option>
-                    </select>
+                    </select> -->
                 </div>
                 <div [hidden]="!(editForm.controls.hakedis?.dirty && editForm.controls.hakedis?.invalid)">
                     <small class="form-text text-danger"
@@ -40,10 +43,13 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="defterTakipApp.hakedisDetay.poz" for="field_poz">Poz</label>
-                    <select class="form-control" id="field_poz" name="poz" [(ngModel)]="hakedisDetay.poz"  required>
+
+                    <p-autoComplete  id="field_poz" name="poz" [(ngModel)]="hakedisDetay.poz" [suggestions]="pozOptions" (completeMethod)="searchPoz($event)" field="ad" placeholder="Poz"></p-autoComplete>
+
+                    <!--<select class="form-control" id="field_poz" name="poz" [(ngModel)]="hakedisDetay.poz"  required>
                         <option *ngIf="!editForm.value.poz" [ngValue]="null" selected></option>
                         <option [ngValue]="pozOption.id === hakedisDetay.poz?.id ? hakedisDetay.poz : pozOption" *ngFor="let pozOption of pozs; trackBy: trackPozById">{{pozOption.ad}}</option>
-                    </select>
+                    </select>-->
                 </div>
                 <div [hidden]="!(editForm.controls.poz?.dirty && editForm.controls.poz?.invalid)">
                     <small class="form-text text-danger"
