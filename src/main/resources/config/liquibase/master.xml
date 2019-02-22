@@ -34,6 +34,7 @@
     <include file="config/liquibase/changelog/20190221095643_added_entity_PersonelArac.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190221095644_added_entity_PersonelIzin.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190221095645_added_entity_PersonelOdeme.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190222115403_added_entity_EntityAuditEvent.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20190221095618_added_entity_constraints_Personel.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190221095619_added_entity_constraints_Ekip.xml" relativeToChangelogFile="false"/>

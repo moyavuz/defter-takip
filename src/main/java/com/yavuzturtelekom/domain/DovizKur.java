@@ -18,7 +18,7 @@ import com.yavuzturtelekom.domain.enumeration.ParaBirimi;
 @Entity
 @Table(name = "doviz_kur")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class DovizKur implements Serializable {
+public class DovizKur extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

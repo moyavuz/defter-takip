@@ -80,6 +80,7 @@ public class CacheConfiguration {
             cm.createCache(com.yavuzturtelekom.domain.PersonelArac.class.getName(), jcacheConfiguration);
             cm.createCache(com.yavuzturtelekom.domain.PersonelIzin.class.getName(), jcacheConfiguration);
             cm.createCache(com.yavuzturtelekom.domain.PersonelOdeme.class.getName(), jcacheConfiguration);
+            cm.createCache(com.yavuzturtelekom.domain.EntityAuditEvent.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

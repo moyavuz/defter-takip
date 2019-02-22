@@ -20,7 +20,7 @@ import com.yavuzturtelekom.domain.enumeration.IzinTuru;
 @Entity
 @Table(name = "personel_izin")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class PersonelIzin implements Serializable {
+public class PersonelIzin extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

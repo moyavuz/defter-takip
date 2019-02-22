@@ -1,4 +1,4 @@
-id;ad;aciklama
-1;Genel Müdür;Genel Müdür,Patron
-2;Şantiye Şefi;Şef, Sorumlu,Yönetici
-3;Elit Ekip;Elit Ekip
+id;ad;aciklama;created_by
+1;Genel Müdür;Genel Müdür,Patron;admin
+2;Şantiye Şefi;Şef, Sorumlu,Yönetici;admin
+3;Elit Ekip;Elit Ekip;admin

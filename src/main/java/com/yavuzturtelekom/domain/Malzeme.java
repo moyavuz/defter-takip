@@ -22,7 +22,7 @@ import com.yavuzturtelekom.domain.enumeration.ParaBirimi;
 @Entity
 @Table(name = "malzeme")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Malzeme implements Serializable {
+public class Malzeme extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

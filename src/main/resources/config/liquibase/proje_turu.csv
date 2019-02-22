@@ -1,12 +1,12 @@
-id;ad
-1;ARIZA
-2;AKTARMA
-3;DEPLASE
-4;FİDER
-5;MDU
-6;OBK
-7;BAKIM
-8;DATA
-9;REV
-10;ENERJİ
+id;ad;created_by
+1;ARIZA;admin
+2;AKTARMA;admin
+3;DEPLASE;admin
+4;FİDER;admin
+5;MDU;admin
+6;OBK;admin
+7;BAKIM;admin
+8;DATA;admin
+9;REV;admin
+10;ENERJİ;admin
 

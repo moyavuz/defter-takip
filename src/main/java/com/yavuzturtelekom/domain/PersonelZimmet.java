@@ -20,7 +20,7 @@ import com.yavuzturtelekom.domain.enumeration.ZimmetDurumu;
 @Entity
 @Table(name = "personel_zimmet")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class PersonelZimmet implements Serializable {
+public class PersonelZimmet extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

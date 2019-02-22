@@ -27,7 +27,7 @@ import com.yavuzturtelekom.domain.enumeration.OdemeDurumu;
 @Entity
 @Table(name = "hakedis")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Hakedis implements Serializable {
+public class Hakedis extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

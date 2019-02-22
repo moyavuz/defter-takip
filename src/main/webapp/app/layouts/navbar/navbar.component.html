@@ -277,6 +277,12 @@
                             <span jhiTranslate="global.menu.admin.apidocs">API</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="admin/entity-audit" routerLinkActive="active" (click)="collapseNavbar()">
+                            <fa-icon [icon]="list-alt" [fixedWidth]="true"></fa-icon>&nbsp;
+                            <span jhiTranslate="global.menu.admin.entity-audit">Entity Audit</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                 </ul>
             </li>

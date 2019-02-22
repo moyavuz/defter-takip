@@ -22,7 +22,7 @@ import com.yavuzturtelekom.domain.enumeration.OdemeYontemi;
 @Entity
 @Table(name = "personel_odeme")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class PersonelOdeme implements Serializable {
+public class PersonelOdeme extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
