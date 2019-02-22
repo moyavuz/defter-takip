@@ -7,7 +7,8 @@
     "styles": [
         "node_modules/primeicons/primeicons.css",
         "node_modules/primeng/resources/themes/nova-light/theme.css",
-        "node_modules/primeng/resources/primeng.min.css"
+        "node_modules/primeng/resources/primeng.min.css",
+        "node_modules/font-awesome/css/font-awesome.css"
     ],
     "cacheDirectories": [
         "node_modules"
@@ -27,8 +28,10 @@
         "@ng-bootstrap/ng-bootstrap": "4.0.1",
         "@ngx-translate/core": "11.0.1",
         "@ngx-translate/http-loader": "4.0.0",
+        "angular-font-awesome": "^3.1.2",
         "bootstrap": "4.2.1",
         "core-js": "2.6.3",
+        "font-awesome": "^4.7.0",
         "moment": "2.24.0",
         "ng-jhipster": "0.9.1",
         "ngx-cookie": "2.0.1",

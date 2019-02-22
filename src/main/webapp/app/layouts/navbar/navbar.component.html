@@ -28,27 +28,126 @@
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
                     <li>
-                        <a class="dropdown-item" routerLink="doviz-kur" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.dovizKur">Doviz Kur</span>
+                        <a class="dropdown-item" routerLink="arac" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="car" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.arac">Arac</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="personel" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <fa name="address-card" fixed="true" ></fa>
                             <span jhiTranslate="global.menu.entities.personel">Personel</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="ekip" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <fa name="users" fixed="true" ></fa>
                             <span jhiTranslate="global.menu.entities.ekip">Ekip</span>
                         </a>
                     </li>
                     <li>
+                        <a class="dropdown-item" routerLink="poz-grubu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="list" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.pozGrubu">Poz Grubu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="poz" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="tasks" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.poz">Poz</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" routerLink="proje" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="star" animation="spin" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.proje">Proje</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="hakedis" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="cog" animation="spin" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.hakedis">Hakedis</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="hakedis-detay" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="cogs" animation="spin" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.hakedisDetay">Hakedis Detay</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="dropdown-item" routerLink="stok-takip" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <fa name="stack-overflow" fixed="true" ></fa>
                             <span jhiTranslate="global.menu.entities.stokTakip">Stok Takip</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" routerLink="depo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="industry" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.depo">Depo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="malzeme-grubu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="object-group" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.malzemeGrubu">Malzeme Grubu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="malzeme" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="bandcamp" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.malzeme">Malzeme</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="eskalasyon" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="bank" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.eskalasyon">Eskalasyon</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" routerLink="personel-arac" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="id-card" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.personelArac">Personel Arac</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="personel-izin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="id-card-o" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.personelIzin">Personel Izin</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="personel-odeme" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="vcard" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.personelOdeme">Personel Odeme</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="personel-zimmet" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa name="id-card-o" fixed="true" ></fa>
+                            <span jhiTranslate="global.menu.entities.personelZimmet">Personel Zimmet</span>
+                        </a>
+                    </li>
+                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+                </ul>
+            </li>
+
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="tanimlamalar-menu">
+                    <span>
+                         <fa name="book" fixed="true" ></fa>
+                        <span jhiTranslate="global.menu.entities.tanimlamalar">Tanımlamalar</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="tanimalamalar-menu">
+                    <li>
+                        <a class="dropdown-item" routerLink="birim" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.birim">Birim</span>
                         </a>
                     </li>
                     <li>
@@ -57,18 +156,7 @@
                             <span jhiTranslate="global.menu.entities.unvan">Unvan</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="depo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.depo">Depo</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="birim" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.birim">Birim</span>
-                        </a>
-                    </li>
+
                     <li>
                         <a class="dropdown-item" routerLink="proje-turu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
@@ -85,30 +173,6 @@
                         <a class="dropdown-item" routerLink="zimmet-turu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.zimmetTuru">Zimmet Turu</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="malzeme-grubu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.malzemeGrubu">Malzeme Grubu</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="malzeme" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.malzeme">Malzeme</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="poz-grubu" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.pozGrubu">Poz Grubu</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="poz" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.poz">Poz</span>
                         </a>
                     </li>
                     <li>
@@ -142,21 +206,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="proje" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="doviz-kur" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.proje">Proje</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="hakedis" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.hakedis">Hakedis</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="hakedis-detay" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.hakedisDetay">Hakedis Detay</span>
+                            <span jhiTranslate="global.menu.entities.dovizKur">Doviz Kur</span>
                         </a>
                     </li>
                     <li>
@@ -165,45 +217,16 @@
                             <span jhiTranslate="global.menu.entities.eskalasyonTuru">Eskalasyon Turu</span>
                         </a>
                     </li>
+
                     <li>
-                        <a class="dropdown-item" routerLink="eskalasyon" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.eskalasyon">Eskalasyon</span>
-                        </a>
+
                     </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="personel-zimmet" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.personelZimmet">Personel Zimmet</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="arac" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.arac">Arac</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="personel-arac" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.personelArac">Personel Arac</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="personel-izin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.personelIzin">Personel Izin</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="personel-odeme" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.personelOdeme">Personel Odeme</span>
-                        </a>
-                    </li>
-                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+
+                    <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                 </ul>
             </li>
+
+
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>
