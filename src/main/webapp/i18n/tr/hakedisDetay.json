@@ -17,7 +17,9 @@
             },
             "miktar": "Miktar",
             "hakedis": "Hakedis",
-            "poz": "Poz"
+            "toplam": "Toplam Tutar",
+            "poz": "Poz",
+            "pozNo": "Poz No"
         }
     }
 }

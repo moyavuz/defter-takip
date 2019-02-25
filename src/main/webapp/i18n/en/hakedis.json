@@ -3,6 +3,7 @@
         "hakedis": {
             "home": {
                 "title": "Hakedis",
+                "titleTakip": "Hakedis Takip",
                 "createLabel": "Create a new Hakedis",
                 "createOrEditLabel": "Create or edit a Hakedis"
             },

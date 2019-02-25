@@ -1,6 +1,6 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="defterTakipApp.hakedis.home.title">Hakedis</span>
+        <span jhiTranslate="defterTakipApp.hakedis.home.titleTakip">Hakedis Takip</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-hakedis" [routerLink]="['/hakedis/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span  jhiTranslate="defterTakipApp.hakedis.home.createLabel">
@@ -23,11 +23,11 @@
                 <th jhiSortBy="turu.ad"><span jhiTranslate="defterTakipApp.hakedis.turu">Turu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="defterNo"><span jhiTranslate="defterTakipApp.hakedis.defterNo">Defter No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="cizimNo"><span jhiTranslate="defterTakipApp.hakedis.cizimNo">Cizim No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+
             <th jhiSortBy="onemDerecesi"><span jhiTranslate="defterTakipApp.hakedis.onemDerecesi">Onem Derecesi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="isDurumu"><span jhiTranslate="defterTakipApp.hakedis.isDurumu">Is Durumu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="odemeDurumu"><span jhiTranslate="defterTakipApp.hakedis.odemeDurumu">Odeme Durumu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="odemeNo"><span jhiTranslate="defterTakipApp.hakedis.odemeNo">Odeme No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="aciklama"><span jhiTranslate="defterTakipApp.hakedis.aciklama">Aciklama</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="resim"><span jhiTranslate="defterTakipApp.hakedis.resim">Resim</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
@@ -48,7 +48,6 @@
                         <a [routerLink]="['../ekip', hakedis.ekip?.id, 'view' ]" >{{hakedis.ekip?.ad}}</a>
                     </div>
                 </td>
-
                 <td>
                     <div *ngIf="hakedis.turu">
                         <a [routerLink]="['../hakedis-turu', hakedis.turu?.id, 'view' ]" >{{hakedis.turu?.ad}}</a>
@@ -60,7 +59,6 @@
                 <td jhiTranslate="{{'defterTakipApp.IsDurumu.' + hakedis.isDurumu}}">{{hakedis.isDurumu}}</td>
                 <td jhiTranslate="{{'defterTakipApp.OdemeDurumu.' + hakedis.odemeDurumu}}">{{hakedis.odemeDurumu}}</td>
                 <td>{{hakedis.odemeNo}}</td>
-                <td>{{hakedis.aciklama}}</td>
                 <td>
                     <a *ngIf="hakedis.resim" (click)="openFile(hakedis.resimContentType, hakedis.resim)">
                         <img [src]="'data:' + hakedis.resimContentType + ';base64,' + hakedis.resim" style="max-height: 30px;" alt="hakedis image"/>
@@ -68,10 +66,12 @@
                     <span *ngIf="hakedis.resim">{{hakedis.resimContentType}}, {{byteSize(hakedis.resim)}}</span>
                 </td>
 
+
+
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['/hakedis', hakedis.id, 'view' ]"
+                                [routerLink]="['/hakedis-takip', hakedis.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
@@ -83,7 +83,7 @@
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', 'hakedis', { outlets: { popup: hakedis.id + '/delete'} }]"
+                                [routerLink]="['/', 'hakedis-takip', { outlets: { popup: hakedis.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
