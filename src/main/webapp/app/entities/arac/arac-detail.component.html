@@ -1,0 +1,85 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="arac">
+            <h2><span jhiTranslate="defterTakipApp.arac.detail.title">Arac</span> {{arac.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.arac.ad">Ad</span></dt>
+                <dd>
+                    <span>{{arac.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{arac.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.detay">Detay</span></dt>
+                <dd>
+                    <span>{{arac.detay}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.modelYili">Model Yili</span></dt>
+                <dd>
+                    <span>{{arac.modelYili}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.yakitTuru">Yakit Turu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.YakitTuru.' + arac.yakitTuru}}">{{arac.yakitTuru}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{arac.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.muayeneTarih">Muayene Tarih</span></dt>
+                <dd>
+                    <span>{{arac.muayeneTarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.kaskoTarih">Kasko Tarih</span></dt>
+                <dd>
+                    <span>{{arac.kaskoTarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.sigortaTarih">Sigorta Tarih</span></dt>
+                <dd>
+                    <span>{{arac.sigortaTarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.bakimTarih">Bakim Tarih</span></dt>
+                <dd>
+                    <span>{{arac.bakimTarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.resim">Resim</span></dt>
+                <dd>
+                    <div *ngIf="arac.resim">
+                        <a (click)="openFile(arac.resimContentType, arac.resim)">
+                            <img [src]="'data:' + arac.resimContentType + ';base64,' + arac.resim" style="max-width: 100%;" alt="arac image"/>
+                        </a>
+                        {{arac.resimContentType}}, {{byteSize(arac.resim)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.dosya">Dosya</span></dt>
+                <dd>
+                    <div *ngIf="arac.dosya">
+                        <a (click)="openFile(arac.dosyaContentType, arac.dosya)" jhiTranslate="entity.action.open">open</a>
+                        {{arac.dosyaContentType}}, {{byteSize(arac.dosya)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.arac.model">Model</span></dt>
+                <dd>
+                    <div *ngIf="arac.model">
+                        <a [routerLink]="['/model', arac.model?.id, 'view']">{{arac.model?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/arac', arac.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

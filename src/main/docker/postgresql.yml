@@ -6,6 +6,6 @@ services:
         #     - ~/volumes/jhipster/DefterTakip/postgresql/:/var/lib/postgresql/data/
         environment:
             - POSTGRES_USER=DefterTakip
-            - POSTGRES_PASSWORD=
+            - POSTGRES_PASSWORD=ytt2019
         ports:
             - 5432:5432

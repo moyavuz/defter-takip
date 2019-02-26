@@ -1,0 +1,144 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-arac-heading" jhiTranslate="defterTakipApp.arac.home.createOrEditLabel">Create or edit a Arac</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!arac.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="arac.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.ad" for="field_ad">Ad</label>
+                    <input type="text" class="form-control" name="ad" id="field_ad"
+                        [(ngModel)]="arac.ad" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.aciklama" for="field_aciklama">Aciklama</label>
+                    <input type="text" class="form-control" name="aciklama" id="field_aciklama"
+                        [(ngModel)]="arac.aciklama" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.detay" for="field_detay">Detay</label>
+                    <textarea class="form-control" name="detay" id="field_detay"
+                        [(ngModel)]="arac.detay" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.modelYili" for="field_modelYili">Model Yili</label>
+                    <input type="number" class="form-control" name="modelYili" id="field_modelYili"
+                        [(ngModel)]="arac.modelYili" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.yakitTuru" for="field_yakitTuru">Yakit Turu</label>
+                    <select class="form-control" name="yakitTuru" [(ngModel)]="arac.yakitTuru" id="field_yakitTuru" >
+                        <option value="DIZEL">{{'defterTakipApp.YakitTuru.DIZEL' | translate}}</option>
+                        <option value="BENZIN">{{'defterTakipApp.YakitTuru.BENZIN' | translate}}</option>
+                        <option value="BENZIN_LPG">{{'defterTakipApp.YakitTuru.BENZIN_LPG' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.tarih" for="field_tarih">Tarih</label>
+                    <div class="input-group">
+                        <input id="field_tarih" type="text" class="form-control" name="tarih" ngbDatepicker  #tarihDp="ngbDatepicker" [(ngModel)]="arac.tarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="tarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.muayeneTarih" for="field_muayeneTarih">Muayene Tarih</label>
+                    <div class="input-group">
+                        <input id="field_muayeneTarih" type="text" class="form-control" name="muayeneTarih" ngbDatepicker  #muayeneTarihDp="ngbDatepicker" [(ngModel)]="arac.muayeneTarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="muayeneTarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.kaskoTarih" for="field_kaskoTarih">Kasko Tarih</label>
+                    <div class="input-group">
+                        <input id="field_kaskoTarih" type="text" class="form-control" name="kaskoTarih" ngbDatepicker  #kaskoTarihDp="ngbDatepicker" [(ngModel)]="arac.kaskoTarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="kaskoTarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.sigortaTarih" for="field_sigortaTarih">Sigorta Tarih</label>
+                    <div class="input-group">
+                        <input id="field_sigortaTarih" type="text" class="form-control" name="sigortaTarih" ngbDatepicker  #sigortaTarihDp="ngbDatepicker" [(ngModel)]="arac.sigortaTarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="sigortaTarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.bakimTarih" for="field_bakimTarih">Bakim Tarih</label>
+                    <div class="input-group">
+                        <input id="field_bakimTarih" type="text" class="form-control" name="bakimTarih" ngbDatepicker  #bakimTarihDp="ngbDatepicker" [(ngModel)]="arac.bakimTarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="bakimTarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.resim" for="field_resim">Resim</label>
+                    <div>
+                        <img [src]="'data:' + arac.resimContentType + ';base64,' + arac.resim" style="max-height: 100px;" *ngIf="arac.resim" alt="arac image"/>
+                        <div *ngIf="arac.resim" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{arac.resimContentType}}, {{byteSize(arac.resim)}}</span>
+                            <button type="button" (click)="clearInputImage('resim', 'resimContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_resim" (change)="setFileData($event, arac, 'resim', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="resim" id="field_resim"
+                        [(ngModel)]="arac.resim" />
+                    <input type="hidden" class="form-control" name="resimContentType" id="field_resimContentType"
+                        [(ngModel)]="arac.resimContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.dosya" for="field_dosya">Dosya</label>
+                    <div>
+                        <div *ngIf="arac.dosya" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(arac.dosyaContentType, arac.dosya)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{arac.dosyaContentType}}, {{byteSize(arac.dosya)}}</span>
+                            <button type="button" (click)="arac.dosya=null;arac.dosyaContentType=null;"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_dosya" (change)="setFileData($event, arac, 'dosya', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="dosya" id="field_dosya"
+                        [(ngModel)]="arac.dosya" />
+                    <input type="hidden" class="form-control" name="dosyaContentType" id="field_dosyaContentType"
+                        [(ngModel)]="arac.dosyaContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.arac.model" for="field_model">Model</label>
+                    <select class="form-control" id="field_model" name="model" [(ngModel)]="arac.model" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="modelOption.id === arac.model?.id ? arac.model : modelOption" *ngFor="let modelOption of models; trackBy: trackModelById">{{modelOption.ad}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

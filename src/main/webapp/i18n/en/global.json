@@ -1,13 +1,44 @@
 {
     "global": {
-        "title": "DefterTakip",
-        "browsehappy":
-            "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "title": "Yavuztur Telekom ERP",
+        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
-                "main": "Entities",
+                "main": "Hakediş Yönetimi",
+                "tanimlamalar": "Definitions",
+                "dovizKur": "Doviz Kur",
+                "personel": "Personel",
+                "personelYonetimi": "Personel Yönetimi",
+                "ekip": "Ekip",
+                "stokTakip": "Stok Takip",
+                "stokYonetimi": "Stok Yönetimi",
+                "unvan": "Unvan",
+                "depo": "Depo",
+                "birim": "Birim",
+                "projeTuru": "Proje Turu",
+                "hakedisTuru": "Hakedis Turu",
+                "zimmetTuru": "Zimmet Turu",
+                "malzemeGrubu": "Malzeme Grubu",
+                "malzeme": "Malzeme",
+                "pozGrubu": "Poz Grubu",
+                "poz": "Poz",
+                "il": "Il",
+                "mudurluk": "Mudurluk",
+                "santral": "Santral",
+                "marka": "Marka",
+                "model": "Model",
+                "proje": "Proje",
+                "hakedis": "Hakedis",
+                "hakedisDetay": "Hakedis Detay",
+                "eskalasyonTuru": "Eskalasyon Turu",
+                "eskalasyon": "Eskalasyon",
+                "personelZimmet": "Personel Zimmet",
+                "arac": "Arac",
+                "personelArac": "Personel Arac",
+                "personelIzin": "Personel Izin",
+                "personelOdeme": "Personel Odeme",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -30,6 +61,7 @@
                 "audits": "Audits",
                 "apidocs": "API",
                 "database": "Database",
+                "entity-audit": "Entity Audit",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
             "language": "Language"
@@ -51,8 +83,7 @@
                 "authenticated": {
                     "prefix": "If you want to ",
                     "link": "sign in",
-                    "suffix":
-                        ", you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
+                    "suffix": ", you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
                 },
                 "register": {
                     "noaccount": "You don't have an account yet?",
@@ -134,5 +165,5 @@
         "idexists": "A new {{ entityName }} cannot already have an ID",
         "idnull": "Invalid ID"
     },
-    "footer": "This is your footer"
+    "footer": "© 2019 Mehmet Özkan YAVUZ"
 }

@@ -1,0 +1,23 @@
+{
+    "defterTakipApp": {
+        "dovizKur": {
+            "home": {
+                "title": "Doviz Kurs",
+                "createLabel": "Create a new Doviz Kur",
+                "createOrEditLabel": "Create or edit a Doviz Kur"
+            },
+            "created": "A new Doviz Kur is created with identifier {{ param }}",
+            "updated": "A Doviz Kur is updated with identifier {{ param }}",
+            "deleted": "A Doviz Kur is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Doviz Kur {{ id }}?"
+            },
+            "detail": {
+                "title": "Doviz Kur"
+            },
+            "paraBirimi": "Para Birimi",
+            "deger": "Deger",
+            "tarih": "Tarih"
+        }
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "name": "Depo",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "adres",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "turu",
+            "fieldType": "DepoTuru",
+            "fieldValues": "MERKEZ_DEPO,MUDURLUK_DEPO"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "stokTakip",
+            "otherEntityName": "stokTakip",
+            "otherEntityRelationshipName": "depo"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "sorumlu",
+            "otherEntityName": "personel",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "depo"
+        }
+    ],
+    "changelogDate": "20190221095622",
+    "entityTableName": "depo",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "enableEntityAudit": true
+}

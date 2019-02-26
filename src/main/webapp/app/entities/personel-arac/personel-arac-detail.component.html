@@ -1,0 +1,59 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="personelArac">
+            <h2><span jhiTranslate="defterTakipApp.personelArac.detail.title">Personel Arac</span> {{personelArac.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.personelArac.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{personelArac.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelArac.detay">Detay</span></dt>
+                <dd>
+                    <span>{{personelArac.detay}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelArac.resim">Resim</span></dt>
+                <dd>
+                    <div *ngIf="personelArac.resim">
+                        <a (click)="openFile(personelArac.resimContentType, personelArac.resim)">
+                            <img [src]="'data:' + personelArac.resimContentType + ';base64,' + personelArac.resim" style="max-width: 100%;" alt="personelArac image"/>
+                        </a>
+                        {{personelArac.resimContentType}}, {{byteSize(personelArac.resim)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelArac.dosya">Dosya</span></dt>
+                <dd>
+                    <div *ngIf="personelArac.dosya">
+                        <a (click)="openFile(personelArac.dosyaContentType, personelArac.dosya)" jhiTranslate="entity.action.open">open</a>
+                        {{personelArac.dosyaContentType}}, {{byteSize(personelArac.dosya)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelArac.arac">Arac</span></dt>
+                <dd>
+                    <div *ngIf="personelArac.arac">
+                        <a [routerLink]="['/arac', personelArac.arac?.id, 'view']">{{personelArac.arac?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personelArac.personel">Personel</span></dt>
+                <dd>
+                    <div *ngIf="personelArac.personel">
+                        <a [routerLink]="['/personel', personelArac.personel?.id, 'view']">{{personelArac.personel?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/personel-arac', personelArac.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

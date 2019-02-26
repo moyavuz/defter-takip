@@ -1,0 +1,25 @@
+{
+    "defterTakipApp": {
+        "personelOdeme": {
+            "home": {
+                "title": "Personel Odemes",
+                "createLabel": "Create a new Personel Odeme",
+                "createOrEditLabel": "Create or edit a Personel Odeme"
+            },
+            "created": "A new Personel Odeme is created with identifier {{ param }}",
+            "updated": "A Personel Odeme is updated with identifier {{ param }}",
+            "deleted": "A Personel Odeme is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Personel Odeme {{ id }}?"
+            },
+            "detail": {
+                "title": "Personel Odeme"
+            },
+            "tarih": "Tarih",
+            "miktar": "Miktar",
+            "turu": "Turu",
+            "yontem": "Yontem",
+            "personel": "Personel"
+        }
+    }
+}

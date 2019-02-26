@@ -1,0 +1,40 @@
+{
+    "name": "HakedisDetay",
+    "fields": [
+        {
+            "fieldName": "miktar",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "hakedis",
+            "otherEntityName": "hakedis",
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "hakedis"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "poz",
+            "otherEntityName": "poz",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "poz"
+        }
+    ],
+    "changelogDate": "20190221095638",
+    "entityTableName": "hakedis_detay",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "enableEntityAudit": true
+}

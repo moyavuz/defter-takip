@@ -87,6 +87,14 @@ Generic styles
 
 .footer {
     border-top: 1px solid rgba(0, 0, 0, 0.125);
+    color: #ccc;
+}
+
+#footer {
+    float: left;
+}
+#version {
+    float: right;
 }
 
 .hand,
@@ -225,3 +233,11 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
+
+/*PrimeNg developments*/
+.ui-autocomplete {
+    width: 100%;
+}
+.ui-autocomplete-input {
+    width: 100%;
+}

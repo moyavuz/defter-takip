@@ -1,19 +1,19 @@
 {
     "home": {
-        "title": "Merhaba, Java Hipster!",
+        "title": "Hoşgeldiniz!",
         "subtitle": "Burası Ana Sayfanız",
         "logged": {
             "message": "\"{{username}}\" olarak giriş yaptınız."
         },
-        "question": "JHipster hakkında sorularınız için:",
+        "question": "Yavuztur Telekom ERP uygulaması hakkında sorularınız için:",
         "link": {
-            "homepage": "JHipster ana sayfa",
-            "stackoverflow": "Stack Overflow'da JHipster",
-            "bugtracker": "JHipster hata yönetimi",
-            "chat": "JHipster genel sohbet odası",
-            "follow": "Twitter'da @java_hipster adresinden ulaşabilirsiniz"
+            "homepage": "Yavuztur Telekom ERP Uygulaması Anasayfa",
+            "stackoverflow": "Stack Overflow'da Yavuztur Telekom ERP ",
+            "bugtracker": "Yavuztur Telekom ERP hata yönetimi",
+            "chat": "Yavuztur Telekom genel sohbet odası",
+            "follow": "Twitter'da @yavuztur_telekom adresinden ulaşabilirsiniz"
         },
-        "like": "JHipster'ı beğendiysenizi yıldız vermeyi unutmayın",
+        "like": "Yavuztur Telekom ERP'ı beğendiysenizi yıldız vermeyi unutmayın",
         "github": "GitHub"
     }
 }

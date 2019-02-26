@@ -1,0 +1,5 @@
+id;ad;aciklama;kisaltma;carpan;created_by
+1;Adet;Tane Adet;ad;1;admin
+2;Metre;Metre;mt;1;admin
+3;Kilometre;1000 metre;km;1000;admin
+4;Kutu;Kapali Kutu; kut.;1;admin

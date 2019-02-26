@@ -1,0 +1,25 @@
+{
+    "defterTakipApp": {
+        "hakedisDetay": {
+            "home": {
+                "title": "Hakedis Detays",
+                "createLabel": "Create a new Hakedis Detay",
+                "createOrEditLabel": "Create or edit a Hakedis Detay"
+            },
+            "created": "A new Hakedis Detay is created with identifier {{ param }}",
+            "updated": "A Hakedis Detay is updated with identifier {{ param }}",
+            "deleted": "A Hakedis Detay is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Hakedis Detay {{ id }}?"
+            },
+            "detail": {
+                "title": "Hakedis Detay"
+            },
+            "miktar": "Miktar",
+            "toplam": "Toplam Tutar",
+            "hakedis": "Hakedis",
+            "poz": "Poz",
+            "pozNo": "Poz No"
+        }
+    }
+}

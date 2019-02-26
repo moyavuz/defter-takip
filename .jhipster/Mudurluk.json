@@ -1,0 +1,44 @@
+{
+    "name": "Mudurluk",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "adres",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "mudurlukSorumlu",
+            "otherEntityName": "personel",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "mudurluk"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "il",
+            "otherEntityName": "il",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "mudurluk"
+        }
+    ],
+    "changelogDate": "20190221095632",
+    "entityTableName": "mudurluk",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "enableEntityAudit": true
+}

@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="depo">
+            <h2><span jhiTranslate="defterTakipApp.depo.detail.title">Depo</span> {{depo.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.depo.ad">Ad</span></dt>
+                <dd>
+                    <span>{{depo.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.depo.adres">Adres</span></dt>
+                <dd>
+                    <span>{{depo.adres}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.depo.turu">Turu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.DepoTuru.' + depo.turu}}">{{depo.turu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.depo.sorumlu">Sorumlu</span></dt>
+                <dd>
+                    <div *ngIf="depo.sorumlu">
+                        <a [routerLink]="['/personel', depo.sorumlu?.id, 'view']">{{depo.sorumlu?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/depo', depo.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

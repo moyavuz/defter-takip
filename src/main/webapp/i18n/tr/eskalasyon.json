@@ -1,0 +1,23 @@
+{
+    "defterTakipApp": {
+        "eskalasyon": {
+            "home": {
+                "title": "Eskalasyons",
+                "createLabel": "Create a new Eskalasyon",
+                "createOrEditLabel": "Create or edit a Eskalasyon"
+            },
+            "created": "A new Eskalasyon is created with identifier {{ param }}",
+            "updated": "A Eskalasyon is updated with identifier {{ param }}",
+            "deleted": "A Eskalasyon is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Eskalasyon {{ id }}?"
+            },
+            "detail": {
+                "title": "Eskalasyon"
+            },
+            "deger": "Deger",
+            "tarih": "Tarih",
+            "turu": "Turu"
+        }
+    }
+}

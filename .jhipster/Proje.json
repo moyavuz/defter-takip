@@ -1,0 +1,85 @@
+{
+    "name": "Proje",
+    "fields": [
+        {
+            "fieldName": "ad",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "aciklama",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "protokolNo",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "durumu",
+            "fieldType": "IsDurumu",
+            "fieldValues": "BEKLIYOR,BEKLIYOR_MALZEME,BEKLIYOR_RUHSAT,CALISILIYOR,TAMAMLANDI,TAMAMLANDI_EKSIK_VAR"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "detay",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "resim",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "dosya",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "baslamaTarihi",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "bitisTarihi",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "hakedis",
+            "otherEntityName": "hakedis",
+            "otherEntityRelationshipName": "proje"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "turu",
+            "otherEntityName": "projeTuru",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "proje"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "mudurluk",
+            "otherEntityName": "mudurluk",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "proje"
+        }
+    ],
+    "changelogDate": "20190221095636",
+    "entityTableName": "proje",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "enableEntityAudit": true
+}

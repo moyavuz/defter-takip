@@ -1,0 +1,119 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="personel">
+            <h2><span jhiTranslate="defterTakipApp.personel.detail.title">Personel</span> {{personel.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.personel.tckimlikno">Tckimlikno</span></dt>
+                <dd>
+                    <span>{{personel.tckimlikno}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.ad">Ad</span></dt>
+                <dd>
+                    <span>{{personel.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.cepTelefon">Cep Telefon</span></dt>
+                <dd>
+                    <span>{{personel.cepTelefon}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.sabitTelefon">Sabit Telefon</span></dt>
+                <dd>
+                    <span>{{personel.sabitTelefon}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.eposta">Eposta</span></dt>
+                <dd>
+                    <span>{{personel.eposta}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.cinsiyet">Cinsiyet</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.Cinsiyet.' + personel.cinsiyet}}">{{personel.cinsiyet}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.egitimDurumu">Egitim Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.EgitimDurumu.' + personel.egitimDurumu}}">{{personel.egitimDurumu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.kanGrubu">Kan Grubu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.KanGrubu.' + personel.kanGrubu}}">{{personel.kanGrubu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.personelTuru">Personel Turu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.PersonelTuru.' + personel.personelTuru}}">{{personel.personelTuru}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.ucret">Ucret</span></dt>
+                <dd>
+                    <span>{{personel.ucret}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.iban">Iban</span></dt>
+                <dd>
+                    <span>{{personel.iban}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.medeniHali">Medeni Hali</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.MedeniHali.' + personel.medeniHali}}">{{personel.medeniHali}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.dogumTarihi">Dogum Tarihi</span></dt>
+                <dd>
+                    <span>{{personel.dogumTarihi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.girisTarihi">Giris Tarihi</span></dt>
+                <dd>
+                    <span>{{personel.girisTarihi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.izinHakedis">Izin Hakedis</span></dt>
+                <dd>
+                    <span>{{personel.izinHakedis}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.cikisTarihi">Cikis Tarihi</span></dt>
+                <dd>
+                    <span>{{personel.cikisTarihi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.resim">Resim</span></dt>
+                <dd>
+                    <div *ngIf="personel.resim">
+                        <a (click)="openFile(personel.resimContentType, personel.resim)">
+                            <img [src]="'data:' + personel.resimContentType + ';base64,' + personel.resim" style="max-width: 100%;" alt="personel image"/>
+                        </a>
+                        {{personel.resimContentType}}, {{byteSize(personel.resim)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.dosya">Dosya</span></dt>
+                <dd>
+                    <div *ngIf="personel.dosya">
+                        <a (click)="openFile(personel.dosyaContentType, personel.dosya)" jhiTranslate="entity.action.open">open</a>
+                        {{personel.dosyaContentType}}, {{byteSize(personel.dosya)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.not">Not</span></dt>
+                <dd>
+                    <span>{{personel.not}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.yonetici">Yonetici</span></dt>
+                <dd>
+                    <div *ngIf="personel.yonetici">
+                        <a [routerLink]="['/personel', personel.yonetici?.id, 'view']">{{personel.yonetici?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.personel.unvan">Unvan</span></dt>
+                <dd>
+                    <div *ngIf="personel.unvan">
+                        <a [routerLink]="['/unvan', personel.unvan?.id, 'view']">{{personel.unvan?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/personel', personel.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

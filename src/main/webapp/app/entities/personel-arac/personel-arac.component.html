@@ -1,0 +1,80 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="defterTakipApp.personelArac.home.title">Personel Aracs</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-personel-arac" [routerLink]="['/personel-arac/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="defterTakipApp.personelArac.home.createLabel">
+            Create new Personel Arac
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="personelAracs">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelArac.tarih">Tarih</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelArac.detay">Detay</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelArac.resim">Resim</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelArac.dosya">Dosya</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelArac.arac">Arac</span></th>
+            <th><span jhiTranslate="defterTakipApp.personelArac.personel">Personel</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let personelArac of personelAracs ;trackBy: trackId">
+                <td><a [routerLink]="['/personel-arac', personelArac.id, 'view' ]">{{personelArac.id}}</a></td>
+                <td>{{personelArac.tarih | date:'mediumDate'}}</td>
+                <td>{{personelArac.detay}}</td>
+                <td>
+                    <a *ngIf="personelArac.resim" (click)="openFile(personelArac.resimContentType, personelArac.resim)">
+                        <img [src]="'data:' + personelArac.resimContentType + ';base64,' + personelArac.resim" style="max-height: 30px;" alt="personelArac image"/>
+                    </a>
+                    <span *ngIf="personelArac.resim">{{personelArac.resimContentType}}, {{byteSize(personelArac.resim)}}</span>
+                </td>
+                <td>
+                    <a *ngIf="personelArac.dosya" (click)="openFile(personelArac.dosyaContentType, personelArac.dosya)" jhiTranslate="entity.action.open">open</a>
+                    <span *ngIf="personelArac.dosya">{{personelArac.dosyaContentType}}, {{byteSize(personelArac.dosya)}}</span>
+                </td>
+                <td>
+                    <div *ngIf="personelArac.arac">
+                        <a [routerLink]="['../arac', personelArac.arac?.id, 'view' ]" >{{personelArac.arac?.ad}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="personelArac.personel">
+                        <a [routerLink]="['../personel', personelArac.personel?.id, 'view' ]" >{{personelArac.personel?.ad}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/personel-arac', personelArac.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/personel-arac', personelArac.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'personel-arac', { outlets: { popup: personelArac.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

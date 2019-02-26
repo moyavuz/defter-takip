@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-personel-odeme-heading" jhiTranslate="defterTakipApp.personelOdeme.home.createOrEditLabel">Create or edit a Personel Odeme</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!personelOdeme.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="personelOdeme.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelOdeme.tarih" for="field_tarih">Tarih</label>
+                    <div class="input-group">
+                        <input id="field_tarih" type="text" class="form-control" name="tarih" ngbDatepicker  #tarihDp="ngbDatepicker" [(ngModel)]="personelOdeme.tarih"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="tarihDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelOdeme.miktar" for="field_miktar">Miktar</label>
+                    <input type="number" class="form-control" name="miktar" id="field_miktar"
+                        [(ngModel)]="personelOdeme.miktar" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelOdeme.turu" for="field_turu">Turu</label>
+                    <select class="form-control" name="turu" [(ngModel)]="personelOdeme.turu" id="field_turu" >
+                        <option value="MAAS">{{'defterTakipApp.OdemeTuru.MAAS' | translate}}</option>
+                        <option value="AVANS">{{'defterTakipApp.OdemeTuru.AVANS' | translate}}</option>
+                        <option value="HIBE">{{'defterTakipApp.OdemeTuru.HIBE' | translate}}</option>
+                        <option value="DIGER">{{'defterTakipApp.OdemeTuru.DIGER' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelOdeme.yontem" for="field_yontem">Yontem</label>
+                    <select class="form-control" name="yontem" [(ngModel)]="personelOdeme.yontem" id="field_yontem" >
+                        <option value="NAKIT">{{'defterTakipApp.OdemeYontemi.NAKIT' | translate}}</option>
+                        <option value="BANKA">{{'defterTakipApp.OdemeYontemi.BANKA' | translate}}</option>
+                        <option value="CEK">{{'defterTakipApp.OdemeYontemi.CEK' | translate}}</option>
+                        <option value="SENET">{{'defterTakipApp.OdemeYontemi.SENET' | translate}}</option>
+                        <option value="DIGER">{{'defterTakipApp.OdemeYontemi.DIGER' | translate}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.personelOdeme.personel" for="field_personel">Personel</label>
+                    <select class="form-control" id="field_personel" name="personel" [(ngModel)]="personelOdeme.personel"  required>
+                        <option *ngIf="!editForm.value.personel" [ngValue]="null" selected></option>
+                        <option [ngValue]="personelOption.id === personelOdeme.personel?.id ? personelOdeme.personel : personelOption" *ngFor="let personelOption of personels; trackBy: trackPersonelById">{{personelOption.ad}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.personel?.dirty && editForm.controls.personel?.invalid)">
+                    <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.personel?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

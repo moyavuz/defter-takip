@@ -1,0 +1,39 @@
+{
+    "name": "Eskalasyon",
+    "fields": [
+        {
+            "fieldName": "deger",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "turu",
+            "otherEntityName": "eskalasyonTuru",
+            "otherEntityField": "ad",
+            "otherEntityRelationshipName": "eskalasyon"
+        }
+    ],
+    "changelogDate": "20190221095640",
+    "entityTableName": "eskalasyon",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "enableEntityAudit": true
+}

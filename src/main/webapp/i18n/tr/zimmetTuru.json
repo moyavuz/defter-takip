@@ -1,0 +1,22 @@
+{
+    "defterTakipApp": {
+        "zimmetTuru": {
+            "home": {
+                "title": "Zimmet Turus",
+                "createLabel": "Create a new Zimmet Turu",
+                "createOrEditLabel": "Create or edit a Zimmet Turu"
+            },
+            "created": "A new Zimmet Turu is created with identifier {{ param }}",
+            "updated": "A Zimmet Turu is updated with identifier {{ param }}",
+            "deleted": "A Zimmet Turu is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Zimmet Turu {{ id }}?"
+            },
+            "detail": {
+                "title": "Zimmet Turu"
+            },
+            "ad": "Ad",
+            "aciklama": "Aciklama"
+        }
+    }
+}

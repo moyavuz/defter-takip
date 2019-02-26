@@ -1,0 +1,200 @@
+<div class="col-sm-12">
+    <div *ngIf="hakedis">
+        <h2><span jhiTranslate="defterTakipApp.hakedis.detail.title">Hakedis</span> {{hakedis.id}}</h2>
+        <hr>
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
+        <div class="row">
+            <div class="col-sm-6">
+                <dt><span jhiTranslate="defterTakipApp.hakedis.ad">Ad</span></dt>
+                <dd>
+                    <span>{{hakedis.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.proje">Proje</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.proje">
+                        <a [routerLink]="['/proje', hakedis.proje?.id, 'view']">{{hakedis.proje?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.turu">Turu</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.turu">
+                        <a [routerLink]="['/hakedis-turu', hakedis.turu?.id, 'view']">{{hakedis.turu?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.ekip">Ekip</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.ekip">
+                        <a [routerLink]="['/ekip', hakedis.ekip?.id, 'view']">{{hakedis.ekip?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.santral">Santral</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.santral">
+                        <a [routerLink]="['/santral', hakedis.santral?.id, 'view']">{{hakedis.santral?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.onemDerecesi">Onem Derecesi</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.OnemDurumu.' + hakedis.onemDerecesi}}">{{hakedis.onemDerecesi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.isDurumu">Is Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.IsDurumu.' + hakedis.isDurumu}}">{{hakedis.isDurumu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{hakedis.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.detay">Detay</span></dt>
+                <dd>
+                    <span>{{hakedis.detay}}</span>
+                </dd>
+
+            </div>
+            <div class="col-sm-6">
+                <dt><span jhiTranslate="defterTakipApp.hakedis.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{hakedis.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.seriNo">Seri No</span></dt>
+                <dd>
+                    <span>{{hakedis.seriNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.defterNo">Defter No</span></dt>
+                <dd>
+                    <span>{{hakedis.defterNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.cizimNo">Cizim No</span></dt>
+                <dd>
+                    <span>{{hakedis.cizimNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.odemeNo">Odeme No</span></dt>
+                <dd>
+                    <span>{{hakedis.odemeNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.odemeDurumu">Odeme Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.OdemeDurumu.' + hakedis.odemeDurumu}}">{{hakedis.odemeDurumu}}</span>
+                </dd>
+
+                <dt><span jhiTranslate="defterTakipApp.hakedis.resim">Resim</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.resim">
+                        <a (click)="openFile(hakedis.resimContentType, hakedis.resim)">
+                            <img [src]="'data:' + hakedis.resimContentType + ';base64,' + hakedis.resim" style="width: 180px;"
+                                 alt="hakedis image"/>
+                        </a>
+                        {{hakedis.resimContentType}}, {{byteSize(hakedis.resim)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.dosya">Dosya</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.dosya">
+                        <a (click)="openFile(hakedis.dosyaContentType, hakedis.dosya)" jhiTranslate="entity.action.open">open</a>
+                        {{hakedis.dosyaContentType}}, {{byteSize(hakedis.dosya)}}
+                    </div>
+                </dd>
+
+
+
+
+            </div>
+        </div>
+        <h2 id="page-heading">
+            <span jhiTranslate="defterTakipApp.hakedisDetay.home.title">Hakedis Detays</span>
+            <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-hakedis-detay"
+                    [routerLink]="['/hakedis-detay/new']">
+                <fa-icon [icon]="'plus'"></fa-icon>
+                <span jhiTranslate="defterTakipApp.hakedisDetay.home.createLabel">
+            Create new Hakedis Detay
+            </span>
+            </button>
+        </h2>
+
+        <div class="table-responsive" *ngIf="hakedisDetays">
+            <table class="table table-striped">
+                <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                    <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
+                        <fa-icon [icon]="'sort'"></fa-icon>
+                    </th>
+                    <th jhiSortBy="poz.kisaltma"><span jhiTranslate="defterTakipApp.hakedisDetay.pozNo">Poz No</span>
+                        <fa-icon [icon]="'sort'"></fa-icon>
+                    </th>
+                    <th jhiSortBy="poz.ad"><span jhiTranslate="defterTakipApp.hakedisDetay.poz">Poz</span>
+                        <fa-icon [icon]="'sort'"></fa-icon>
+                    </th>
+                    <th jhiSortBy="miktar"><span jhiTranslate="defterTakipApp.hakedisDetay.miktar">Miktar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                    <th><span jhiTranslate="defterTakipApp.poz.birim">Birim</span></th>
+                    <th><span jhiTranslate="defterTakipApp.poz.tasereFiyat">Fiyat</span></th>
+                    <th><span jhiTranslate="defterTakipApp.hakedisDetay.toplam">Toplam</span></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                       [infiniteScrollDistance]="0">
+                <tr *ngFor="let hakedisDetay of hakedisDetays ;trackBy: trackId">
+                    <td><a [routerLink]="['/hakedis-detay', hakedisDetay.id, 'view' ]">{{hakedisDetay.id}}</a></td>
+                    <td>
+                        <div *ngIf="hakedisDetay.poz">
+                            <a [routerLink]="['../poz', hakedisDetay.poz?.id, 'view' ]" >{{hakedisDetay.poz?.kisaltma}}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="hakedisDetay.poz">
+                            <a [routerLink]="['../poz', hakedisDetay.poz?.id, 'view' ]">{{hakedisDetay.poz?.ad}}</a>
+                        </div>
+                    </td>
+                    <td align="right">{{hakedisDetay.miktar}}</td>
+                    <td align="right">{{hakedisDetay.poz.birim.ad}}</td>
+                    <td align="right">
+                        {{hakedisDetay.poz.tasereFiyat}}
+                    </td>
+                    <td align="right">
+                        {{ (hakedisDetay.miktar) * (hakedisDetay.poz.tasereFiyat)}}
+                    </td>
+
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    [routerLink]="['/hakedis-detay', hakedisDetay.id, 'view' ]"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon [icon]="'eye'"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit"
+                                    [routerLink]="['/hakedis-detay', hakedisDetay.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit"
+                                    [routerLink]="['/', 'hakedis-detay', { outlets: { popup: hakedisDetay.id + '/delete'} }]"
+                                    replaceUrl="true"
+                                    queryParamsHandling="merge"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit"
+                (click)="previousState()"
+                class="btn btn-info">
+            <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
+
+        <button type="button"
+                [routerLink]="['/hakedis', hakedis.id, 'edit']"
+                class="btn btn-primary">
+            <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        </button>
+    </div>
+</div>
+

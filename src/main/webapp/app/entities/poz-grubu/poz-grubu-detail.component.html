@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pozGrubu">
+            <h2><span jhiTranslate="defterTakipApp.pozGrubu.detail.title">Poz Grubu</span> {{pozGrubu.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.pozGrubu.ad">Ad</span></dt>
+                <dd>
+                    <span>{{pozGrubu.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.pozGrubu.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{pozGrubu.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.pozGrubu.kisaltma">Kisaltma</span></dt>
+                <dd>
+                    <span>{{pozGrubu.kisaltma}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.pozGrubu.pozListesi">Poz Listesi</span></dt>
+                <dd>
+                    <span *ngFor="let pozListesi of pozGrubu.pozListesis; let last = last">
+                        <a [routerLink]="['/poz', pozListesi?.id, 'view' ]">{{pozListesi.ad}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/poz-grubu', pozGrubu.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

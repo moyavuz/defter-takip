@@ -1,0 +1,11 @@
+version: '2'
+services:
+    deftertakip-postgresql:
+        image: postgres:10.4
+        # volumes:
+        #     - ~/volumes/DefterTakip/postgresql/:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=DefterTakip
+            - POSTGRES_PASSWORD=ytt2019
+        ports:
+            - 5432:5432

@@ -1,0 +1,10 @@
+{
+    "defterTakipApp": {
+        "YakitTuru": {
+            "null": "",
+            "DIZEL": "DIZEL",
+            "BENZIN": "BENZIN",
+            "BENZIN_LPG": "BENZIN_LPG"
+        }
+    }
+}

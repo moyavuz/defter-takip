@@ -1,0 +1,12 @@
+{
+    "defterTakipApp": {
+        "OdemeYontemi": {
+            "null": "",
+            "NAKIT": "NAKIT",
+            "BANKA": "BANKA",
+            "CEK": "CEK",
+            "SENET": "SENET",
+            "DIGER": "DIGER"
+        }
+    }
+}

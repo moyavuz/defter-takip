@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="eskalasyon">
+            <h2><span jhiTranslate="defterTakipApp.eskalasyon.detail.title">Eskalasyon</span> {{eskalasyon.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="defterTakipApp.eskalasyon.deger">Deger</span></dt>
+                <dd>
+                    <span>{{eskalasyon.deger}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.eskalasyon.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{eskalasyon.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.eskalasyon.turu">Turu</span></dt>
+                <dd>
+                    <div *ngIf="eskalasyon.turu">
+                        <a [routerLink]="['/eskalasyon-turu', eskalasyon.turu?.id, 'view']">{{eskalasyon.turu?.ad}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/eskalasyon', eskalasyon.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

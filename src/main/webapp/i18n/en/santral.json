@@ -1,0 +1,23 @@
+{
+    "defterTakipApp": {
+        "santral": {
+            "home": {
+                "title": "Santrals",
+                "createLabel": "Create a new Santral",
+                "createOrEditLabel": "Create or edit a Santral"
+            },
+            "created": "A new Santral is created with identifier {{ param }}",
+            "updated": "A Santral is updated with identifier {{ param }}",
+            "deleted": "A Santral is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Santral {{ id }}?"
+            },
+            "detail": {
+                "title": "Santral"
+            },
+            "ad": "Ad",
+            "mudurluk": "Mudurluk",
+            "santralSorumlu": "Santral Sorumlu"
+        }
+    }
+}
