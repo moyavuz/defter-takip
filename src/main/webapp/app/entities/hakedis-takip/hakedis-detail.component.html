@@ -138,12 +138,12 @@
                     <td><a [routerLink]="['/hakedis-detay', hakedisDetay.id, 'view' ]">{{hakedisDetay.id}}</a></td>
                     <td>
                         <div *ngIf="hakedisDetay.poz">
-                            <a [routerLink]="['../poz', hakedisDetay.poz?.id, 'view' ]" >{{hakedisDetay.poz?.kisaltma}}</a>
+                            <a [routerLink]="['/poz', hakedisDetay.poz?.id, 'view' ]" >{{hakedisDetay.poz?.kisaltma}}</a>
                         </div>
                     </td>
                     <td>
                         <div *ngIf="hakedisDetay.poz">
-                            <a [routerLink]="['../poz', hakedisDetay.poz?.id, 'view' ]">{{hakedisDetay.poz?.ad}}</a>
+                            <a [routerLink]="['/poz', hakedisDetay.poz?.id, 'view' ]">{{hakedisDetay.poz?.ad}}</a>
                         </div>
                     </td>
                     <td align="right">{{hakedisDetay.miktar}}</td>
