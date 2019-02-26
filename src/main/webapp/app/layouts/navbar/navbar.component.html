@@ -61,7 +61,7 @@
                     <li>
                         <a class="dropdown-item" routerLink="poz-grubu" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="list" fixedWidth="true"></fa-icon>
+                            <fa name="cog" animation="spin" fixed="true"></fa>
                             <span jhiTranslate="global.menu.entities.pozGrubu">Poz Grubu</span>
                         </a>
                     </li>
@@ -72,8 +72,6 @@
                             <span jhiTranslate="global.menu.entities.poz">Poz</span>
                         </a>
                     </li>
-
-                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
 
@@ -326,7 +324,7 @@
                     <li>
                         <a class="dropdown-item" routerLink="admin/jhi-configuration" routerLinkActive="active"
                            (click)="collapseNavbar()">
-                            <fa-icon icon="list" fixedWidth="true"></fa-icon>
+                            <fa name="cog" animation="spin" fixed="true"></fa>
                             <span jhiTranslate="global.menu.admin.configuration">Configuration</span>
                         </a>
                     </li>
@@ -351,7 +349,7 @@
                     <li>
                         <a class="dropdown-item" routerLink="admin/entity-audit" routerLinkActive="active"
                            (click)="collapseNavbar()">
-                            <fa-icon [icon]="list-alt" [fixedWidth]="true"></fa-icon>&nbsp;
+                            <fa name="cog" animation="spin" fixed="true"></fa>
                             <span jhiTranslate="global.menu.admin.entity-audit">Entity Audit</span>
                         </a>
                     </li>

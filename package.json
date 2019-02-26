@@ -29,7 +29,7 @@
         "@ngx-translate/core": "11.0.1",
         "@ngx-translate/http-loader": "4.0.0",
         "angular-font-awesome": "^3.1.2",
-        "bootstrap": "4.3.1",
+        "bootstrap": "4.2.1",
         "core-js": "2.6.3",
         "font-awesome": "^4.7.0",
         "moment": "2.24.0",

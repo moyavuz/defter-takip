@@ -93,6 +93,10 @@ import { RouterModule } from '@angular/router';
                 loadChildren: './hakedis-detay/hakedis-detay.module#DefterTakipHakedisDetayModule'
             },
             {
+                path: 'hakedis-takip',
+                loadChildren: './hakedis-takip/hakedis-takip.module#DefterTakipHakedisTakipModule'
+            },
+            {
                 path: 'eskalasyon-turu',
                 loadChildren: './eskalasyon-turu/eskalasyon-turu.module#DefterTakipEskalasyonTuruModule'
             },

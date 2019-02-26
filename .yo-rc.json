@@ -31,7 +31,9 @@
         "jwtSecretKey": "MWE0MThlOWJlZTE3MWNiYTc4MGRmZGUyNTYzYTAwYmU5NzY3ZGNlNTI0ZDJkODI1M2QxNGRhNTA2NzgzZGNiYThhZmM4N2U3N2FjODgyYTU0NWZmZDcyMGZhNWYxZDFjNDE4NzU4MWY0MDI3NzlmODg5YmQ3ZmI5ODYxMDI2OTg=",
         "entitySuffix": "",
         "dtoSuffix": "DTO",
-        "otherModules": []
+        "otherModules": [],
+        "herokuAppName": "defter-takip",
+        "herokuDeployType": "jar"
     },
     "git-provider": "GitHub",
     "git-company": "moyavuz",
