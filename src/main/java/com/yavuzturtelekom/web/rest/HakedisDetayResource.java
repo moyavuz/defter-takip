@@ -117,4 +117,17 @@ public class HakedisDetayResource {
         hakedisDetayService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+
+    @GetMapping("/hakedis-detays/hakedis/{hakedisId}")
+    public List<HakedisDetay> getHakedisDetayByHakedis(@PathVariable Long hakedisId) {
+        log.debug("REST request to get HakedisDetay by Hakedis Id: {}", hakedisId);
+
+        Optional<HakedisDetay> hakedisDetay = hakedisDetayService.findOne(hakedisId);
+
+        List<HakedisDetay> actions = hakedisDetayService.findHakedisDetayByHakedisId(hakedisId);
+
+        return actions;
+    }
+
 }
