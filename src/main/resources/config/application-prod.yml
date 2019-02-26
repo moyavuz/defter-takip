@@ -27,9 +27,9 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://localhost:5432/DefterTakip
-        username: DefterTakip
-        password:
+        url: jdbc:postgresql://ec2-46-137-170-51.eu-west-1.compute.amazonaws.com:5432/d1u21aie8mvfjp
+        username: zljmbmvgwgcdee
+        password: 551fdb20465640c45a7fc9a0fb445ef3a3357ad1c8d57ae28b8f22ab77e1497f
         hikari:
             poolName: Hikari
             auto-commit: false
