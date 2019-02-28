@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,13 +43,14 @@ public class PozGrubuServiceImpl implements PozGrubuService {
     /**
      * Get all the pozGrubus.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<PozGrubu> findAll() {
+    public Page<PozGrubu> findAll(Pageable pageable) {
         log.debug("Request to get all PozGrubus");
-        return pozGrubuRepository.findAllWithEagerRelationships();
+        return pozGrubuRepository.findAll(pageable);
     }
 
     /**
@@ -83,6 +83,7 @@ public class PozGrubuServiceImpl implements PozGrubuService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete PozGrubu : {}", id);        pozGrubuRepository.deleteById(id);
+        log.debug("Request to delete PozGrubu : {}", id);
+        pozGrubuRepository.deleteById(id);
     }
 }

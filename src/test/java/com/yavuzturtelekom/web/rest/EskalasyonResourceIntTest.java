@@ -7,6 +7,8 @@ import com.yavuzturtelekom.domain.EskalasyonTuru;
 import com.yavuzturtelekom.repository.EskalasyonRepository;
 import com.yavuzturtelekom.service.EskalasyonService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.EskalasyonCriteria;
+import com.yavuzturtelekom.service.EskalasyonQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +59,9 @@ public class EskalasyonResourceIntTest {
     private EskalasyonService eskalasyonService;
 
     @Autowired
+    private EskalasyonQueryService eskalasyonQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -78,7 +83,7 @@ public class EskalasyonResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final EskalasyonResource eskalasyonResource = new EskalasyonResource(eskalasyonService);
+        final EskalasyonResource eskalasyonResource = new EskalasyonResource(eskalasyonService, eskalasyonQueryService);
         this.restEskalasyonMockMvc = MockMvcBuilders.standaloneSetup(eskalasyonResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -213,6 +218,165 @@ public class EskalasyonResourceIntTest {
             .andExpect(jsonPath("$.deger").value(DEFAULT_DEGER.doubleValue()))
             .andExpect(jsonPath("$.tarih").value(DEFAULT_TARIH.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByDegerIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+
+        // Get all the eskalasyonList where deger equals to DEFAULT_DEGER
+        defaultEskalasyonShouldBeFound("deger.equals=" + DEFAULT_DEGER);
+
+        // Get all the eskalasyonList where deger equals to UPDATED_DEGER
+        defaultEskalasyonShouldNotBeFound("deger.equals=" + UPDATED_DEGER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByDegerIsInShouldWork() throws Exception {
+        // Initialize the database
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+
+        // Get all the eskalasyonList where deger in DEFAULT_DEGER or UPDATED_DEGER
+        defaultEskalasyonShouldBeFound("deger.in=" + DEFAULT_DEGER + "," + UPDATED_DEGER);
+
+        // Get all the eskalasyonList where deger equals to UPDATED_DEGER
+        defaultEskalasyonShouldNotBeFound("deger.in=" + UPDATED_DEGER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByDegerIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+
+        // Get all the eskalasyonList where deger is not null
+        defaultEskalasyonShouldBeFound("deger.specified=true");
+
+        // Get all the eskalasyonList where deger is null
+        defaultEskalasyonShouldNotBeFound("deger.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+
+        // Get all the eskalasyonList where tarih equals to DEFAULT_TARIH
+        defaultEskalasyonShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the eskalasyonList where tarih equals to UPDATED_TARIH
+        defaultEskalasyonShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+
+        // Get all the eskalasyonList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultEskalasyonShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the eskalasyonList where tarih equals to UPDATED_TARIH
+        defaultEskalasyonShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+
+        // Get all the eskalasyonList where tarih is not null
+        defaultEskalasyonShouldBeFound("tarih.specified=true");
+
+        // Get all the eskalasyonList where tarih is null
+        defaultEskalasyonShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+
+        // Get all the eskalasyonList where tarih greater than or equals to DEFAULT_TARIH
+        defaultEskalasyonShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the eskalasyonList where tarih greater than or equals to UPDATED_TARIH
+        defaultEskalasyonShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+
+        // Get all the eskalasyonList where tarih less than or equals to DEFAULT_TARIH
+        defaultEskalasyonShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the eskalasyonList where tarih less than or equals to UPDATED_TARIH
+        defaultEskalasyonShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonsByTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        EskalasyonTuru turu = EskalasyonTuruResourceIntTest.createEntity(em);
+        em.persist(turu);
+        em.flush();
+        eskalasyon.setTuru(turu);
+        eskalasyonRepository.saveAndFlush(eskalasyon);
+        Long turuId = turu.getId();
+
+        // Get all the eskalasyonList where turu equals to turuId
+        defaultEskalasyonShouldBeFound("turuId.equals=" + turuId);
+
+        // Get all the eskalasyonList where turu equals to turuId + 1
+        defaultEskalasyonShouldNotBeFound("turuId.equals=" + (turuId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultEskalasyonShouldBeFound(String filter) throws Exception {
+        restEskalasyonMockMvc.perform(get("/api/eskalasyons?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(eskalasyon.getId().intValue())))
+            .andExpect(jsonPath("$.[*].deger").value(hasItem(DEFAULT_DEGER.doubleValue())))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())));
+
+        // Check, that the count call also returns 1
+        restEskalasyonMockMvc.perform(get("/api/eskalasyons/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultEskalasyonShouldNotBeFound(String filter) throws Exception {
+        restEskalasyonMockMvc.perform(get("/api/eskalasyons?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restEskalasyonMockMvc.perform(get("/api/eskalasyons/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

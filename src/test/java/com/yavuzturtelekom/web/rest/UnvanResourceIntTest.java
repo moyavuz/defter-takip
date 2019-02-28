@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.Unvan;
 import com.yavuzturtelekom.repository.UnvanRepository;
 import com.yavuzturtelekom.service.UnvanService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.UnvanCriteria;
+import com.yavuzturtelekom.service.UnvanQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +56,9 @@ public class UnvanResourceIntTest {
     private UnvanService unvanService;
 
     @Autowired
+    private UnvanQueryService unvanQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -75,7 +80,7 @@ public class UnvanResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UnvanResource unvanResource = new UnvanResource(unvanService);
+        final UnvanResource unvanResource = new UnvanResource(unvanService, unvanQueryService);
         this.restUnvanMockMvc = MockMvcBuilders.standaloneSetup(unvanResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -187,6 +192,119 @@ public class UnvanResourceIntTest {
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()))
             .andExpect(jsonPath("$.aciklama").value(DEFAULT_ACIKLAMA.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllUnvansByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        unvanRepository.saveAndFlush(unvan);
+
+        // Get all the unvanList where ad equals to DEFAULT_AD
+        defaultUnvanShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the unvanList where ad equals to UPDATED_AD
+        defaultUnvanShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUnvansByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        unvanRepository.saveAndFlush(unvan);
+
+        // Get all the unvanList where ad in DEFAULT_AD or UPDATED_AD
+        defaultUnvanShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the unvanList where ad equals to UPDATED_AD
+        defaultUnvanShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUnvansByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        unvanRepository.saveAndFlush(unvan);
+
+        // Get all the unvanList where ad is not null
+        defaultUnvanShouldBeFound("ad.specified=true");
+
+        // Get all the unvanList where ad is null
+        defaultUnvanShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllUnvansByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        unvanRepository.saveAndFlush(unvan);
+
+        // Get all the unvanList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultUnvanShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the unvanList where aciklama equals to UPDATED_ACIKLAMA
+        defaultUnvanShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUnvansByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        unvanRepository.saveAndFlush(unvan);
+
+        // Get all the unvanList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultUnvanShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the unvanList where aciklama equals to UPDATED_ACIKLAMA
+        defaultUnvanShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllUnvansByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        unvanRepository.saveAndFlush(unvan);
+
+        // Get all the unvanList where aciklama is not null
+        defaultUnvanShouldBeFound("aciklama.specified=true");
+
+        // Get all the unvanList where aciklama is null
+        defaultUnvanShouldNotBeFound("aciklama.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultUnvanShouldBeFound(String filter) throws Exception {
+        restUnvanMockMvc.perform(get("/api/unvans?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(unvan.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)));
+
+        // Check, that the count call also returns 1
+        restUnvanMockMvc.perform(get("/api/unvans/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultUnvanShouldNotBeFound(String filter) throws Exception {
+        restUnvanMockMvc.perform(get("/api/unvans?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restUnvanMockMvc.perform(get("/api/unvans/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "hakedis_detay")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class HakedisDetay extends AbstractAuditingEntity implements Serializable {
+public class HakedisDetay implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -32,12 +32,12 @@ public class HakedisDetay extends AbstractAuditingEntity implements Serializable
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties("hakedis")
+    @JsonIgnoreProperties("hakedisDetays")
     private Hakedis hakedis;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties("pozs")
+    @JsonIgnoreProperties("hakedisDetays")
     private Poz poz;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

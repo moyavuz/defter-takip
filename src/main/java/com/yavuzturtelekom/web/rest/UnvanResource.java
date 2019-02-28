@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.Unvan;
 import com.yavuzturtelekom.service.UnvanService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.UnvanCriteria;
+import com.yavuzturtelekom.service.UnvanQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class UnvanResource {
 
     private final UnvanService unvanService;
 
-    public UnvanResource(UnvanService unvanService) {
+    private final UnvanQueryService unvanQueryService;
+
+    public UnvanResource(UnvanService unvanService, UnvanQueryService unvanQueryService) {
         this.unvanService = unvanService;
+        this.unvanQueryService = unvanQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class UnvanResource {
     /**
      * GET  /unvans : get all the unvans.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of unvans in body
      */
     @GetMapping("/unvans")
-    public List<Unvan> getAllUnvans() {
-        log.debug("REST request to get all Unvans");
-        return unvanService.findAll();
+    public ResponseEntity<List<Unvan>> getAllUnvans(UnvanCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Unvans by criteria: {}", criteria);
+        Page<Unvan> page = unvanQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/unvans");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /unvans/count : count all the unvans.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/unvans/count")
+    public ResponseEntity<Long> countUnvans(UnvanCriteria criteria) {
+        log.debug("REST request to count Unvans by criteria: {}", criteria);
+        return ResponseEntity.ok().body(unvanQueryService.countByCriteria(criteria));
     }
 
     /**

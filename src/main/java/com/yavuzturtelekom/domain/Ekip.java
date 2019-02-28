@@ -22,7 +22,7 @@ import com.yavuzturtelekom.domain.enumeration.PersonelTuru;
 @Entity
 @Table(name = "ekip")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Ekip extends AbstractAuditingEntity implements Serializable {
+public class Ekip implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -45,6 +45,9 @@ public class Ekip extends AbstractAuditingEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "turu")
     private PersonelTuru turu;
+
+    @Column(name = "tenzilat_oran")
+    private Double tenzilatOran;
 
     @OneToMany(mappedBy = "ekip")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -127,6 +130,19 @@ public class Ekip extends AbstractAuditingEntity implements Serializable {
 
     public void setTuru(PersonelTuru turu) {
         this.turu = turu;
+    }
+
+    public Double getTenzilatOran() {
+        return tenzilatOran;
+    }
+
+    public Ekip tenzilatOran(Double tenzilatOran) {
+        this.tenzilatOran = tenzilatOran;
+        return this;
+    }
+
+    public void setTenzilatOran(Double tenzilatOran) {
+        this.tenzilatOran = tenzilatOran;
     }
 
     public Set<Hakedis> getHakedis() {
@@ -259,6 +275,7 @@ public class Ekip extends AbstractAuditingEntity implements Serializable {
             ", telefon='" + getTelefon() + "'" +
             ", eposta='" + getEposta() + "'" +
             ", turu='" + getTuru() + "'" +
+            ", tenzilatOran=" + getTenzilatOran() +
             "}";
     }
 }

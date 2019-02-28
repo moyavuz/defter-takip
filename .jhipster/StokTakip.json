@@ -26,26 +26,26 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "ekip",
+            "otherEntityRelationshipName": "stokTakip",
             "relationshipValidateRules": "required",
             "relationshipName": "ekip",
-            "otherEntityName": "ekip",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "ekip"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "malzeme",
+            "otherEntityRelationshipName": "stokTakip",
             "relationshipValidateRules": "required",
             "relationshipName": "malzeme",
-            "otherEntityName": "malzeme",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "malzeme"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "depo",
             "otherEntityName": "depo",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "depo"
+            "otherEntityRelationshipName": "stokTakip",
+            "relationshipName": "depo",
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095620",
@@ -53,9 +53,8 @@
     "dto": "no",
     "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

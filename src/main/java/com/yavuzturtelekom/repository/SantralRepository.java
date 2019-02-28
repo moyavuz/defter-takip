@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SantralRepository extends JpaRepository<Santral, Long> {
+public interface SantralRepository extends JpaRepository<Santral, Long>, JpaSpecificationExecutor<Santral> {
 
 }

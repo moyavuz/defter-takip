@@ -66,49 +66,48 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "hakedisDetay",
             "otherEntityName": "hakedisDetay",
-            "otherEntityRelationshipName": "hakedis"
+            "otherEntityRelationshipName": "hakedis",
+            "relationshipName": "hakedisDetay"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "santral",
             "otherEntityName": "santral",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "hakedis"
+            "otherEntityRelationshipName": "hakedis",
+            "relationshipName": "santral",
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "turu",
             "otherEntityName": "hakedisTuru",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "hakedis"
+            "otherEntityRelationshipName": "hakedis",
+            "relationshipName": "turu",
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "ekip",
+            "otherEntityRelationshipName": "hakedis",
             "relationshipValidateRules": "required",
             "relationshipName": "ekip",
-            "otherEntityName": "ekip",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "ekip"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "proje",
+            "otherEntityRelationshipName": "hakedis",
             "relationshipValidateRules": "required",
             "relationshipName": "proje",
-            "otherEntityName": "proje",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "proje"
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095637",
     "entityTableName": "hakedis",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

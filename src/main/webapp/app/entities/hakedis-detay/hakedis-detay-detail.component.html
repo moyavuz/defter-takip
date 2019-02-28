@@ -5,27 +5,21 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-
+                <dt><span jhiTranslate="defterTakipApp.hakedisDetay.miktar">Miktar</span></dt>
+                <dd>
+                    <span>{{hakedisDetay.miktar}}</span>
+                </dd>
                 <dt><span jhiTranslate="defterTakipApp.hakedisDetay.hakedis">Hakedis</span></dt>
                 <dd>
                     <div *ngIf="hakedisDetay.hakedis">
-                        <a [routerLink]="['/hakedis', hakedisDetay.hakedis?.id, 'view']">{{hakedisDetay.hakedis?.ad}}</a>
+                        <a [routerLink]="['/hakedis', hakedisDetay.hakedis?.id, 'view']">{{hakedisDetay.hakedis?.id}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="defterTakipApp.hakedisDetay.poz">Poz</span></dt>
                 <dd>
                     <div *ngIf="hakedisDetay.poz">
-                        <a [routerLink]="['/poz', hakedisDetay.poz?.id, 'view']">{{hakedisDetay.poz?.kisaltma}} - {{hakedisDetay.poz?.ad}}</a>
+                        <a [routerLink]="['/poz', hakedisDetay.poz?.id, 'view']">{{hakedisDetay.poz?.ad}}</a>
                     </div>
-                </dd>
-                <dt><span jhiTranslate="defterTakipApp.hakedisDetay.miktar">Miktar</span></dt>
-                <dd>
-                    <span>{{hakedisDetay.miktar}}</span>
-                </dd>
-
-                <dt><span jhiTranslate="defterTakipApp.poz.birim">Birim</span></dt>
-                <dd>
-                    <span>{{hakedisDetay.poz.birim.ad}}</span>
                 </dd>
             </dl>
 

@@ -4,6 +4,8 @@ import com.yavuzturtelekom.service.ProjeService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
 import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.ProjeCriteria;
+import com.yavuzturtelekom.service.ProjeQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +36,11 @@ public class ProjeResource {
 
     private final ProjeService projeService;
 
-    public ProjeResource(ProjeService projeService) {
+    private final ProjeQueryService projeQueryService;
+
+    public ProjeResource(ProjeService projeService, ProjeQueryService projeQueryService) {
         this.projeService = projeService;
+        this.projeQueryService = projeQueryService;
     }
 
     /**
@@ -82,14 +87,27 @@ public class ProjeResource {
      * GET  /projes : get all the projes.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of projes in body
      */
     @GetMapping("/projes")
-    public ResponseEntity<List<Proje>> getAllProjes(Pageable pageable) {
-        log.debug("REST request to get a page of Projes");
-        Page<Proje> page = projeService.findAll(pageable);
+    public ResponseEntity<List<Proje>> getAllProjes(ProjeCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Projes by criteria: {}", criteria);
+        Page<Proje> page = projeQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/projes");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /projes/count : count all the projes.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/projes/count")
+    public ResponseEntity<Long> countProjes(ProjeCriteria criteria) {
+        log.debug("REST request to count Projes by criteria: {}", criteria);
+        return ResponseEntity.ok().body(projeQueryService.countByCriteria(criteria));
     }
 
     /**

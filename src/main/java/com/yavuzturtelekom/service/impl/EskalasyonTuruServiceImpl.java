@@ -6,10 +6,11 @@ import com.yavuzturtelekom.repository.EskalasyonTuruRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,13 +43,14 @@ public class EskalasyonTuruServiceImpl implements EskalasyonTuruService {
     /**
      * Get all the eskalasyonTurus.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<EskalasyonTuru> findAll() {
+    public Page<EskalasyonTuru> findAll(Pageable pageable) {
         log.debug("Request to get all EskalasyonTurus");
-        return eskalasyonTuruRepository.findAll();
+        return eskalasyonTuruRepository.findAll(pageable);
     }
 
 
@@ -72,6 +74,7 @@ public class EskalasyonTuruServiceImpl implements EskalasyonTuruService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete EskalasyonTuru : {}", id);        eskalasyonTuruRepository.deleteById(id);
+        log.debug("Request to delete EskalasyonTuru : {}", id);
+        eskalasyonTuruRepository.deleteById(id);
     }
 }

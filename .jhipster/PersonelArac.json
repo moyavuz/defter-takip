@@ -24,29 +24,28 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "arac",
+            "otherEntityRelationshipName": "personelArac",
             "relationshipValidateRules": "required",
             "relationshipName": "arac",
-            "otherEntityName": "arac",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "personelArac"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "personel",
+            "otherEntityRelationshipName": "personelArac",
             "relationshipValidateRules": "required",
             "relationshipName": "personel",
-            "otherEntityName": "personel",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "personelArac"
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095643",
     "entityTableName": "personel_arac",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

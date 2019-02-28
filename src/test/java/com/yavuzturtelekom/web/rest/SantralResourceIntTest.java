@@ -3,10 +3,13 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Santral;
+import com.yavuzturtelekom.domain.Mudurluk;
 import com.yavuzturtelekom.domain.Personel;
 import com.yavuzturtelekom.repository.SantralRepository;
 import com.yavuzturtelekom.service.SantralService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.SantralCriteria;
+import com.yavuzturtelekom.service.SantralQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +55,9 @@ public class SantralResourceIntTest {
     private SantralService santralService;
 
     @Autowired
+    private SantralQueryService santralQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -73,7 +79,7 @@ public class SantralResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SantralResource santralResource = new SantralResource(santralService);
+        final SantralResource santralResource = new SantralResource(santralService, santralQueryService);
         this.restSantralMockMvc = MockMvcBuilders.standaloneSetup(santralResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -186,6 +192,117 @@ public class SantralResourceIntTest {
             .andExpect(jsonPath("$.id").value(santral.getId().intValue()))
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllSantralsByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        santralRepository.saveAndFlush(santral);
+
+        // Get all the santralList where ad equals to DEFAULT_AD
+        defaultSantralShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the santralList where ad equals to UPDATED_AD
+        defaultSantralShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSantralsByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        santralRepository.saveAndFlush(santral);
+
+        // Get all the santralList where ad in DEFAULT_AD or UPDATED_AD
+        defaultSantralShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the santralList where ad equals to UPDATED_AD
+        defaultSantralShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSantralsByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        santralRepository.saveAndFlush(santral);
+
+        // Get all the santralList where ad is not null
+        defaultSantralShouldBeFound("ad.specified=true");
+
+        // Get all the santralList where ad is null
+        defaultSantralShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllSantralsByMudurlukIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Mudurluk mudurluk = MudurlukResourceIntTest.createEntity(em);
+        em.persist(mudurluk);
+        em.flush();
+        santral.setMudurluk(mudurluk);
+        santralRepository.saveAndFlush(santral);
+        Long mudurlukId = mudurluk.getId();
+
+        // Get all the santralList where mudurluk equals to mudurlukId
+        defaultSantralShouldBeFound("mudurlukId.equals=" + mudurlukId);
+
+        // Get all the santralList where mudurluk equals to mudurlukId + 1
+        defaultSantralShouldNotBeFound("mudurlukId.equals=" + (mudurlukId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSantralsBySantralSorumluIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel santralSorumlu = PersonelResourceIntTest.createEntity(em);
+        em.persist(santralSorumlu);
+        em.flush();
+        santral.setSantralSorumlu(santralSorumlu);
+        santralRepository.saveAndFlush(santral);
+        Long santralSorumluId = santralSorumlu.getId();
+
+        // Get all the santralList where santralSorumlu equals to santralSorumluId
+        defaultSantralShouldBeFound("santralSorumluId.equals=" + santralSorumluId);
+
+        // Get all the santralList where santralSorumlu equals to santralSorumluId + 1
+        defaultSantralShouldNotBeFound("santralSorumluId.equals=" + (santralSorumluId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultSantralShouldBeFound(String filter) throws Exception {
+        restSantralMockMvc.perform(get("/api/santrals?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(santral.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)));
+
+        // Check, that the count call also returns 1
+        restSantralMockMvc.perform(get("/api/santrals/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultSantralShouldNotBeFound(String filter) throws Exception {
+        restSantralMockMvc.perform(get("/api/santrals?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restSantralMockMvc.perform(get("/api/santrals/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

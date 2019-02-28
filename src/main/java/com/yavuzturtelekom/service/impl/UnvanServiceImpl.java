@@ -6,10 +6,11 @@ import com.yavuzturtelekom.repository.UnvanRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,13 +43,14 @@ public class UnvanServiceImpl implements UnvanService {
     /**
      * Get all the unvans.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Unvan> findAll() {
+    public Page<Unvan> findAll(Pageable pageable) {
         log.debug("Request to get all Unvans");
-        return unvanRepository.findAll();
+        return unvanRepository.findAll(pageable);
     }
 
 
@@ -72,6 +74,7 @@ public class UnvanServiceImpl implements UnvanService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Unvan : {}", id);        unvanRepository.deleteById(id);
+        log.debug("Request to delete Unvan : {}", id);
+        unvanRepository.deleteById(id);
     }
 }

@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.DovizKur;
 import com.yavuzturtelekom.repository.DovizKurRepository;
 import com.yavuzturtelekom.service.DovizKurService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.DovizKurCriteria;
+import com.yavuzturtelekom.service.DovizKurQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -60,6 +62,9 @@ public class DovizKurResourceIntTest {
     private DovizKurService dovizKurService;
 
     @Autowired
+    private DovizKurQueryService dovizKurQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -81,7 +86,7 @@ public class DovizKurResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DovizKurResource dovizKurResource = new DovizKurResource(dovizKurService);
+        final DovizKurResource dovizKurResource = new DovizKurResource(dovizKurService, dovizKurQueryService);
         this.restDovizKurMockMvc = MockMvcBuilders.standaloneSetup(dovizKurResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -179,6 +184,186 @@ public class DovizKurResourceIntTest {
             .andExpect(jsonPath("$.deger").value(DEFAULT_DEGER.doubleValue()))
             .andExpect(jsonPath("$.tarih").value(DEFAULT_TARIH.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByParaBirimiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where paraBirimi equals to DEFAULT_PARA_BIRIMI
+        defaultDovizKurShouldBeFound("paraBirimi.equals=" + DEFAULT_PARA_BIRIMI);
+
+        // Get all the dovizKurList where paraBirimi equals to UPDATED_PARA_BIRIMI
+        defaultDovizKurShouldNotBeFound("paraBirimi.equals=" + UPDATED_PARA_BIRIMI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByParaBirimiIsInShouldWork() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where paraBirimi in DEFAULT_PARA_BIRIMI or UPDATED_PARA_BIRIMI
+        defaultDovizKurShouldBeFound("paraBirimi.in=" + DEFAULT_PARA_BIRIMI + "," + UPDATED_PARA_BIRIMI);
+
+        // Get all the dovizKurList where paraBirimi equals to UPDATED_PARA_BIRIMI
+        defaultDovizKurShouldNotBeFound("paraBirimi.in=" + UPDATED_PARA_BIRIMI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByParaBirimiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where paraBirimi is not null
+        defaultDovizKurShouldBeFound("paraBirimi.specified=true");
+
+        // Get all the dovizKurList where paraBirimi is null
+        defaultDovizKurShouldNotBeFound("paraBirimi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByDegerIsEqualToSomething() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where deger equals to DEFAULT_DEGER
+        defaultDovizKurShouldBeFound("deger.equals=" + DEFAULT_DEGER);
+
+        // Get all the dovizKurList where deger equals to UPDATED_DEGER
+        defaultDovizKurShouldNotBeFound("deger.equals=" + UPDATED_DEGER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByDegerIsInShouldWork() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where deger in DEFAULT_DEGER or UPDATED_DEGER
+        defaultDovizKurShouldBeFound("deger.in=" + DEFAULT_DEGER + "," + UPDATED_DEGER);
+
+        // Get all the dovizKurList where deger equals to UPDATED_DEGER
+        defaultDovizKurShouldNotBeFound("deger.in=" + UPDATED_DEGER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByDegerIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where deger is not null
+        defaultDovizKurShouldBeFound("deger.specified=true");
+
+        // Get all the dovizKurList where deger is null
+        defaultDovizKurShouldNotBeFound("deger.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where tarih equals to DEFAULT_TARIH
+        defaultDovizKurShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the dovizKurList where tarih equals to UPDATED_TARIH
+        defaultDovizKurShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultDovizKurShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the dovizKurList where tarih equals to UPDATED_TARIH
+        defaultDovizKurShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where tarih is not null
+        defaultDovizKurShouldBeFound("tarih.specified=true");
+
+        // Get all the dovizKurList where tarih is null
+        defaultDovizKurShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where tarih greater than or equals to DEFAULT_TARIH
+        defaultDovizKurShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the dovizKurList where tarih greater than or equals to UPDATED_TARIH
+        defaultDovizKurShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDovizKursByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        dovizKurRepository.saveAndFlush(dovizKur);
+
+        // Get all the dovizKurList where tarih less than or equals to DEFAULT_TARIH
+        defaultDovizKurShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the dovizKurList where tarih less than or equals to UPDATED_TARIH
+        defaultDovizKurShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultDovizKurShouldBeFound(String filter) throws Exception {
+        restDovizKurMockMvc.perform(get("/api/doviz-kurs?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(dovizKur.getId().intValue())))
+            .andExpect(jsonPath("$.[*].paraBirimi").value(hasItem(DEFAULT_PARA_BIRIMI.toString())))
+            .andExpect(jsonPath("$.[*].deger").value(hasItem(DEFAULT_DEGER.doubleValue())))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())));
+
+        // Check, that the count call also returns 1
+        restDovizKurMockMvc.perform(get("/api/doviz-kurs/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultDovizKurShouldNotBeFound(String filter) throws Exception {
+        restDovizKurMockMvc.perform(get("/api/doviz-kurs?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restDovizKurMockMvc.perform(get("/api/doviz-kurs/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

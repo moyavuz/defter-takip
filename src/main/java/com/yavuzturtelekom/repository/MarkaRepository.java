@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MarkaRepository extends JpaRepository<Marka, Long> {
+public interface MarkaRepository extends JpaRepository<Marka, Long>, JpaSpecificationExecutor<Marka> {
 
 }

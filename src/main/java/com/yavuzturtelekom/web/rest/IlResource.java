@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.Il;
 import com.yavuzturtelekom.service.IlService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.IlCriteria;
+import com.yavuzturtelekom.service.IlQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class IlResource {
 
     private final IlService ilService;
 
-    public IlResource(IlService ilService) {
+    private final IlQueryService ilQueryService;
+
+    public IlResource(IlService ilService, IlQueryService ilQueryService) {
         this.ilService = ilService;
+        this.ilQueryService = ilQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class IlResource {
     /**
      * GET  /ils : get all the ils.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of ils in body
      */
     @GetMapping("/ils")
-    public List<Il> getAllIls() {
-        log.debug("REST request to get all Ils");
-        return ilService.findAll();
+    public ResponseEntity<List<Il>> getAllIls(IlCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Ils by criteria: {}", criteria);
+        Page<Il> page = ilQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/ils");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /ils/count : count all the ils.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/ils/count")
+    public ResponseEntity<Long> countIls(IlCriteria criteria) {
+        log.debug("REST request to count Ils by criteria: {}", criteria);
+        return ResponseEntity.ok().body(ilQueryService.countByCriteria(criteria));
     }
 
     /**

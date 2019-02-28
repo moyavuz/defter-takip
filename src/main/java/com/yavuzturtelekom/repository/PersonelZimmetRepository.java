@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PersonelZimmetRepository extends JpaRepository<PersonelZimmet, Long> {
+public interface PersonelZimmetRepository extends JpaRepository<PersonelZimmet, Long>, JpaSpecificationExecutor<PersonelZimmet> {
 
 }

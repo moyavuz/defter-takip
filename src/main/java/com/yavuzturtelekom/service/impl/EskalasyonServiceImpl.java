@@ -6,10 +6,11 @@ import com.yavuzturtelekom.repository.EskalasyonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,13 +43,14 @@ public class EskalasyonServiceImpl implements EskalasyonService {
     /**
      * Get all the eskalasyons.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Eskalasyon> findAll() {
+    public Page<Eskalasyon> findAll(Pageable pageable) {
         log.debug("Request to get all Eskalasyons");
-        return eskalasyonRepository.findAll();
+        return eskalasyonRepository.findAll(pageable);
     }
 
 
@@ -72,6 +74,7 @@ public class EskalasyonServiceImpl implements EskalasyonService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Eskalasyon : {}", id);        eskalasyonRepository.deleteById(id);
+        log.debug("Request to delete Eskalasyon : {}", id);
+        eskalasyonRepository.deleteById(id);
     }
 }

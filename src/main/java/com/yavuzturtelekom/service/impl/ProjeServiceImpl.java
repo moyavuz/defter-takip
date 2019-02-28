@@ -74,6 +74,7 @@ public class ProjeServiceImpl implements ProjeService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Proje : {}", id);        projeRepository.deleteById(id);
+        log.debug("Request to delete Proje : {}", id);
+        projeRepository.deleteById(id);
     }
 }

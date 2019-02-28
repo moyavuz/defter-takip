@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.Marka;
 import com.yavuzturtelekom.repository.MarkaRepository;
 import com.yavuzturtelekom.service.MarkaService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.MarkaCriteria;
+import com.yavuzturtelekom.service.MarkaQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +53,9 @@ public class MarkaResourceIntTest {
     private MarkaService markaService;
 
     @Autowired
+    private MarkaQueryService markaQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,7 +77,7 @@ public class MarkaResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MarkaResource markaResource = new MarkaResource(markaService);
+        final MarkaResource markaResource = new MarkaResource(markaService, markaQueryService);
         this.restMarkaMockMvc = MockMvcBuilders.standaloneSetup(markaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -180,6 +185,79 @@ public class MarkaResourceIntTest {
             .andExpect(jsonPath("$.id").value(marka.getId().intValue()))
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllMarkasByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        markaRepository.saveAndFlush(marka);
+
+        // Get all the markaList where ad equals to DEFAULT_AD
+        defaultMarkaShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the markaList where ad equals to UPDATED_AD
+        defaultMarkaShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMarkasByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        markaRepository.saveAndFlush(marka);
+
+        // Get all the markaList where ad in DEFAULT_AD or UPDATED_AD
+        defaultMarkaShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the markaList where ad equals to UPDATED_AD
+        defaultMarkaShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMarkasByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        markaRepository.saveAndFlush(marka);
+
+        // Get all the markaList where ad is not null
+        defaultMarkaShouldBeFound("ad.specified=true");
+
+        // Get all the markaList where ad is null
+        defaultMarkaShouldNotBeFound("ad.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultMarkaShouldBeFound(String filter) throws Exception {
+        restMarkaMockMvc.perform(get("/api/markas?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(marka.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)));
+
+        // Check, that the count call also returns 1
+        restMarkaMockMvc.perform(get("/api/markas/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultMarkaShouldNotBeFound(String filter) throws Exception {
+        restMarkaMockMvc.perform(get("/api/markas?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restMarkaMockMvc.perform(get("/api/markas/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

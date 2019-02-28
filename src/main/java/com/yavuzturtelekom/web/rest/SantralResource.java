@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.Santral;
 import com.yavuzturtelekom.service.SantralService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.SantralCriteria;
+import com.yavuzturtelekom.service.SantralQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class SantralResource {
 
     private final SantralService santralService;
 
-    public SantralResource(SantralService santralService) {
+    private final SantralQueryService santralQueryService;
+
+    public SantralResource(SantralService santralService, SantralQueryService santralQueryService) {
         this.santralService = santralService;
+        this.santralQueryService = santralQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class SantralResource {
     /**
      * GET  /santrals : get all the santrals.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of santrals in body
      */
     @GetMapping("/santrals")
-    public List<Santral> getAllSantrals() {
-        log.debug("REST request to get all Santrals");
-        return santralService.findAll();
+    public ResponseEntity<List<Santral>> getAllSantrals(SantralCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Santrals by criteria: {}", criteria);
+        Page<Santral> page = santralQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/santrals");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /santrals/count : count all the santrals.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/santrals/count")
+    public ResponseEntity<Long> countSantrals(SantralCriteria criteria) {
+        log.debug("REST request to count Santrals by criteria: {}", criteria);
+        return ResponseEntity.ok().body(santralQueryService.countByCriteria(criteria));
     }
 
     /**

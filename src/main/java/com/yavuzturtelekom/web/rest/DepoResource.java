@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.Depo;
 import com.yavuzturtelekom.service.DepoService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.DepoCriteria;
+import com.yavuzturtelekom.service.DepoQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class DepoResource {
 
     private final DepoService depoService;
 
-    public DepoResource(DepoService depoService) {
+    private final DepoQueryService depoQueryService;
+
+    public DepoResource(DepoService depoService, DepoQueryService depoQueryService) {
         this.depoService = depoService;
+        this.depoQueryService = depoQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class DepoResource {
     /**
      * GET  /depos : get all the depos.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of depos in body
      */
     @GetMapping("/depos")
-    public List<Depo> getAllDepos() {
-        log.debug("REST request to get all Depos");
-        return depoService.findAll();
+    public ResponseEntity<List<Depo>> getAllDepos(DepoCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Depos by criteria: {}", criteria);
+        Page<Depo> page = depoQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/depos");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /depos/count : count all the depos.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/depos/count")
+    public ResponseEntity<Long> countDepos(DepoCriteria criteria) {
+        log.debug("REST request to count Depos by criteria: {}", criteria);
+        return ResponseEntity.ok().body(depoQueryService.countByCriteria(criteria));
     }
 
     /**

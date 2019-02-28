@@ -97,24 +97,25 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "yonetici",
             "otherEntityName": "personel",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "personel"
+            "otherEntityRelationshipName": "personel",
+            "relationshipName": "yonetici",
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "unvan",
             "otherEntityName": "unvan",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "personel"
+            "otherEntityRelationshipName": "personel",
+            "relationshipName": "unvan",
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "ekip",
             "otherEntityName": "ekip",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "ekipPersonel"
+            "otherEntityRelationshipName": "ekipPersonel",
+            "relationshipName": "ekip",
+            "otherEntityField": "id",
+            "ownerSide": false
         }
     ],
     "changelogDate": "20190221095618",
@@ -122,9 +123,8 @@
     "dto": "no",
     "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

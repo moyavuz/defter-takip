@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.HakedisTuru;
 import com.yavuzturtelekom.repository.HakedisTuruRepository;
 import com.yavuzturtelekom.service.HakedisTuruService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.HakedisTuruCriteria;
+import com.yavuzturtelekom.service.HakedisTuruQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +56,9 @@ public class HakedisTuruResourceIntTest {
     private HakedisTuruService hakedisTuruService;
 
     @Autowired
+    private HakedisTuruQueryService hakedisTuruQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -75,7 +80,7 @@ public class HakedisTuruResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final HakedisTuruResource hakedisTuruResource = new HakedisTuruResource(hakedisTuruService);
+        final HakedisTuruResource hakedisTuruResource = new HakedisTuruResource(hakedisTuruService, hakedisTuruQueryService);
         this.restHakedisTuruMockMvc = MockMvcBuilders.standaloneSetup(hakedisTuruResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -187,6 +192,119 @@ public class HakedisTuruResourceIntTest {
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()))
             .andExpect(jsonPath("$.aciklama").value(DEFAULT_ACIKLAMA.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllHakedisTurusByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisTuruRepository.saveAndFlush(hakedisTuru);
+
+        // Get all the hakedisTuruList where ad equals to DEFAULT_AD
+        defaultHakedisTuruShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the hakedisTuruList where ad equals to UPDATED_AD
+        defaultHakedisTuruShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisTurusByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisTuruRepository.saveAndFlush(hakedisTuru);
+
+        // Get all the hakedisTuruList where ad in DEFAULT_AD or UPDATED_AD
+        defaultHakedisTuruShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the hakedisTuruList where ad equals to UPDATED_AD
+        defaultHakedisTuruShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisTurusByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisTuruRepository.saveAndFlush(hakedisTuru);
+
+        // Get all the hakedisTuruList where ad is not null
+        defaultHakedisTuruShouldBeFound("ad.specified=true");
+
+        // Get all the hakedisTuruList where ad is null
+        defaultHakedisTuruShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisTurusByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisTuruRepository.saveAndFlush(hakedisTuru);
+
+        // Get all the hakedisTuruList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultHakedisTuruShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the hakedisTuruList where aciklama equals to UPDATED_ACIKLAMA
+        defaultHakedisTuruShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisTurusByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisTuruRepository.saveAndFlush(hakedisTuru);
+
+        // Get all the hakedisTuruList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultHakedisTuruShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the hakedisTuruList where aciklama equals to UPDATED_ACIKLAMA
+        defaultHakedisTuruShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisTurusByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisTuruRepository.saveAndFlush(hakedisTuru);
+
+        // Get all the hakedisTuruList where aciklama is not null
+        defaultHakedisTuruShouldBeFound("aciklama.specified=true");
+
+        // Get all the hakedisTuruList where aciklama is null
+        defaultHakedisTuruShouldNotBeFound("aciklama.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultHakedisTuruShouldBeFound(String filter) throws Exception {
+        restHakedisTuruMockMvc.perform(get("/api/hakedis-turus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(hakedisTuru.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)));
+
+        // Check, that the count call also returns 1
+        restHakedisTuruMockMvc.perform(get("/api/hakedis-turus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultHakedisTuruShouldNotBeFound(String filter) throws Exception {
+        restHakedisTuruMockMvc.perform(get("/api/hakedis-turus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restHakedisTuruMockMvc.perform(get("/api/hakedis-turus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

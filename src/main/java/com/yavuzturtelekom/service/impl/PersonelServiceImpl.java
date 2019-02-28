@@ -74,6 +74,7 @@ public class PersonelServiceImpl implements PersonelService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Personel : {}", id);        personelRepository.deleteById(id);
+        log.debug("Request to delete Personel : {}", id);
+        personelRepository.deleteById(id);
     }
 }

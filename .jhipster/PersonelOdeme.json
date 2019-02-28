@@ -23,21 +23,20 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "personel",
+            "otherEntityRelationshipName": "personelOdeme",
             "relationshipValidateRules": "required",
             "relationshipName": "personel",
-            "otherEntityName": "personel",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "personelOdeme"
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095645",
     "entityTableName": "personel_odeme",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

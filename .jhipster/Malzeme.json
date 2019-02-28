@@ -41,31 +41,32 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "stokTakip",
             "otherEntityName": "stokTakip",
-            "otherEntityRelationshipName": "malzeme"
+            "otherEntityRelationshipName": "malzeme",
+            "relationshipName": "stokTakip"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "birim",
+            "otherEntityRelationshipName": "malzeme",
             "relationshipValidateRules": "required",
             "relationshipName": "birim",
-            "otherEntityName": "birim",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "malzeme"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "depo",
             "otherEntityName": "depo",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "malzeme"
+            "otherEntityRelationshipName": "malzeme",
+            "relationshipName": "depo",
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "grup",
             "otherEntityName": "malzemeGrubu",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "malzemeListesi"
+            "otherEntityRelationshipName": "malzemeListesi",
+            "relationshipName": "grup",
+            "otherEntityField": "id",
+            "ownerSide": false
         }
     ],
     "changelogDate": "20190221095628",
@@ -73,9 +74,8 @@
     "dto": "no",
     "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

@@ -2,7 +2,9 @@ package com.yavuzturtelekom.service;
 
 import com.yavuzturtelekom.domain.Arac;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 /**
@@ -21,9 +23,10 @@ public interface AracService {
     /**
      * Get all the aracs.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
-    List<Arac> findAll();
+    Page<Arac> findAll(Pageable pageable);
 
 
     /**

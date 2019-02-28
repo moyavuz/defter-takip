@@ -4,6 +4,8 @@ import com.yavuzturtelekom.service.PersonelService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
 import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.PersonelCriteria;
+import com.yavuzturtelekom.service.PersonelQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +36,11 @@ public class PersonelResource {
 
     private final PersonelService personelService;
 
-    public PersonelResource(PersonelService personelService) {
+    private final PersonelQueryService personelQueryService;
+
+    public PersonelResource(PersonelService personelService, PersonelQueryService personelQueryService) {
         this.personelService = personelService;
+        this.personelQueryService = personelQueryService;
     }
 
     /**
@@ -82,14 +87,27 @@ public class PersonelResource {
      * GET  /personels : get all the personels.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of personels in body
      */
     @GetMapping("/personels")
-    public ResponseEntity<List<Personel>> getAllPersonels(Pageable pageable) {
-        log.debug("REST request to get a page of Personels");
-        Page<Personel> page = personelService.findAll(pageable);
+    public ResponseEntity<List<Personel>> getAllPersonels(PersonelCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Personels by criteria: {}", criteria);
+        Page<Personel> page = personelQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/personels");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /personels/count : count all the personels.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/personels/count")
+    public ResponseEntity<Long> countPersonels(PersonelCriteria criteria) {
+        log.debug("REST request to count Personels by criteria: {}", criteria);
+        return ResponseEntity.ok().body(personelQueryService.countByCriteria(criteria));
     }
 
     /**

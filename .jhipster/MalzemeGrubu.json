@@ -16,9 +16,9 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
+            "otherEntityName": "malzeme",
             "otherEntityRelationshipName": "grup",
             "relationshipName": "malzemeListesi",
-            "otherEntityName": "malzeme",
             "otherEntityField": "ad",
             "ownerSide": true
         }
@@ -26,11 +26,10 @@
     "changelogDate": "20190221095627",
     "entityTableName": "malzeme_grubu",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

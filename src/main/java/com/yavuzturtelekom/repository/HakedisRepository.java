@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface HakedisRepository extends JpaRepository<Hakedis, Long> {
+public interface HakedisRepository extends JpaRepository<Hakedis, Long>, JpaSpecificationExecutor<Hakedis> {
 
 }

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface EskalasyonTuruRepository extends JpaRepository<EskalasyonTuru, Long> {
+public interface EskalasyonTuruRepository extends JpaRepository<EskalasyonTuru, Long>, JpaSpecificationExecutor<EskalasyonTuru> {
 
 }

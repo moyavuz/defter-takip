@@ -8,6 +8,8 @@ import com.yavuzturtelekom.domain.Poz;
 import com.yavuzturtelekom.repository.HakedisDetayRepository;
 import com.yavuzturtelekom.service.HakedisDetayService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.HakedisDetayCriteria;
+import com.yavuzturtelekom.service.HakedisDetayQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +55,9 @@ public class HakedisDetayResourceIntTest {
     private HakedisDetayService hakedisDetayService;
 
     @Autowired
+    private HakedisDetayQueryService hakedisDetayQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -74,7 +79,7 @@ public class HakedisDetayResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final HakedisDetayResource hakedisDetayResource = new HakedisDetayResource(hakedisDetayService);
+        final HakedisDetayResource hakedisDetayResource = new HakedisDetayResource(hakedisDetayService, hakedisDetayQueryService);
         this.restHakedisDetayMockMvc = MockMvcBuilders.standaloneSetup(hakedisDetayResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -192,6 +197,117 @@ public class HakedisDetayResourceIntTest {
             .andExpect(jsonPath("$.id").value(hakedisDetay.getId().intValue()))
             .andExpect(jsonPath("$.miktar").value(DEFAULT_MIKTAR.doubleValue()));
     }
+
+    @Test
+    @Transactional
+    public void getAllHakedisDetaysByMiktarIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisDetayRepository.saveAndFlush(hakedisDetay);
+
+        // Get all the hakedisDetayList where miktar equals to DEFAULT_MIKTAR
+        defaultHakedisDetayShouldBeFound("miktar.equals=" + DEFAULT_MIKTAR);
+
+        // Get all the hakedisDetayList where miktar equals to UPDATED_MIKTAR
+        defaultHakedisDetayShouldNotBeFound("miktar.equals=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisDetaysByMiktarIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisDetayRepository.saveAndFlush(hakedisDetay);
+
+        // Get all the hakedisDetayList where miktar in DEFAULT_MIKTAR or UPDATED_MIKTAR
+        defaultHakedisDetayShouldBeFound("miktar.in=" + DEFAULT_MIKTAR + "," + UPDATED_MIKTAR);
+
+        // Get all the hakedisDetayList where miktar equals to UPDATED_MIKTAR
+        defaultHakedisDetayShouldNotBeFound("miktar.in=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisDetaysByMiktarIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisDetayRepository.saveAndFlush(hakedisDetay);
+
+        // Get all the hakedisDetayList where miktar is not null
+        defaultHakedisDetayShouldBeFound("miktar.specified=true");
+
+        // Get all the hakedisDetayList where miktar is null
+        defaultHakedisDetayShouldNotBeFound("miktar.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisDetaysByHakedisIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Hakedis hakedis = HakedisResourceIntTest.createEntity(em);
+        em.persist(hakedis);
+        em.flush();
+        hakedisDetay.setHakedis(hakedis);
+        hakedisDetayRepository.saveAndFlush(hakedisDetay);
+        Long hakedisId = hakedis.getId();
+
+        // Get all the hakedisDetayList where hakedis equals to hakedisId
+        defaultHakedisDetayShouldBeFound("hakedisId.equals=" + hakedisId);
+
+        // Get all the hakedisDetayList where hakedis equals to hakedisId + 1
+        defaultHakedisDetayShouldNotBeFound("hakedisId.equals=" + (hakedisId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllHakedisDetaysByPozIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Poz poz = PozResourceIntTest.createEntity(em);
+        em.persist(poz);
+        em.flush();
+        hakedisDetay.setPoz(poz);
+        hakedisDetayRepository.saveAndFlush(hakedisDetay);
+        Long pozId = poz.getId();
+
+        // Get all the hakedisDetayList where poz equals to pozId
+        defaultHakedisDetayShouldBeFound("pozId.equals=" + pozId);
+
+        // Get all the hakedisDetayList where poz equals to pozId + 1
+        defaultHakedisDetayShouldNotBeFound("pozId.equals=" + (pozId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultHakedisDetayShouldBeFound(String filter) throws Exception {
+        restHakedisDetayMockMvc.perform(get("/api/hakedis-detays?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(hakedisDetay.getId().intValue())))
+            .andExpect(jsonPath("$.[*].miktar").value(hasItem(DEFAULT_MIKTAR.doubleValue())));
+
+        // Check, that the count call also returns 1
+        restHakedisDetayMockMvc.perform(get("/api/hakedis-detays/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultHakedisDetayShouldNotBeFound(String filter) throws Exception {
+        restHakedisDetayMockMvc.perform(get("/api/hakedis-detays?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restHakedisDetayMockMvc.perform(get("/api/hakedis-detays/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

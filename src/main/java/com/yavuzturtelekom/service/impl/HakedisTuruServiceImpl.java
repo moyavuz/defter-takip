@@ -6,10 +6,11 @@ import com.yavuzturtelekom.repository.HakedisTuruRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,13 +43,14 @@ public class HakedisTuruServiceImpl implements HakedisTuruService {
     /**
      * Get all the hakedisTurus.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<HakedisTuru> findAll() {
+    public Page<HakedisTuru> findAll(Pageable pageable) {
         log.debug("Request to get all HakedisTurus");
-        return hakedisTuruRepository.findAll();
+        return hakedisTuruRepository.findAll(pageable);
     }
 
 
@@ -72,6 +74,7 @@ public class HakedisTuruServiceImpl implements HakedisTuruService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete HakedisTuru : {}", id);        hakedisTuruRepository.deleteById(id);
+        log.debug("Request to delete HakedisTuru : {}", id);
+        hakedisTuruRepository.deleteById(id);
     }
 }

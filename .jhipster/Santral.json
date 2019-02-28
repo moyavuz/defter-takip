@@ -12,28 +12,27 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "mudurluk",
             "otherEntityName": "mudurluk",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "santral"
+            "otherEntityRelationshipName": "santral",
+            "relationshipName": "mudurluk",
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "personel",
+            "otherEntityRelationshipName": "santral",
             "relationshipValidateRules": "required",
             "relationshipName": "santralSorumlu",
-            "otherEntityName": "personel",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "santral"
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095633",
     "entityTableName": "santral",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

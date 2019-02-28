@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { IPersonelIzin } from 'app/shared/model/personel-izin.model';
 import { AccountService } from 'app/core';
+
+import { ITEMS_PER_PAGE } from 'app/shared';
 import { PersonelIzinService } from './personel-izin.service';
 
 @Component({
@@ -13,31 +16,80 @@ import { PersonelIzinService } from './personel-izin.service';
     templateUrl: './personel-izin.component.html'
 })
 export class PersonelIzinComponent implements OnInit, OnDestroy {
-    personelIzins: IPersonelIzin[];
     currentAccount: any;
+    personelIzins: IPersonelIzin[];
+    error: any;
+    success: any;
     eventSubscriber: Subscription;
+    routeData: any;
+    links: any;
+    totalItems: any;
+    itemsPerPage: any;
+    page: any;
+    predicate: any;
+    previousPage: any;
+    reverse: any;
 
     constructor(
         protected personelIzinService: PersonelIzinService,
+        protected parseLinks: JhiParseLinks,
         protected jhiAlertService: JhiAlertService,
+        protected accountService: AccountService,
+        protected activatedRoute: ActivatedRoute,
         protected dataUtils: JhiDataUtils,
-        protected eventManager: JhiEventManager,
-        protected accountService: AccountService
-    ) {}
+        protected router: Router,
+        protected eventManager: JhiEventManager
+    ) {
+        this.itemsPerPage = ITEMS_PER_PAGE;
+        this.routeData = this.activatedRoute.data.subscribe(data => {
+            this.page = data.pagingParams.page;
+            this.previousPage = data.pagingParams.page;
+            this.reverse = data.pagingParams.ascending;
+            this.predicate = data.pagingParams.predicate;
+        });
+    }
 
     loadAll() {
         this.personelIzinService
-            .query()
-            .pipe(
-                filter((res: HttpResponse<IPersonelIzin[]>) => res.ok),
-                map((res: HttpResponse<IPersonelIzin[]>) => res.body)
-            )
+            .query({
+                page: this.page - 1,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            })
             .subscribe(
-                (res: IPersonelIzin[]) => {
-                    this.personelIzins = res;
-                },
+                (res: HttpResponse<IPersonelIzin[]>) => this.paginatePersonelIzins(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+    }
+
+    loadPage(page: number) {
+        if (page !== this.previousPage) {
+            this.previousPage = page;
+            this.transition();
+        }
+    }
+
+    transition() {
+        this.router.navigate(['/personel-izin'], {
+            queryParams: {
+                page: this.page,
+                size: this.itemsPerPage,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        });
+        this.loadAll();
+    }
+
+    clear() {
+        this.page = 0;
+        this.router.navigate([
+            '/personel-izin',
+            {
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        ]);
+        this.loadAll();
     }
 
     ngOnInit() {
@@ -66,6 +118,20 @@ export class PersonelIzinComponent implements OnInit, OnDestroy {
 
     registerChangeInPersonelIzins() {
         this.eventSubscriber = this.eventManager.subscribe('personelIzinListModification', response => this.loadAll());
+    }
+
+    sort() {
+        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+        if (this.predicate !== 'id') {
+            result.push('id');
+        }
+        return result;
+    }
+
+    protected paginatePersonelIzins(data: IPersonelIzin[], headers: HttpHeaders) {
+        this.links = this.parseLinks.parse(headers.get('link'));
+        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
+        this.personelIzins = data;
     }
 
     protected onError(errorMessage: string) {

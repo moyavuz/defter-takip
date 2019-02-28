@@ -8,6 +8,8 @@ import com.yavuzturtelekom.domain.Il;
 import com.yavuzturtelekom.repository.MudurlukRepository;
 import com.yavuzturtelekom.service.MudurlukService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.MudurlukCriteria;
+import com.yavuzturtelekom.service.MudurlukQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +58,9 @@ public class MudurlukResourceIntTest {
     private MudurlukService mudurlukService;
 
     @Autowired
+    private MudurlukQueryService mudurlukQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -77,7 +82,7 @@ public class MudurlukResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MudurlukResource mudurlukResource = new MudurlukResource(mudurlukService);
+        final MudurlukResource mudurlukResource = new MudurlukResource(mudurlukService, mudurlukQueryService);
         this.restMudurlukMockMvc = MockMvcBuilders.standaloneSetup(mudurlukResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -199,6 +204,157 @@ public class MudurlukResourceIntTest {
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()))
             .andExpect(jsonPath("$.adres").value(DEFAULT_ADRES.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllMudurluksByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        mudurlukRepository.saveAndFlush(mudurluk);
+
+        // Get all the mudurlukList where ad equals to DEFAULT_AD
+        defaultMudurlukShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the mudurlukList where ad equals to UPDATED_AD
+        defaultMudurlukShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMudurluksByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        mudurlukRepository.saveAndFlush(mudurluk);
+
+        // Get all the mudurlukList where ad in DEFAULT_AD or UPDATED_AD
+        defaultMudurlukShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the mudurlukList where ad equals to UPDATED_AD
+        defaultMudurlukShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMudurluksByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        mudurlukRepository.saveAndFlush(mudurluk);
+
+        // Get all the mudurlukList where ad is not null
+        defaultMudurlukShouldBeFound("ad.specified=true");
+
+        // Get all the mudurlukList where ad is null
+        defaultMudurlukShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMudurluksByAdresIsEqualToSomething() throws Exception {
+        // Initialize the database
+        mudurlukRepository.saveAndFlush(mudurluk);
+
+        // Get all the mudurlukList where adres equals to DEFAULT_ADRES
+        defaultMudurlukShouldBeFound("adres.equals=" + DEFAULT_ADRES);
+
+        // Get all the mudurlukList where adres equals to UPDATED_ADRES
+        defaultMudurlukShouldNotBeFound("adres.equals=" + UPDATED_ADRES);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMudurluksByAdresIsInShouldWork() throws Exception {
+        // Initialize the database
+        mudurlukRepository.saveAndFlush(mudurluk);
+
+        // Get all the mudurlukList where adres in DEFAULT_ADRES or UPDATED_ADRES
+        defaultMudurlukShouldBeFound("adres.in=" + DEFAULT_ADRES + "," + UPDATED_ADRES);
+
+        // Get all the mudurlukList where adres equals to UPDATED_ADRES
+        defaultMudurlukShouldNotBeFound("adres.in=" + UPDATED_ADRES);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMudurluksByAdresIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        mudurlukRepository.saveAndFlush(mudurluk);
+
+        // Get all the mudurlukList where adres is not null
+        defaultMudurlukShouldBeFound("adres.specified=true");
+
+        // Get all the mudurlukList where adres is null
+        defaultMudurlukShouldNotBeFound("adres.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMudurluksByMudurlukSorumluIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel mudurlukSorumlu = PersonelResourceIntTest.createEntity(em);
+        em.persist(mudurlukSorumlu);
+        em.flush();
+        mudurluk.setMudurlukSorumlu(mudurlukSorumlu);
+        mudurlukRepository.saveAndFlush(mudurluk);
+        Long mudurlukSorumluId = mudurlukSorumlu.getId();
+
+        // Get all the mudurlukList where mudurlukSorumlu equals to mudurlukSorumluId
+        defaultMudurlukShouldBeFound("mudurlukSorumluId.equals=" + mudurlukSorumluId);
+
+        // Get all the mudurlukList where mudurlukSorumlu equals to mudurlukSorumluId + 1
+        defaultMudurlukShouldNotBeFound("mudurlukSorumluId.equals=" + (mudurlukSorumluId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMudurluksByIlIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Il il = IlResourceIntTest.createEntity(em);
+        em.persist(il);
+        em.flush();
+        mudurluk.setIl(il);
+        mudurlukRepository.saveAndFlush(mudurluk);
+        Long ilId = il.getId();
+
+        // Get all the mudurlukList where il equals to ilId
+        defaultMudurlukShouldBeFound("ilId.equals=" + ilId);
+
+        // Get all the mudurlukList where il equals to ilId + 1
+        defaultMudurlukShouldNotBeFound("ilId.equals=" + (ilId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultMudurlukShouldBeFound(String filter) throws Exception {
+        restMudurlukMockMvc.perform(get("/api/mudurluks?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(mudurluk.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].adres").value(hasItem(DEFAULT_ADRES)));
+
+        // Check, that the count call also returns 1
+        restMudurlukMockMvc.perform(get("/api/mudurluks/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultMudurlukShouldNotBeFound(String filter) throws Exception {
+        restMudurlukMockMvc.perform(get("/api/mudurluks?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restMudurlukMockMvc.perform(get("/api/mudurluks/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

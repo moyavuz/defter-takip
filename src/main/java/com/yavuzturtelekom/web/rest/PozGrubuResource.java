@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.PozGrubu;
 import com.yavuzturtelekom.service.PozGrubuService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.PozGrubuCriteria;
+import com.yavuzturtelekom.service.PozGrubuQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class PozGrubuResource {
 
     private final PozGrubuService pozGrubuService;
 
-    public PozGrubuResource(PozGrubuService pozGrubuService) {
+    private final PozGrubuQueryService pozGrubuQueryService;
+
+    public PozGrubuResource(PozGrubuService pozGrubuService, PozGrubuQueryService pozGrubuQueryService) {
         this.pozGrubuService = pozGrubuService;
+        this.pozGrubuQueryService = pozGrubuQueryService;
     }
 
     /**
@@ -76,13 +86,28 @@ public class PozGrubuResource {
     /**
      * GET  /poz-grubus : get all the pozGrubus.
      *
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of pozGrubus in body
      */
     @GetMapping("/poz-grubus")
-    public List<PozGrubu> getAllPozGrubus(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all PozGrubus");
-        return pozGrubuService.findAll();
+    public ResponseEntity<List<PozGrubu>> getAllPozGrubus(PozGrubuCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get PozGrubus by criteria: {}", criteria);
+        Page<PozGrubu> page = pozGrubuQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/poz-grubus");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /poz-grubus/count : count all the pozGrubus.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/poz-grubus/count")
+    public ResponseEntity<Long> countPozGrubus(PozGrubuCriteria criteria) {
+        log.debug("REST request to count PozGrubus by criteria: {}", criteria);
+        return ResponseEntity.ok().body(pozGrubuQueryService.countByCriteria(criteria));
     }
 
     /**

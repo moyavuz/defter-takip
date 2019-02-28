@@ -23,7 +23,7 @@ import com.yavuzturtelekom.domain.enumeration.IsDurumu;
 @Entity
 @Table(name = "proje")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Proje extends AbstractAuditingEntity implements Serializable {
+public class Proje implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

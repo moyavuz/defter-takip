@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.ProjeTuru;
 import com.yavuzturtelekom.service.ProjeTuruService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.ProjeTuruCriteria;
+import com.yavuzturtelekom.service.ProjeTuruQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class ProjeTuruResource {
 
     private final ProjeTuruService projeTuruService;
 
-    public ProjeTuruResource(ProjeTuruService projeTuruService) {
+    private final ProjeTuruQueryService projeTuruQueryService;
+
+    public ProjeTuruResource(ProjeTuruService projeTuruService, ProjeTuruQueryService projeTuruQueryService) {
         this.projeTuruService = projeTuruService;
+        this.projeTuruQueryService = projeTuruQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class ProjeTuruResource {
     /**
      * GET  /proje-turus : get all the projeTurus.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of projeTurus in body
      */
     @GetMapping("/proje-turus")
-    public List<ProjeTuru> getAllProjeTurus() {
-        log.debug("REST request to get all ProjeTurus");
-        return projeTuruService.findAll();
+    public ResponseEntity<List<ProjeTuru>> getAllProjeTurus(ProjeTuruCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get ProjeTurus by criteria: {}", criteria);
+        Page<ProjeTuru> page = projeTuruQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/proje-turus");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /proje-turus/count : count all the projeTurus.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/proje-turus/count")
+    public ResponseEntity<Long> countProjeTurus(ProjeTuruCriteria criteria) {
+        log.debug("REST request to count ProjeTurus by criteria: {}", criteria);
+        return ResponseEntity.ok().body(projeTuruQueryService.countByCriteria(criteria));
     }
 
     /**

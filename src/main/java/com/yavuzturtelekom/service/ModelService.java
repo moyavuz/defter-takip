@@ -2,7 +2,9 @@ package com.yavuzturtelekom.service;
 
 import com.yavuzturtelekom.domain.Model;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 /**
@@ -21,9 +23,10 @@ public interface ModelService {
     /**
      * Get all the models.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
-    List<Model> findAll();
+    Page<Model> findAll(Pageable pageable);
 
 
     /**

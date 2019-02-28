@@ -4,6 +4,8 @@ import com.yavuzturtelekom.service.StokTakipService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
 import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.StokTakipCriteria;
+import com.yavuzturtelekom.service.StokTakipQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +36,11 @@ public class StokTakipResource {
 
     private final StokTakipService stokTakipService;
 
-    public StokTakipResource(StokTakipService stokTakipService) {
+    private final StokTakipQueryService stokTakipQueryService;
+
+    public StokTakipResource(StokTakipService stokTakipService, StokTakipQueryService stokTakipQueryService) {
         this.stokTakipService = stokTakipService;
+        this.stokTakipQueryService = stokTakipQueryService;
     }
 
     /**
@@ -82,14 +87,27 @@ public class StokTakipResource {
      * GET  /stok-takips : get all the stokTakips.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of stokTakips in body
      */
     @GetMapping("/stok-takips")
-    public ResponseEntity<List<StokTakip>> getAllStokTakips(Pageable pageable) {
-        log.debug("REST request to get a page of StokTakips");
-        Page<StokTakip> page = stokTakipService.findAll(pageable);
+    public ResponseEntity<List<StokTakip>> getAllStokTakips(StokTakipCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get StokTakips by criteria: {}", criteria);
+        Page<StokTakip> page = stokTakipQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stok-takips");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /stok-takips/count : count all the stokTakips.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/stok-takips/count")
+    public ResponseEntity<Long> countStokTakips(StokTakipCriteria criteria) {
+        log.debug("REST request to count StokTakips by criteria: {}", criteria);
+        return ResponseEntity.ok().body(stokTakipQueryService.countByCriteria(criteria));
     }
 
     /**

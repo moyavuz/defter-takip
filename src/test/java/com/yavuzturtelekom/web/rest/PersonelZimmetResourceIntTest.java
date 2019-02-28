@@ -8,6 +8,8 @@ import com.yavuzturtelekom.domain.ZimmetTuru;
 import com.yavuzturtelekom.repository.PersonelZimmetRepository;
 import com.yavuzturtelekom.service.PersonelZimmetService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.PersonelZimmetCriteria;
+import com.yavuzturtelekom.service.PersonelZimmetQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +72,9 @@ public class PersonelZimmetResourceIntTest {
     private PersonelZimmetService personelZimmetService;
 
     @Autowired
+    private PersonelZimmetQueryService personelZimmetQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -91,7 +96,7 @@ public class PersonelZimmetResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PersonelZimmetResource personelZimmetResource = new PersonelZimmetResource(personelZimmetService);
+        final PersonelZimmetResource personelZimmetResource = new PersonelZimmetResource(personelZimmetService, personelZimmetQueryService);
         this.restPersonelZimmetMockMvc = MockMvcBuilders.standaloneSetup(personelZimmetResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -211,6 +216,188 @@ public class PersonelZimmetResourceIntTest {
             .andExpect(jsonPath("$.dosyaContentType").value(DEFAULT_DOSYA_CONTENT_TYPE))
             .andExpect(jsonPath("$.dosya").value(Base64Utils.encodeToString(DEFAULT_DOSYA)));
     }
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+
+        // Get all the personelZimmetList where tarih equals to DEFAULT_TARIH
+        defaultPersonelZimmetShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the personelZimmetList where tarih equals to UPDATED_TARIH
+        defaultPersonelZimmetShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+
+        // Get all the personelZimmetList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultPersonelZimmetShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the personelZimmetList where tarih equals to UPDATED_TARIH
+        defaultPersonelZimmetShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+
+        // Get all the personelZimmetList where tarih is not null
+        defaultPersonelZimmetShouldBeFound("tarih.specified=true");
+
+        // Get all the personelZimmetList where tarih is null
+        defaultPersonelZimmetShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+
+        // Get all the personelZimmetList where tarih greater than or equals to DEFAULT_TARIH
+        defaultPersonelZimmetShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the personelZimmetList where tarih greater than or equals to UPDATED_TARIH
+        defaultPersonelZimmetShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+
+        // Get all the personelZimmetList where tarih less than or equals to DEFAULT_TARIH
+        defaultPersonelZimmetShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the personelZimmetList where tarih less than or equals to UPDATED_TARIH
+        defaultPersonelZimmetShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByDurumuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+
+        // Get all the personelZimmetList where durumu equals to DEFAULT_DURUMU
+        defaultPersonelZimmetShouldBeFound("durumu.equals=" + DEFAULT_DURUMU);
+
+        // Get all the personelZimmetList where durumu equals to UPDATED_DURUMU
+        defaultPersonelZimmetShouldNotBeFound("durumu.equals=" + UPDATED_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByDurumuIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+
+        // Get all the personelZimmetList where durumu in DEFAULT_DURUMU or UPDATED_DURUMU
+        defaultPersonelZimmetShouldBeFound("durumu.in=" + DEFAULT_DURUMU + "," + UPDATED_DURUMU);
+
+        // Get all the personelZimmetList where durumu equals to UPDATED_DURUMU
+        defaultPersonelZimmetShouldNotBeFound("durumu.in=" + UPDATED_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByDurumuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+
+        // Get all the personelZimmetList where durumu is not null
+        defaultPersonelZimmetShouldBeFound("durumu.specified=true");
+
+        // Get all the personelZimmetList where durumu is null
+        defaultPersonelZimmetShouldNotBeFound("durumu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByPersonelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel personel = PersonelResourceIntTest.createEntity(em);
+        em.persist(personel);
+        em.flush();
+        personelZimmet.setPersonel(personel);
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+        Long personelId = personel.getId();
+
+        // Get all the personelZimmetList where personel equals to personelId
+        defaultPersonelZimmetShouldBeFound("personelId.equals=" + personelId);
+
+        // Get all the personelZimmetList where personel equals to personelId + 1
+        defaultPersonelZimmetShouldNotBeFound("personelId.equals=" + (personelId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelZimmetsByZimmetIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ZimmetTuru zimmet = ZimmetTuruResourceIntTest.createEntity(em);
+        em.persist(zimmet);
+        em.flush();
+        personelZimmet.setZimmet(zimmet);
+        personelZimmetRepository.saveAndFlush(personelZimmet);
+        Long zimmetId = zimmet.getId();
+
+        // Get all the personelZimmetList where zimmet equals to zimmetId
+        defaultPersonelZimmetShouldBeFound("zimmetId.equals=" + zimmetId);
+
+        // Get all the personelZimmetList where zimmet equals to zimmetId + 1
+        defaultPersonelZimmetShouldNotBeFound("zimmetId.equals=" + (zimmetId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultPersonelZimmetShouldBeFound(String filter) throws Exception {
+        restPersonelZimmetMockMvc.perform(get("/api/personel-zimmets?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(personelZimmet.getId().intValue())))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())))
+            .andExpect(jsonPath("$.[*].durumu").value(hasItem(DEFAULT_DURUMU.toString())))
+            .andExpect(jsonPath("$.[*].resimContentType").value(hasItem(DEFAULT_RESIM_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].resim").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESIM))))
+            .andExpect(jsonPath("$.[*].dosyaContentType").value(hasItem(DEFAULT_DOSYA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].dosya").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOSYA))));
+
+        // Check, that the count call also returns 1
+        restPersonelZimmetMockMvc.perform(get("/api/personel-zimmets/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultPersonelZimmetShouldNotBeFound(String filter) throws Exception {
+        restPersonelZimmetMockMvc.perform(get("/api/personel-zimmets?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restPersonelZimmetMockMvc.perform(get("/api/personel-zimmets/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

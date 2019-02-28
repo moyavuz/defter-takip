@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.HakedisTuru;
 import com.yavuzturtelekom.service.HakedisTuruService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.HakedisTuruCriteria;
+import com.yavuzturtelekom.service.HakedisTuruQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class HakedisTuruResource {
 
     private final HakedisTuruService hakedisTuruService;
 
-    public HakedisTuruResource(HakedisTuruService hakedisTuruService) {
+    private final HakedisTuruQueryService hakedisTuruQueryService;
+
+    public HakedisTuruResource(HakedisTuruService hakedisTuruService, HakedisTuruQueryService hakedisTuruQueryService) {
         this.hakedisTuruService = hakedisTuruService;
+        this.hakedisTuruQueryService = hakedisTuruQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class HakedisTuruResource {
     /**
      * GET  /hakedis-turus : get all the hakedisTurus.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of hakedisTurus in body
      */
     @GetMapping("/hakedis-turus")
-    public List<HakedisTuru> getAllHakedisTurus() {
-        log.debug("REST request to get all HakedisTurus");
-        return hakedisTuruService.findAll();
+    public ResponseEntity<List<HakedisTuru>> getAllHakedisTurus(HakedisTuruCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get HakedisTurus by criteria: {}", criteria);
+        Page<HakedisTuru> page = hakedisTuruQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/hakedis-turus");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /hakedis-turus/count : count all the hakedisTurus.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/hakedis-turus/count")
+    public ResponseEntity<Long> countHakedisTurus(HakedisTuruCriteria criteria) {
+        log.debug("REST request to count HakedisTurus by criteria: {}", criteria);
+        return ResponseEntity.ok().body(hakedisTuruQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface EkipRepository extends JpaRepository<Ekip, Long> {
+public interface EkipRepository extends JpaRepository<Ekip, Long>, JpaSpecificationExecutor<Ekip> {
 
     @Query(value = "select distinct ekip from Ekip ekip left join fetch ekip.ekipPersonels",
         countQuery = "select count(distinct ekip) from Ekip ekip")

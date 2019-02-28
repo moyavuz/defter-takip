@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { IEkip } from 'app/shared/model/ekip.model';
 import { AccountService } from 'app/core';
+
+import { ITEMS_PER_PAGE } from 'app/shared';
 import { EkipService } from './ekip.service';
 
 @Component({
@@ -13,30 +16,79 @@ import { EkipService } from './ekip.service';
     templateUrl: './ekip.component.html'
 })
 export class EkipComponent implements OnInit, OnDestroy {
-    ekips: IEkip[];
     currentAccount: any;
+    ekips: IEkip[];
+    error: any;
+    success: any;
     eventSubscriber: Subscription;
+    routeData: any;
+    links: any;
+    totalItems: any;
+    itemsPerPage: any;
+    page: any;
+    predicate: any;
+    previousPage: any;
+    reverse: any;
 
     constructor(
         protected ekipService: EkipService,
+        protected parseLinks: JhiParseLinks,
         protected jhiAlertService: JhiAlertService,
-        protected eventManager: JhiEventManager,
-        protected accountService: AccountService
-    ) {}
+        protected accountService: AccountService,
+        protected activatedRoute: ActivatedRoute,
+        protected router: Router,
+        protected eventManager: JhiEventManager
+    ) {
+        this.itemsPerPage = ITEMS_PER_PAGE;
+        this.routeData = this.activatedRoute.data.subscribe(data => {
+            this.page = data.pagingParams.page;
+            this.previousPage = data.pagingParams.page;
+            this.reverse = data.pagingParams.ascending;
+            this.predicate = data.pagingParams.predicate;
+        });
+    }
 
     loadAll() {
         this.ekipService
-            .query()
-            .pipe(
-                filter((res: HttpResponse<IEkip[]>) => res.ok),
-                map((res: HttpResponse<IEkip[]>) => res.body)
-            )
+            .query({
+                page: this.page - 1,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            })
             .subscribe(
-                (res: IEkip[]) => {
-                    this.ekips = res;
-                },
+                (res: HttpResponse<IEkip[]>) => this.paginateEkips(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+    }
+
+    loadPage(page: number) {
+        if (page !== this.previousPage) {
+            this.previousPage = page;
+            this.transition();
+        }
+    }
+
+    transition() {
+        this.router.navigate(['/ekip'], {
+            queryParams: {
+                page: this.page,
+                size: this.itemsPerPage,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        });
+        this.loadAll();
+    }
+
+    clear() {
+        this.page = 0;
+        this.router.navigate([
+            '/ekip',
+            {
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        ]);
+        this.loadAll();
     }
 
     ngOnInit() {
@@ -57,6 +109,20 @@ export class EkipComponent implements OnInit, OnDestroy {
 
     registerChangeInEkips() {
         this.eventSubscriber = this.eventManager.subscribe('ekipListModification', response => this.loadAll());
+    }
+
+    sort() {
+        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+        if (this.predicate !== 'id') {
+            result.push('id');
+        }
+        return result;
+    }
+
+    protected paginateEkips(data: IEkip[], headers: HttpHeaders) {
+        this.links = this.parseLinks.parse(headers.get('link'));
+        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
+        this.ekips = data;
     }
 
     protected onError(errorMessage: string) {

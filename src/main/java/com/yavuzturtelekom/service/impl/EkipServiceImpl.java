@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,13 +43,14 @@ public class EkipServiceImpl implements EkipService {
     /**
      * Get all the ekips.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Ekip> findAll() {
+    public Page<Ekip> findAll(Pageable pageable) {
         log.debug("Request to get all Ekips");
-        return ekipRepository.findAllWithEagerRelationships();
+        return ekipRepository.findAll(pageable);
     }
 
     /**
@@ -83,6 +83,7 @@ public class EkipServiceImpl implements EkipService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Ekip : {}", id);        ekipRepository.deleteById(id);
+        log.debug("Request to delete Ekip : {}", id);
+        ekipRepository.deleteById(id);
     }
 }

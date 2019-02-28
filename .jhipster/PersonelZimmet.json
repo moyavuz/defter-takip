@@ -24,29 +24,28 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "personel",
+            "otherEntityRelationshipName": "personelZimmet",
             "relationshipValidateRules": "required",
             "relationshipName": "personel",
-            "otherEntityName": "personel",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "personelZimmet"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "zimmetTuru",
+            "otherEntityRelationshipName": "personelZimmet",
             "relationshipValidateRules": "required",
             "relationshipName": "zimmet",
-            "otherEntityName": "zimmetTuru",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "personelZimmet"
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095641",
     "entityTableName": "personel_zimmet",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

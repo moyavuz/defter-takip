@@ -44,34 +44,34 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "hakedisDetay",
             "otherEntityName": "hakedisDetay",
-            "otherEntityRelationshipName": "poz"
+            "otherEntityRelationshipName": "poz",
+            "relationshipName": "hakedisDetay"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "birim",
+            "otherEntityRelationshipName": "poz",
             "relationshipValidateRules": "required",
             "relationshipName": "birim",
-            "otherEntityName": "birim",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "poz"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "grup",
             "otherEntityName": "pozGrubu",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "pozListesi"
+            "otherEntityRelationshipName": "pozListesi",
+            "relationshipName": "grup",
+            "otherEntityField": "id",
+            "ownerSide": false
         }
     ],
     "changelogDate": "20190221095630",
     "entityTableName": "poz",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

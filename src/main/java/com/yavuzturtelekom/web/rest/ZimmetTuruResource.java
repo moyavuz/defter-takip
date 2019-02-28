@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.ZimmetTuru;
 import com.yavuzturtelekom.service.ZimmetTuruService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.ZimmetTuruCriteria;
+import com.yavuzturtelekom.service.ZimmetTuruQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class ZimmetTuruResource {
 
     private final ZimmetTuruService zimmetTuruService;
 
-    public ZimmetTuruResource(ZimmetTuruService zimmetTuruService) {
+    private final ZimmetTuruQueryService zimmetTuruQueryService;
+
+    public ZimmetTuruResource(ZimmetTuruService zimmetTuruService, ZimmetTuruQueryService zimmetTuruQueryService) {
         this.zimmetTuruService = zimmetTuruService;
+        this.zimmetTuruQueryService = zimmetTuruQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class ZimmetTuruResource {
     /**
      * GET  /zimmet-turus : get all the zimmetTurus.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of zimmetTurus in body
      */
     @GetMapping("/zimmet-turus")
-    public List<ZimmetTuru> getAllZimmetTurus() {
-        log.debug("REST request to get all ZimmetTurus");
-        return zimmetTuruService.findAll();
+    public ResponseEntity<List<ZimmetTuru>> getAllZimmetTurus(ZimmetTuruCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get ZimmetTurus by criteria: {}", criteria);
+        Page<ZimmetTuru> page = zimmetTuruQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/zimmet-turus");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /zimmet-turus/count : count all the zimmetTurus.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/zimmet-turus/count")
+    public ResponseEntity<Long> countZimmetTurus(ZimmetTuruCriteria criteria) {
+        log.debug("REST request to count ZimmetTurus by criteria: {}", criteria);
+        return ResponseEntity.ok().body(zimmetTuruQueryService.countByCriteria(criteria));
     }
 
     /**

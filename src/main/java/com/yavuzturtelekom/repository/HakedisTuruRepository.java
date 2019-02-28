@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface HakedisTuruRepository extends JpaRepository<HakedisTuru, Long> {
+public interface HakedisTuruRepository extends JpaRepository<HakedisTuru, Long>, JpaSpecificationExecutor<HakedisTuru> {
 
 }

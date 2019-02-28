@@ -12,29 +12,28 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "hakedis",
+            "otherEntityRelationshipName": "hakedisDetay",
             "relationshipValidateRules": "required",
             "relationshipName": "hakedis",
-            "otherEntityName": "hakedis",
-            "otherEntityField": "id",
-            "otherEntityRelationshipName": "hakedis"
+            "otherEntityField": "id"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "poz",
+            "otherEntityRelationshipName": "hakedisDetay",
             "relationshipValidateRules": "required",
             "relationshipName": "poz",
-            "otherEntityName": "poz",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "poz"
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095638",
     "entityTableName": "hakedis_detay",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

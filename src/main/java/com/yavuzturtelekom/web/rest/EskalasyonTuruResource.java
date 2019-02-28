@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.EskalasyonTuru;
 import com.yavuzturtelekom.service.EskalasyonTuruService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.EskalasyonTuruCriteria;
+import com.yavuzturtelekom.service.EskalasyonTuruQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class EskalasyonTuruResource {
 
     private final EskalasyonTuruService eskalasyonTuruService;
 
-    public EskalasyonTuruResource(EskalasyonTuruService eskalasyonTuruService) {
+    private final EskalasyonTuruQueryService eskalasyonTuruQueryService;
+
+    public EskalasyonTuruResource(EskalasyonTuruService eskalasyonTuruService, EskalasyonTuruQueryService eskalasyonTuruQueryService) {
         this.eskalasyonTuruService = eskalasyonTuruService;
+        this.eskalasyonTuruQueryService = eskalasyonTuruQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class EskalasyonTuruResource {
     /**
      * GET  /eskalasyon-turus : get all the eskalasyonTurus.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of eskalasyonTurus in body
      */
     @GetMapping("/eskalasyon-turus")
-    public List<EskalasyonTuru> getAllEskalasyonTurus() {
-        log.debug("REST request to get all EskalasyonTurus");
-        return eskalasyonTuruService.findAll();
+    public ResponseEntity<List<EskalasyonTuru>> getAllEskalasyonTurus(EskalasyonTuruCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get EskalasyonTurus by criteria: {}", criteria);
+        Page<EskalasyonTuru> page = eskalasyonTuruQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/eskalasyon-turus");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /eskalasyon-turus/count : count all the eskalasyonTurus.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/eskalasyon-turus/count")
+    public ResponseEntity<Long> countEskalasyonTurus(EskalasyonTuruCriteria criteria) {
+        log.debug("REST request to count EskalasyonTurus by criteria: {}", criteria);
+        return ResponseEntity.ok().body(eskalasyonTuruQueryService.countByCriteria(criteria));
     }
 
     /**

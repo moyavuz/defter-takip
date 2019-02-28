@@ -15,6 +15,7 @@ export interface IEkip {
     telefon?: string;
     eposta?: string;
     turu?: PersonelTuru;
+    tenzilatOran?: number;
     hakedis?: IHakedis[];
     stokTakips?: IStokTakip[];
     ekipSorumlu?: IPersonel;
@@ -29,6 +30,7 @@ export class Ekip implements IEkip {
         public telefon?: string,
         public eposta?: string,
         public turu?: PersonelTuru,
+        public tenzilatOran?: number,
         public hakedis?: IHakedis[],
         public stokTakips?: IStokTakip[],
         public ekipSorumlu?: IPersonel,

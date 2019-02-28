@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,13 +43,14 @@ public class MalzemeGrubuServiceImpl implements MalzemeGrubuService {
     /**
      * Get all the malzemeGrubus.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public List<MalzemeGrubu> findAll() {
+    public Page<MalzemeGrubu> findAll(Pageable pageable) {
         log.debug("Request to get all MalzemeGrubus");
-        return malzemeGrubuRepository.findAllWithEagerRelationships();
+        return malzemeGrubuRepository.findAll(pageable);
     }
 
     /**
@@ -83,6 +83,7 @@ public class MalzemeGrubuServiceImpl implements MalzemeGrubuService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete MalzemeGrubu : {}", id);        malzemeGrubuRepository.deleteById(id);
+        log.debug("Request to delete MalzemeGrubu : {}", id);
+        malzemeGrubuRepository.deleteById(id);
     }
 }

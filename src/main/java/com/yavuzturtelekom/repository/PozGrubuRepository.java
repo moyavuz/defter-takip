@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PozGrubuRepository extends JpaRepository<PozGrubu, Long> {
+public interface PozGrubuRepository extends JpaRepository<PozGrubu, Long>, JpaSpecificationExecutor<PozGrubu> {
 
     @Query(value = "select distinct poz_grubu from PozGrubu poz_grubu left join fetch poz_grubu.pozListesis",
         countQuery = "select count(distinct poz_grubu) from PozGrubu poz_grubu")

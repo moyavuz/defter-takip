@@ -21,26 +21,25 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "stokTakip",
             "otherEntityName": "stokTakip",
-            "otherEntityRelationshipName": "depo"
+            "otherEntityRelationshipName": "depo",
+            "relationshipName": "stokTakip"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "sorumlu",
             "otherEntityName": "personel",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "depo"
+            "otherEntityRelationshipName": "depo",
+            "relationshipName": "sorumlu",
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095622",
     "entityTableName": "depo",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

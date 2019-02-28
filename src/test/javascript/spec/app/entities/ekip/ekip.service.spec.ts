@@ -21,7 +21,7 @@ describe('Service Tests', () => {
             service = injector.get(EkipService);
             httpMock = injector.get(HttpTestingController);
 
-            elemDefault = new Ekip(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', PersonelTuru.MAASLI);
+            elemDefault = new Ekip(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', PersonelTuru.MAASLI, 0);
         });
 
         describe('Service methods', async () => {
@@ -58,7 +58,8 @@ describe('Service Tests', () => {
                         ad: 'BBBBBB',
                         telefon: 'BBBBBB',
                         eposta: 'BBBBBB',
-                        turu: 'BBBBBB'
+                        turu: 'BBBBBB',
+                        tenzilatOran: 1
                     },
                     elemDefault
                 );
@@ -78,7 +79,8 @@ describe('Service Tests', () => {
                         ad: 'BBBBBB',
                         telefon: 'BBBBBB',
                         eposta: 'BBBBBB',
-                        turu: 'BBBBBB'
+                        turu: 'BBBBBB',
+                        tenzilatOran: 1
                     },
                     elemDefault
                 );

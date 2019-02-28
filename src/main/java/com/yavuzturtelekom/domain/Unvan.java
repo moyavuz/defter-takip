@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "unvan")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Unvan extends AbstractAuditingEntity implements Serializable {
+public class Unvan implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
