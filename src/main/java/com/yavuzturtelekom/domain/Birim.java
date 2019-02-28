@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "birim")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Birim extends AbstractAuditingEntity implements Serializable {
+public class Birim implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

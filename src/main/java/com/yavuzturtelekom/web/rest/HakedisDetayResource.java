@@ -4,6 +4,8 @@ import com.yavuzturtelekom.service.HakedisDetayService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
 import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.HakedisDetayCriteria;
+import com.yavuzturtelekom.service.HakedisDetayQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +36,11 @@ public class HakedisDetayResource {
 
     private final HakedisDetayService hakedisDetayService;
 
-    public HakedisDetayResource(HakedisDetayService hakedisDetayService) {
+    private final HakedisDetayQueryService hakedisDetayQueryService;
+
+    public HakedisDetayResource(HakedisDetayService hakedisDetayService, HakedisDetayQueryService hakedisDetayQueryService) {
         this.hakedisDetayService = hakedisDetayService;
+        this.hakedisDetayQueryService = hakedisDetayQueryService;
     }
 
     /**
@@ -82,14 +87,27 @@ public class HakedisDetayResource {
      * GET  /hakedis-detays : get all the hakedisDetays.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of hakedisDetays in body
      */
     @GetMapping("/hakedis-detays")
-    public ResponseEntity<List<HakedisDetay>> getAllHakedisDetays(Pageable pageable) {
-        log.debug("REST request to get a page of HakedisDetays");
-        Page<HakedisDetay> page = hakedisDetayService.findAll(pageable);
+    public ResponseEntity<List<HakedisDetay>> getAllHakedisDetays(HakedisDetayCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get HakedisDetays by criteria: {}", criteria);
+        Page<HakedisDetay> page = hakedisDetayQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/hakedis-detays");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /hakedis-detays/count : count all the hakedisDetays.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/hakedis-detays/count")
+    public ResponseEntity<Long> countHakedisDetays(HakedisDetayCriteria criteria) {
+        log.debug("REST request to count HakedisDetays by criteria: {}", criteria);
+        return ResponseEntity.ok().body(hakedisDetayQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -117,17 +135,4 @@ public class HakedisDetayResource {
         hakedisDetayService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-
-    @GetMapping("/hakedis-detays/hakedis/{hakedisId}")
-    public List<HakedisDetay> getHakedisDetayByHakedis(@PathVariable Long hakedisId) {
-        log.debug("REST request to get HakedisDetay by Hakedis Id: {}", hakedisId);
-
-        Optional<HakedisDetay> hakedisDetay = hakedisDetayService.findOne(hakedisId);
-
-        List<HakedisDetay> actions = hakedisDetayService.findHakedisDetayByHakedisId(hakedisId);
-
-        return actions;
-    }
-
 }

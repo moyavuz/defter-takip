@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.Marka;
 import com.yavuzturtelekom.service.MarkaService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.MarkaCriteria;
+import com.yavuzturtelekom.service.MarkaQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class MarkaResource {
 
     private final MarkaService markaService;
 
-    public MarkaResource(MarkaService markaService) {
+    private final MarkaQueryService markaQueryService;
+
+    public MarkaResource(MarkaService markaService, MarkaQueryService markaQueryService) {
         this.markaService = markaService;
+        this.markaQueryService = markaQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class MarkaResource {
     /**
      * GET  /markas : get all the markas.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of markas in body
      */
     @GetMapping("/markas")
-    public List<Marka> getAllMarkas() {
-        log.debug("REST request to get all Markas");
-        return markaService.findAll();
+    public ResponseEntity<List<Marka>> getAllMarkas(MarkaCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Markas by criteria: {}", criteria);
+        Page<Marka> page = markaQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/markas");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /markas/count : count all the markas.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/markas/count")
+    public ResponseEntity<Long> countMarkas(MarkaCriteria criteria) {
+        log.debug("REST request to count Markas by criteria: {}", criteria);
+        return ResponseEntity.ok().body(markaQueryService.countByCriteria(criteria));
     }
 
     /**

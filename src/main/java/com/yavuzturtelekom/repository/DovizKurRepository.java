@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface DovizKurRepository extends JpaRepository<DovizKur, Long> {
+public interface DovizKurRepository extends JpaRepository<DovizKur, Long>, JpaSpecificationExecutor<DovizKur> {
 
 }

@@ -1,108 +1,94 @@
 <div class="row justify-content-center">
-    <div class="col-12">
+    <div class="col-8">
         <div *ngIf="hakedis">
             <h2><span jhiTranslate="defterTakipApp.hakedis.detail.title">Hakedis</span> {{hakedis.id}}</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
-
             <dl class="row-md jh-entity-details">
-            <div class="row">
-                <div class="col-sm-6">
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.ad">Ad</span></dt>
-                    <dd>
-                        <span>{{hakedis.ad}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.proje">Proje</span></dt>
-                    <dd>
-                        <div *ngIf="hakedis.proje">
-                            <a [routerLink]="['/proje', hakedis.proje?.id, 'view']">{{hakedis.proje?.ad}}</a>
-                        </div>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.turu">Turu</span></dt>
-                    <dd>
-                        <div *ngIf="hakedis.turu">
-                            <a [routerLink]="['/hakedis-turu', hakedis.turu?.id, 'view']">{{hakedis.turu?.ad}}</a>
-                        </div>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.ekip">Ekip</span></dt>
-                    <dd>
-                        <div *ngIf="hakedis.ekip">
-                            <a [routerLink]="['/ekip', hakedis.ekip?.id, 'view']">{{hakedis.ekip?.ad}}</a>
-                        </div>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.santral">Santral</span></dt>
-                    <dd>
-                        <div *ngIf="hakedis.santral">
-                            <a [routerLink]="['/santral', hakedis.santral?.id, 'view']">{{hakedis.santral?.ad}}</a>
-                        </div>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.onemDerecesi">Onem Derecesi</span></dt>
-                    <dd>
-                        <span jhiTranslate="{{'defterTakipApp.OnemDurumu.' + hakedis.onemDerecesi}}">{{hakedis.onemDerecesi}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.isDurumu">Is Durumu</span></dt>
-                    <dd>
-                        <span jhiTranslate="{{'defterTakipApp.IsDurumu.' + hakedis.isDurumu}}">{{hakedis.isDurumu}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.aciklama">Aciklama</span></dt>
-                    <dd>
-                        <span>{{hakedis.aciklama}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.detay">Detay</span></dt>
-                    <dd>
-                        <span>{{hakedis.detay}}</span>
-                    </dd>
-
-                </div>
-                <div class="col-sm-6">
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.tarih">Tarih</span></dt>
-                    <dd>
-                        <span>{{hakedis.tarih}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.seriNo">Seri No</span></dt>
-                    <dd>
-                        <span>{{hakedis.seriNo}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.defterNo">Defter No</span></dt>
-                    <dd>
-                        <span>{{hakedis.defterNo}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.cizimNo">Cizim No</span></dt>
-                    <dd>
-                        <span>{{hakedis.cizimNo}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.odemeNo">Odeme No</span></dt>
-                    <dd>
-                        <span>{{hakedis.odemeNo}}</span>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.odemeDurumu">Odeme Durumu</span></dt>
-                    <dd>
-                        <span jhiTranslate="{{'defterTakipApp.OdemeDurumu.' + hakedis.odemeDurumu}}">{{hakedis.odemeDurumu}}</span>
-                    </dd>
-
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.resim">Resim</span></dt>
-                    <dd>
-                        <div *ngIf="hakedis.resim">
-                            <a (click)="openFile(hakedis.resimContentType, hakedis.resim)">
-                                <img [src]="'data:' + hakedis.resimContentType + ';base64,' + hakedis.resim" style="width: 180px;"
-                                     alt="hakedis image"/>
-                            </a>
-                            {{hakedis.resimContentType}}, {{byteSize(hakedis.resim)}}
-                        </div>
-                    </dd>
-                    <dt><span jhiTranslate="defterTakipApp.hakedis.dosya">Dosya</span></dt>
-                    <dd>
-                        <div *ngIf="hakedis.dosya">
-                            <a (click)="openFile(hakedis.dosyaContentType, hakedis.dosya)" jhiTranslate="entity.action.open">open</a>
-                            {{hakedis.dosyaContentType}}, {{byteSize(hakedis.dosya)}}
-                        </div>
-                    </dd>
-
-
-
-
-                </div>
-            </div>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.ad">Ad</span></dt>
+                <dd>
+                    <span>{{hakedis.ad}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.tarih">Tarih</span></dt>
+                <dd>
+                    <span>{{hakedis.tarih}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.seriNo">Seri No</span></dt>
+                <dd>
+                    <span>{{hakedis.seriNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.defterNo">Defter No</span></dt>
+                <dd>
+                    <span>{{hakedis.defterNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.cizimNo">Cizim No</span></dt>
+                <dd>
+                    <span>{{hakedis.cizimNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.onemDerecesi">Onem Derecesi</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.OnemDurumu.' + hakedis.onemDerecesi}}">{{hakedis.onemDerecesi}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.isDurumu">Is Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.IsDurumu.' + hakedis.isDurumu}}">{{hakedis.isDurumu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.odemeDurumu">Odeme Durumu</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'defterTakipApp.OdemeDurumu.' + hakedis.odemeDurumu}}">{{hakedis.odemeDurumu}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.odemeNo">Odeme No</span></dt>
+                <dd>
+                    <span>{{hakedis.odemeNo}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.aciklama">Aciklama</span></dt>
+                <dd>
+                    <span>{{hakedis.aciklama}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.detay">Detay</span></dt>
+                <dd>
+                    <span>{{hakedis.detay}}</span>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.resim">Resim</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.resim">
+                        <a (click)="openFile(hakedis.resimContentType, hakedis.resim)">
+                            <img [src]="'data:' + hakedis.resimContentType + ';base64,' + hakedis.resim" style="max-width: 100%;" alt="hakedis image"/>
+                        </a>
+                        {{hakedis.resimContentType}}, {{byteSize(hakedis.resim)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.dosya">Dosya</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.dosya">
+                        <a (click)="openFile(hakedis.dosyaContentType, hakedis.dosya)" jhiTranslate="entity.action.open">open</a>
+                        {{hakedis.dosyaContentType}}, {{byteSize(hakedis.dosya)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.santral">Santral</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.santral">
+                        <a [routerLink]="['/santral', hakedis.santral?.id, 'view']">{{hakedis.santral?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.turu">Turu</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.turu">
+                        <a [routerLink]="['/hakedis-turu', hakedis.turu?.id, 'view']">{{hakedis.turu?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.ekip">Ekip</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.ekip">
+                        <a [routerLink]="['/ekip', hakedis.ekip?.id, 'view']">{{hakedis.ekip?.ad}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="defterTakipApp.hakedis.proje">Proje</span></dt>
+                <dd>
+                    <div *ngIf="hakedis.proje">
+                        <a [routerLink]="['/proje', hakedis.proje?.id, 'view']">{{hakedis.proje?.ad}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

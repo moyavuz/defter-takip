@@ -74,6 +74,7 @@ public class StokTakipServiceImpl implements StokTakipService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete StokTakip : {}", id);        stokTakipRepository.deleteById(id);
+        log.debug("Request to delete StokTakip : {}", id);
+        stokTakipRepository.deleteById(id);
     }
 }

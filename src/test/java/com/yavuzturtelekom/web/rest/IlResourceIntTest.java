@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.Il;
 import com.yavuzturtelekom.repository.IlRepository;
 import com.yavuzturtelekom.service.IlService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.IlCriteria;
+import com.yavuzturtelekom.service.IlQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +53,9 @@ public class IlResourceIntTest {
     private IlService ilService;
 
     @Autowired
+    private IlQueryService ilQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,7 +77,7 @@ public class IlResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final IlResource ilResource = new IlResource(ilService);
+        final IlResource ilResource = new IlResource(ilService, ilQueryService);
         this.restIlMockMvc = MockMvcBuilders.standaloneSetup(ilResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -180,6 +185,79 @@ public class IlResourceIntTest {
             .andExpect(jsonPath("$.id").value(il.getId().intValue()))
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllIlsByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ilRepository.saveAndFlush(il);
+
+        // Get all the ilList where ad equals to DEFAULT_AD
+        defaultIlShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the ilList where ad equals to UPDATED_AD
+        defaultIlShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIlsByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        ilRepository.saveAndFlush(il);
+
+        // Get all the ilList where ad in DEFAULT_AD or UPDATED_AD
+        defaultIlShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the ilList where ad equals to UPDATED_AD
+        defaultIlShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllIlsByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ilRepository.saveAndFlush(il);
+
+        // Get all the ilList where ad is not null
+        defaultIlShouldBeFound("ad.specified=true");
+
+        // Get all the ilList where ad is null
+        defaultIlShouldNotBeFound("ad.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultIlShouldBeFound(String filter) throws Exception {
+        restIlMockMvc.perform(get("/api/ils?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(il.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)));
+
+        // Check, that the count call also returns 1
+        restIlMockMvc.perform(get("/api/ils/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultIlShouldNotBeFound(String filter) throws Exception {
+        restIlMockMvc.perform(get("/api/ils?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restIlMockMvc.perform(get("/api/ils/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

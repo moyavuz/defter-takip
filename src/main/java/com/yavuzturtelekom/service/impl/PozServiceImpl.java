@@ -74,6 +74,7 @@ public class PozServiceImpl implements PozService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Poz : {}", id);        pozRepository.deleteById(id);
+        log.debug("Request to delete Poz : {}", id);
+        pozRepository.deleteById(id);
     }
 }

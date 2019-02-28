@@ -3,9 +3,12 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.MalzemeGrubu;
+import com.yavuzturtelekom.domain.Malzeme;
 import com.yavuzturtelekom.repository.MalzemeGrubuRepository;
 import com.yavuzturtelekom.service.MalzemeGrubuService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.MalzemeGrubuCriteria;
+import com.yavuzturtelekom.service.MalzemeGrubuQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +68,9 @@ public class MalzemeGrubuResourceIntTest {
     private MalzemeGrubuService malzemeGrubuService;
 
     @Autowired
+    private MalzemeGrubuQueryService malzemeGrubuQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -86,7 +92,7 @@ public class MalzemeGrubuResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MalzemeGrubuResource malzemeGrubuResource = new MalzemeGrubuResource(malzemeGrubuService);
+        final MalzemeGrubuResource malzemeGrubuResource = new MalzemeGrubuResource(malzemeGrubuService, malzemeGrubuQueryService);
         this.restMalzemeGrubuMockMvc = MockMvcBuilders.standaloneSetup(malzemeGrubuResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -186,7 +192,7 @@ public class MalzemeGrubuResourceIntTest {
     
     @SuppressWarnings({"unchecked"})
     public void getAllMalzemeGrubusWithEagerRelationshipsIsEnabled() throws Exception {
-        MalzemeGrubuResource malzemeGrubuResource = new MalzemeGrubuResource(malzemeGrubuServiceMock);
+        MalzemeGrubuResource malzemeGrubuResource = new MalzemeGrubuResource(malzemeGrubuServiceMock, malzemeGrubuQueryService);
         when(malzemeGrubuServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         MockMvc restMalzemeGrubuMockMvc = MockMvcBuilders.standaloneSetup(malzemeGrubuResource)
@@ -203,7 +209,7 @@ public class MalzemeGrubuResourceIntTest {
 
     @SuppressWarnings({"unchecked"})
     public void getAllMalzemeGrubusWithEagerRelationshipsIsNotEnabled() throws Exception {
-        MalzemeGrubuResource malzemeGrubuResource = new MalzemeGrubuResource(malzemeGrubuServiceMock);
+        MalzemeGrubuResource malzemeGrubuResource = new MalzemeGrubuResource(malzemeGrubuServiceMock, malzemeGrubuQueryService);
             when(malzemeGrubuServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
             MockMvc restMalzemeGrubuMockMvc = MockMvcBuilders.standaloneSetup(malzemeGrubuResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -231,6 +237,138 @@ public class MalzemeGrubuResourceIntTest {
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()))
             .andExpect(jsonPath("$.aciklama").value(DEFAULT_ACIKLAMA.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllMalzemeGrubusByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeGrubuRepository.saveAndFlush(malzemeGrubu);
+
+        // Get all the malzemeGrubuList where ad equals to DEFAULT_AD
+        defaultMalzemeGrubuShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the malzemeGrubuList where ad equals to UPDATED_AD
+        defaultMalzemeGrubuShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemeGrubusByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeGrubuRepository.saveAndFlush(malzemeGrubu);
+
+        // Get all the malzemeGrubuList where ad in DEFAULT_AD or UPDATED_AD
+        defaultMalzemeGrubuShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the malzemeGrubuList where ad equals to UPDATED_AD
+        defaultMalzemeGrubuShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemeGrubusByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeGrubuRepository.saveAndFlush(malzemeGrubu);
+
+        // Get all the malzemeGrubuList where ad is not null
+        defaultMalzemeGrubuShouldBeFound("ad.specified=true");
+
+        // Get all the malzemeGrubuList where ad is null
+        defaultMalzemeGrubuShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemeGrubusByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeGrubuRepository.saveAndFlush(malzemeGrubu);
+
+        // Get all the malzemeGrubuList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultMalzemeGrubuShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the malzemeGrubuList where aciklama equals to UPDATED_ACIKLAMA
+        defaultMalzemeGrubuShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemeGrubusByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeGrubuRepository.saveAndFlush(malzemeGrubu);
+
+        // Get all the malzemeGrubuList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultMalzemeGrubuShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the malzemeGrubuList where aciklama equals to UPDATED_ACIKLAMA
+        defaultMalzemeGrubuShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemeGrubusByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeGrubuRepository.saveAndFlush(malzemeGrubu);
+
+        // Get all the malzemeGrubuList where aciklama is not null
+        defaultMalzemeGrubuShouldBeFound("aciklama.specified=true");
+
+        // Get all the malzemeGrubuList where aciklama is null
+        defaultMalzemeGrubuShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemeGrubusByMalzemeListesiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Malzeme malzemeListesi = MalzemeResourceIntTest.createEntity(em);
+        em.persist(malzemeListesi);
+        em.flush();
+        malzemeGrubu.addMalzemeListesi(malzemeListesi);
+        malzemeGrubuRepository.saveAndFlush(malzemeGrubu);
+        Long malzemeListesiId = malzemeListesi.getId();
+
+        // Get all the malzemeGrubuList where malzemeListesi equals to malzemeListesiId
+        defaultMalzemeGrubuShouldBeFound("malzemeListesiId.equals=" + malzemeListesiId);
+
+        // Get all the malzemeGrubuList where malzemeListesi equals to malzemeListesiId + 1
+        defaultMalzemeGrubuShouldNotBeFound("malzemeListesiId.equals=" + (malzemeListesiId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultMalzemeGrubuShouldBeFound(String filter) throws Exception {
+        restMalzemeGrubuMockMvc.perform(get("/api/malzeme-grubus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(malzemeGrubu.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)));
+
+        // Check, that the count call also returns 1
+        restMalzemeGrubuMockMvc.perform(get("/api/malzeme-grubus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultMalzemeGrubuShouldNotBeFound(String filter) throws Exception {
+        restMalzemeGrubuMockMvc.perform(get("/api/malzeme-grubus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restMalzemeGrubuMockMvc.perform(get("/api/malzeme-grubus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

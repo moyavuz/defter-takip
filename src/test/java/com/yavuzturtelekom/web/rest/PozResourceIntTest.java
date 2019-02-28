@@ -3,10 +3,14 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Poz;
+import com.yavuzturtelekom.domain.HakedisDetay;
 import com.yavuzturtelekom.domain.Birim;
+import com.yavuzturtelekom.domain.PozGrubu;
 import com.yavuzturtelekom.repository.PozRepository;
 import com.yavuzturtelekom.service.PozService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.PozCriteria;
+import com.yavuzturtelekom.service.PozQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -76,6 +80,9 @@ public class PozResourceIntTest {
     private PozService pozService;
 
     @Autowired
+    private PozQueryService pozQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -97,7 +104,7 @@ public class PozResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PozResource pozResource = new PozResource(pozService);
+        final PozResource pozResource = new PozResource(pozService, pozQueryService);
         this.restPozMockMvc = MockMvcBuilders.standaloneSetup(pozResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -242,6 +249,483 @@ public class PozResourceIntTest {
             .andExpect(jsonPath("$.tasereFiyat").value(DEFAULT_TASERE_FIYAT.doubleValue()))
             .andExpect(jsonPath("$.malzemeMi").value(DEFAULT_MALZEME_MI.booleanValue()));
     }
+
+    @Test
+    @Transactional
+    public void getAllPozsByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where ad equals to DEFAULT_AD
+        defaultPozShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the pozList where ad equals to UPDATED_AD
+        defaultPozShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where ad in DEFAULT_AD or UPDATED_AD
+        defaultPozShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the pozList where ad equals to UPDATED_AD
+        defaultPozShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where ad is not null
+        defaultPozShouldBeFound("ad.specified=true");
+
+        // Get all the pozList where ad is null
+        defaultPozShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultPozShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the pozList where aciklama equals to UPDATED_ACIKLAMA
+        defaultPozShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultPozShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the pozList where aciklama equals to UPDATED_ACIKLAMA
+        defaultPozShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where aciklama is not null
+        defaultPozShouldBeFound("aciklama.specified=true");
+
+        // Get all the pozList where aciklama is null
+        defaultPozShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByKisaltmaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where kisaltma equals to DEFAULT_KISALTMA
+        defaultPozShouldBeFound("kisaltma.equals=" + DEFAULT_KISALTMA);
+
+        // Get all the pozList where kisaltma equals to UPDATED_KISALTMA
+        defaultPozShouldNotBeFound("kisaltma.equals=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByKisaltmaIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where kisaltma in DEFAULT_KISALTMA or UPDATED_KISALTMA
+        defaultPozShouldBeFound("kisaltma.in=" + DEFAULT_KISALTMA + "," + UPDATED_KISALTMA);
+
+        // Get all the pozList where kisaltma equals to UPDATED_KISALTMA
+        defaultPozShouldNotBeFound("kisaltma.in=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByKisaltmaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where kisaltma is not null
+        defaultPozShouldBeFound("kisaltma.specified=true");
+
+        // Get all the pozList where kisaltma is null
+        defaultPozShouldNotBeFound("kisaltma.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByYilIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where yil equals to DEFAULT_YIL
+        defaultPozShouldBeFound("yil.equals=" + DEFAULT_YIL);
+
+        // Get all the pozList where yil equals to UPDATED_YIL
+        defaultPozShouldNotBeFound("yil.equals=" + UPDATED_YIL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByYilIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where yil in DEFAULT_YIL or UPDATED_YIL
+        defaultPozShouldBeFound("yil.in=" + DEFAULT_YIL + "," + UPDATED_YIL);
+
+        // Get all the pozList where yil equals to UPDATED_YIL
+        defaultPozShouldNotBeFound("yil.in=" + UPDATED_YIL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByYilIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where yil is not null
+        defaultPozShouldBeFound("yil.specified=true");
+
+        // Get all the pozList where yil is null
+        defaultPozShouldNotBeFound("yil.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByYilIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where yil greater than or equals to DEFAULT_YIL
+        defaultPozShouldBeFound("yil.greaterOrEqualThan=" + DEFAULT_YIL);
+
+        // Get all the pozList where yil greater than or equals to UPDATED_YIL
+        defaultPozShouldNotBeFound("yil.greaterOrEqualThan=" + UPDATED_YIL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByYilIsLessThanSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where yil less than or equals to DEFAULT_YIL
+        defaultPozShouldNotBeFound("yil.lessThan=" + DEFAULT_YIL);
+
+        // Get all the pozList where yil less than or equals to UPDATED_YIL
+        defaultPozShouldBeFound("yil.lessThan=" + UPDATED_YIL);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPozsByTenzilatsizFiyatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tenzilatsizFiyat equals to DEFAULT_TENZILATSIZ_FIYAT
+        defaultPozShouldBeFound("tenzilatsizFiyat.equals=" + DEFAULT_TENZILATSIZ_FIYAT);
+
+        // Get all the pozList where tenzilatsizFiyat equals to UPDATED_TENZILATSIZ_FIYAT
+        defaultPozShouldNotBeFound("tenzilatsizFiyat.equals=" + UPDATED_TENZILATSIZ_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTenzilatsizFiyatIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tenzilatsizFiyat in DEFAULT_TENZILATSIZ_FIYAT or UPDATED_TENZILATSIZ_FIYAT
+        defaultPozShouldBeFound("tenzilatsizFiyat.in=" + DEFAULT_TENZILATSIZ_FIYAT + "," + UPDATED_TENZILATSIZ_FIYAT);
+
+        // Get all the pozList where tenzilatsizFiyat equals to UPDATED_TENZILATSIZ_FIYAT
+        defaultPozShouldNotBeFound("tenzilatsizFiyat.in=" + UPDATED_TENZILATSIZ_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTenzilatsizFiyatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tenzilatsizFiyat is not null
+        defaultPozShouldBeFound("tenzilatsizFiyat.specified=true");
+
+        // Get all the pozList where tenzilatsizFiyat is null
+        defaultPozShouldNotBeFound("tenzilatsizFiyat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTenzilatliFiyatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tenzilatliFiyat equals to DEFAULT_TENZILATLI_FIYAT
+        defaultPozShouldBeFound("tenzilatliFiyat.equals=" + DEFAULT_TENZILATLI_FIYAT);
+
+        // Get all the pozList where tenzilatliFiyat equals to UPDATED_TENZILATLI_FIYAT
+        defaultPozShouldNotBeFound("tenzilatliFiyat.equals=" + UPDATED_TENZILATLI_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTenzilatliFiyatIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tenzilatliFiyat in DEFAULT_TENZILATLI_FIYAT or UPDATED_TENZILATLI_FIYAT
+        defaultPozShouldBeFound("tenzilatliFiyat.in=" + DEFAULT_TENZILATLI_FIYAT + "," + UPDATED_TENZILATLI_FIYAT);
+
+        // Get all the pozList where tenzilatliFiyat equals to UPDATED_TENZILATLI_FIYAT
+        defaultPozShouldNotBeFound("tenzilatliFiyat.in=" + UPDATED_TENZILATLI_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTenzilatliFiyatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tenzilatliFiyat is not null
+        defaultPozShouldBeFound("tenzilatliFiyat.specified=true");
+
+        // Get all the pozList where tenzilatliFiyat is null
+        defaultPozShouldNotBeFound("tenzilatliFiyat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTaseronFiyatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where taseronFiyat equals to DEFAULT_TASERON_FIYAT
+        defaultPozShouldBeFound("taseronFiyat.equals=" + DEFAULT_TASERON_FIYAT);
+
+        // Get all the pozList where taseronFiyat equals to UPDATED_TASERON_FIYAT
+        defaultPozShouldNotBeFound("taseronFiyat.equals=" + UPDATED_TASERON_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTaseronFiyatIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where taseronFiyat in DEFAULT_TASERON_FIYAT or UPDATED_TASERON_FIYAT
+        defaultPozShouldBeFound("taseronFiyat.in=" + DEFAULT_TASERON_FIYAT + "," + UPDATED_TASERON_FIYAT);
+
+        // Get all the pozList where taseronFiyat equals to UPDATED_TASERON_FIYAT
+        defaultPozShouldNotBeFound("taseronFiyat.in=" + UPDATED_TASERON_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTaseronFiyatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where taseronFiyat is not null
+        defaultPozShouldBeFound("taseronFiyat.specified=true");
+
+        // Get all the pozList where taseronFiyat is null
+        defaultPozShouldNotBeFound("taseronFiyat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTasereFiyatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tasereFiyat equals to DEFAULT_TASERE_FIYAT
+        defaultPozShouldBeFound("tasereFiyat.equals=" + DEFAULT_TASERE_FIYAT);
+
+        // Get all the pozList where tasereFiyat equals to UPDATED_TASERE_FIYAT
+        defaultPozShouldNotBeFound("tasereFiyat.equals=" + UPDATED_TASERE_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTasereFiyatIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tasereFiyat in DEFAULT_TASERE_FIYAT or UPDATED_TASERE_FIYAT
+        defaultPozShouldBeFound("tasereFiyat.in=" + DEFAULT_TASERE_FIYAT + "," + UPDATED_TASERE_FIYAT);
+
+        // Get all the pozList where tasereFiyat equals to UPDATED_TASERE_FIYAT
+        defaultPozShouldNotBeFound("tasereFiyat.in=" + UPDATED_TASERE_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByTasereFiyatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where tasereFiyat is not null
+        defaultPozShouldBeFound("tasereFiyat.specified=true");
+
+        // Get all the pozList where tasereFiyat is null
+        defaultPozShouldNotBeFound("tasereFiyat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByMalzemeMiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where malzemeMi equals to DEFAULT_MALZEME_MI
+        defaultPozShouldBeFound("malzemeMi.equals=" + DEFAULT_MALZEME_MI);
+
+        // Get all the pozList where malzemeMi equals to UPDATED_MALZEME_MI
+        defaultPozShouldNotBeFound("malzemeMi.equals=" + UPDATED_MALZEME_MI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByMalzemeMiIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where malzemeMi in DEFAULT_MALZEME_MI or UPDATED_MALZEME_MI
+        defaultPozShouldBeFound("malzemeMi.in=" + DEFAULT_MALZEME_MI + "," + UPDATED_MALZEME_MI);
+
+        // Get all the pozList where malzemeMi equals to UPDATED_MALZEME_MI
+        defaultPozShouldNotBeFound("malzemeMi.in=" + UPDATED_MALZEME_MI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByMalzemeMiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozRepository.saveAndFlush(poz);
+
+        // Get all the pozList where malzemeMi is not null
+        defaultPozShouldBeFound("malzemeMi.specified=true");
+
+        // Get all the pozList where malzemeMi is null
+        defaultPozShouldNotBeFound("malzemeMi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozsByHakedisDetayIsEqualToSomething() throws Exception {
+        // Initialize the database
+        HakedisDetay hakedisDetay = HakedisDetayResourceIntTest.createEntity(em);
+        em.persist(hakedisDetay);
+        em.flush();
+        poz.addHakedisDetay(hakedisDetay);
+        pozRepository.saveAndFlush(poz);
+        Long hakedisDetayId = hakedisDetay.getId();
+
+        // Get all the pozList where hakedisDetay equals to hakedisDetayId
+        defaultPozShouldBeFound("hakedisDetayId.equals=" + hakedisDetayId);
+
+        // Get all the pozList where hakedisDetay equals to hakedisDetayId + 1
+        defaultPozShouldNotBeFound("hakedisDetayId.equals=" + (hakedisDetayId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPozsByBirimIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Birim birim = BirimResourceIntTest.createEntity(em);
+        em.persist(birim);
+        em.flush();
+        poz.setBirim(birim);
+        pozRepository.saveAndFlush(poz);
+        Long birimId = birim.getId();
+
+        // Get all the pozList where birim equals to birimId
+        defaultPozShouldBeFound("birimId.equals=" + birimId);
+
+        // Get all the pozList where birim equals to birimId + 1
+        defaultPozShouldNotBeFound("birimId.equals=" + (birimId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPozsByGrupIsEqualToSomething() throws Exception {
+        // Initialize the database
+        PozGrubu grup = PozGrubuResourceIntTest.createEntity(em);
+        em.persist(grup);
+        em.flush();
+        poz.addGrup(grup);
+        pozRepository.saveAndFlush(poz);
+        Long grupId = grup.getId();
+
+        // Get all the pozList where grup equals to grupId
+        defaultPozShouldBeFound("grupId.equals=" + grupId);
+
+        // Get all the pozList where grup equals to grupId + 1
+        defaultPozShouldNotBeFound("grupId.equals=" + (grupId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultPozShouldBeFound(String filter) throws Exception {
+        restPozMockMvc.perform(get("/api/pozs?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(poz.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)))
+            .andExpect(jsonPath("$.[*].kisaltma").value(hasItem(DEFAULT_KISALTMA)))
+            .andExpect(jsonPath("$.[*].yil").value(hasItem(DEFAULT_YIL)))
+            .andExpect(jsonPath("$.[*].tenzilatsizFiyat").value(hasItem(DEFAULT_TENZILATSIZ_FIYAT.doubleValue())))
+            .andExpect(jsonPath("$.[*].tenzilatliFiyat").value(hasItem(DEFAULT_TENZILATLI_FIYAT.doubleValue())))
+            .andExpect(jsonPath("$.[*].taseronFiyat").value(hasItem(DEFAULT_TASERON_FIYAT.doubleValue())))
+            .andExpect(jsonPath("$.[*].tasereFiyat").value(hasItem(DEFAULT_TASERE_FIYAT.doubleValue())))
+            .andExpect(jsonPath("$.[*].malzemeMi").value(hasItem(DEFAULT_MALZEME_MI.booleanValue())));
+
+        // Check, that the count call also returns 1
+        restPozMockMvc.perform(get("/api/pozs/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultPozShouldNotBeFound(String filter) throws Exception {
+        restPozMockMvc.perform(get("/api/pozs?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restPozMockMvc.perform(get("/api/pozs/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

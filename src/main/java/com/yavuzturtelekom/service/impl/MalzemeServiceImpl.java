@@ -74,6 +74,7 @@ public class MalzemeServiceImpl implements MalzemeService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Malzeme : {}", id);        malzemeRepository.deleteById(id);
+        log.debug("Request to delete Malzeme : {}", id);
+        malzemeRepository.deleteById(id);
     }
 }

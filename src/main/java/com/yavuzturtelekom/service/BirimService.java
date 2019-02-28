@@ -2,7 +2,9 @@ package com.yavuzturtelekom.service;
 
 import com.yavuzturtelekom.domain.Birim;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 /**
@@ -21,9 +23,10 @@ public interface BirimService {
     /**
      * Get all the birims.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
-    List<Birim> findAll();
+    Page<Birim> findAll(Pageable pageable);
 
 
     /**

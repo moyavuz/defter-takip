@@ -2,7 +2,9 @@ package com.yavuzturtelekom.service;
 
 import com.yavuzturtelekom.domain.Il;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 /**
@@ -21,9 +23,10 @@ public interface IlService {
     /**
      * Get all the ils.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
-    List<Il> findAll();
+    Page<Il> findAll(Pageable pageable);
 
 
     /**

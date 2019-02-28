@@ -12,20 +12,19 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "marka",
             "otherEntityName": "marka",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "model"
+            "otherEntityRelationshipName": "model",
+            "relationshipName": "marka",
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095635",
     "entityTableName": "model",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

@@ -74,6 +74,7 @@ public class HakedisServiceImpl implements HakedisService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Hakedis : {}", id);        hakedisRepository.deleteById(id);
+        log.debug("Request to delete Hakedis : {}", id);
+        hakedisRepository.deleteById(id);
     }
 }

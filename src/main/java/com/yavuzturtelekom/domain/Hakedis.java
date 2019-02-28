@@ -27,7 +27,7 @@ import com.yavuzturtelekom.domain.enumeration.OdemeDurumu;
 @Entity
 @Table(name = "hakedis")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Hakedis extends AbstractAuditingEntity implements Serializable {
+public class Hakedis implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -101,12 +101,12 @@ public class Hakedis extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties("ekips")
+    @JsonIgnoreProperties("hakedis")
     private Ekip ekip;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties("projes")
+    @JsonIgnoreProperties("hakedis")
     private Proje proje;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

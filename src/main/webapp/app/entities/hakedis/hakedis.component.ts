@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
@@ -15,38 +16,43 @@ import { HakedisService } from './hakedis.service';
     templateUrl: './hakedis.component.html'
 })
 export class HakedisComponent implements OnInit, OnDestroy {
-    hakedis: IHakedis[];
     currentAccount: any;
+    hakedis: IHakedis[];
+    error: any;
+    success: any;
     eventSubscriber: Subscription;
-    itemsPerPage: number;
+    routeData: any;
     links: any;
+    totalItems: any;
+    itemsPerPage: any;
     page: any;
     predicate: any;
+    previousPage: any;
     reverse: any;
-    totalItems: number;
 
     constructor(
         protected hakedisService: HakedisService,
-        protected jhiAlertService: JhiAlertService,
-        protected dataUtils: JhiDataUtils,
-        protected eventManager: JhiEventManager,
         protected parseLinks: JhiParseLinks,
-        protected accountService: AccountService
+        protected jhiAlertService: JhiAlertService,
+        protected accountService: AccountService,
+        protected activatedRoute: ActivatedRoute,
+        protected dataUtils: JhiDataUtils,
+        protected router: Router,
+        protected eventManager: JhiEventManager
     ) {
-        this.hakedis = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
-        this.page = 0;
-        this.links = {
-            last: 0
-        };
-        this.predicate = 'id';
-        this.reverse = true;
+        this.routeData = this.activatedRoute.data.subscribe(data => {
+            this.page = data.pagingParams.page;
+            this.previousPage = data.pagingParams.page;
+            this.reverse = data.pagingParams.ascending;
+            this.predicate = data.pagingParams.predicate;
+        });
     }
 
     loadAll() {
         this.hakedisService
             .query({
-                page: this.page,
+                page: this.page - 1,
                 size: this.itemsPerPage,
                 sort: this.sort()
             })
@@ -56,14 +62,33 @@ export class HakedisComponent implements OnInit, OnDestroy {
             );
     }
 
-    reset() {
-        this.page = 0;
-        this.hakedis = [];
+    loadPage(page: number) {
+        if (page !== this.previousPage) {
+            this.previousPage = page;
+            this.transition();
+        }
+    }
+
+    transition() {
+        this.router.navigate(['/hakedis'], {
+            queryParams: {
+                page: this.page,
+                size: this.itemsPerPage,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        });
         this.loadAll();
     }
 
-    loadPage(page) {
-        this.page = page;
+    clear() {
+        this.page = 0;
+        this.router.navigate([
+            '/hakedis',
+            {
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        ]);
         this.loadAll();
     }
 
@@ -92,7 +117,7 @@ export class HakedisComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInHakedis() {
-        this.eventSubscriber = this.eventManager.subscribe('hakedisListModification', response => this.reset());
+        this.eventSubscriber = this.eventManager.subscribe('hakedisListModification', response => this.loadAll());
     }
 
     sort() {
@@ -106,9 +131,7 @@ export class HakedisComponent implements OnInit, OnDestroy {
     protected paginateHakedis(data: IHakedis[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-        for (let i = 0; i < data.length; i++) {
-            this.hakedis.push(data[i]);
-        }
+        this.hakedis = data;
     }
 
     protected onError(errorMessage: string) {

@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.EskalasyonTuru;
 import com.yavuzturtelekom.repository.EskalasyonTuruRepository;
 import com.yavuzturtelekom.service.EskalasyonTuruService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.EskalasyonTuruCriteria;
+import com.yavuzturtelekom.service.EskalasyonTuruQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +59,9 @@ public class EskalasyonTuruResourceIntTest {
     private EskalasyonTuruService eskalasyonTuruService;
 
     @Autowired
+    private EskalasyonTuruQueryService eskalasyonTuruQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -78,7 +83,7 @@ public class EskalasyonTuruResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final EskalasyonTuruResource eskalasyonTuruResource = new EskalasyonTuruResource(eskalasyonTuruService);
+        final EskalasyonTuruResource eskalasyonTuruResource = new EskalasyonTuruResource(eskalasyonTuruService, eskalasyonTuruQueryService);
         this.restEskalasyonTuruMockMvc = MockMvcBuilders.standaloneSetup(eskalasyonTuruResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -194,6 +199,159 @@ public class EskalasyonTuruResourceIntTest {
             .andExpect(jsonPath("$.aciklama").value(DEFAULT_ACIKLAMA.toString()))
             .andExpect(jsonPath("$.kisaltma").value(DEFAULT_KISALTMA.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where ad equals to DEFAULT_AD
+        defaultEskalasyonTuruShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the eskalasyonTuruList where ad equals to UPDATED_AD
+        defaultEskalasyonTuruShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where ad in DEFAULT_AD or UPDATED_AD
+        defaultEskalasyonTuruShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the eskalasyonTuruList where ad equals to UPDATED_AD
+        defaultEskalasyonTuruShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where ad is not null
+        defaultEskalasyonTuruShouldBeFound("ad.specified=true");
+
+        // Get all the eskalasyonTuruList where ad is null
+        defaultEskalasyonTuruShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultEskalasyonTuruShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the eskalasyonTuruList where aciklama equals to UPDATED_ACIKLAMA
+        defaultEskalasyonTuruShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultEskalasyonTuruShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the eskalasyonTuruList where aciklama equals to UPDATED_ACIKLAMA
+        defaultEskalasyonTuruShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where aciklama is not null
+        defaultEskalasyonTuruShouldBeFound("aciklama.specified=true");
+
+        // Get all the eskalasyonTuruList where aciklama is null
+        defaultEskalasyonTuruShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByKisaltmaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where kisaltma equals to DEFAULT_KISALTMA
+        defaultEskalasyonTuruShouldBeFound("kisaltma.equals=" + DEFAULT_KISALTMA);
+
+        // Get all the eskalasyonTuruList where kisaltma equals to UPDATED_KISALTMA
+        defaultEskalasyonTuruShouldNotBeFound("kisaltma.equals=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByKisaltmaIsInShouldWork() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where kisaltma in DEFAULT_KISALTMA or UPDATED_KISALTMA
+        defaultEskalasyonTuruShouldBeFound("kisaltma.in=" + DEFAULT_KISALTMA + "," + UPDATED_KISALTMA);
+
+        // Get all the eskalasyonTuruList where kisaltma equals to UPDATED_KISALTMA
+        defaultEskalasyonTuruShouldNotBeFound("kisaltma.in=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEskalasyonTurusByKisaltmaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eskalasyonTuruRepository.saveAndFlush(eskalasyonTuru);
+
+        // Get all the eskalasyonTuruList where kisaltma is not null
+        defaultEskalasyonTuruShouldBeFound("kisaltma.specified=true");
+
+        // Get all the eskalasyonTuruList where kisaltma is null
+        defaultEskalasyonTuruShouldNotBeFound("kisaltma.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultEskalasyonTuruShouldBeFound(String filter) throws Exception {
+        restEskalasyonTuruMockMvc.perform(get("/api/eskalasyon-turus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(eskalasyonTuru.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)))
+            .andExpect(jsonPath("$.[*].kisaltma").value(hasItem(DEFAULT_KISALTMA)));
+
+        // Check, that the count call also returns 1
+        restEskalasyonTuruMockMvc.perform(get("/api/eskalasyon-turus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultEskalasyonTuruShouldNotBeFound(String filter) throws Exception {
+        restEskalasyonTuruMockMvc.perform(get("/api/eskalasyon-turus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restEskalasyonTuruMockMvc.perform(get("/api/eskalasyon-turus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

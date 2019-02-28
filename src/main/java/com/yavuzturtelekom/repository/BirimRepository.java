@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface BirimRepository extends JpaRepository<Birim, Long> {
+public interface BirimRepository extends JpaRepository<Birim, Long>, JpaSpecificationExecutor<Birim> {
 
 }

@@ -5,7 +5,6 @@ import com.yavuzturtelekom.domain.PozGrubu;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,9 +23,10 @@ public interface PozGrubuService {
     /**
      * Get all the pozGrubus.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
-    List<PozGrubu> findAll();
+    Page<PozGrubu> findAll(Pageable pageable);
 
     /**
      * Get all the PozGrubu with eager load of many-to-many relationships.

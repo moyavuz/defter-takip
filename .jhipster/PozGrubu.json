@@ -20,9 +20,9 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
+            "otherEntityName": "poz",
             "otherEntityRelationshipName": "grup",
             "relationshipName": "pozListesi",
-            "otherEntityName": "poz",
             "otherEntityField": "ad",
             "ownerSide": true
         }
@@ -30,11 +30,10 @@
     "changelogDate": "20190221095629",
     "entityTableName": "poz_grubu",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

@@ -5,7 +5,6 @@ import com.yavuzturtelekom.domain.Ekip;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,9 +23,10 @@ public interface EkipService {
     /**
      * Get all the ekips.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
-    List<Ekip> findAll();
+    Page<Ekip> findAll(Pageable pageable);
 
     /**
      * Get all the Ekip with eager load of many-to-many relationships.

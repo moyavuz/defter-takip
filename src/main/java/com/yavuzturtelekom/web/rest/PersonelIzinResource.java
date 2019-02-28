@@ -3,9 +3,16 @@ import com.yavuzturtelekom.domain.PersonelIzin;
 import com.yavuzturtelekom.service.PersonelIzinService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.PersonelIzinCriteria;
+import com.yavuzturtelekom.service.PersonelIzinQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +36,11 @@ public class PersonelIzinResource {
 
     private final PersonelIzinService personelIzinService;
 
-    public PersonelIzinResource(PersonelIzinService personelIzinService) {
+    private final PersonelIzinQueryService personelIzinQueryService;
+
+    public PersonelIzinResource(PersonelIzinService personelIzinService, PersonelIzinQueryService personelIzinQueryService) {
         this.personelIzinService = personelIzinService;
+        this.personelIzinQueryService = personelIzinQueryService;
     }
 
     /**
@@ -76,12 +86,28 @@ public class PersonelIzinResource {
     /**
      * GET  /personel-izins : get all the personelIzins.
      *
+     * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of personelIzins in body
      */
     @GetMapping("/personel-izins")
-    public List<PersonelIzin> getAllPersonelIzins() {
-        log.debug("REST request to get all PersonelIzins");
-        return personelIzinService.findAll();
+    public ResponseEntity<List<PersonelIzin>> getAllPersonelIzins(PersonelIzinCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get PersonelIzins by criteria: {}", criteria);
+        Page<PersonelIzin> page = personelIzinQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/personel-izins");
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /personel-izins/count : count all the personelIzins.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/personel-izins/count")
+    public ResponseEntity<Long> countPersonelIzins(PersonelIzinCriteria criteria) {
+        log.debug("REST request to count PersonelIzins by criteria: {}", criteria);
+        return ResponseEntity.ok().body(personelIzinQueryService.countByCriteria(criteria));
     }
 
     /**

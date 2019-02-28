@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PersonelAracRepository extends JpaRepository<PersonelArac, Long> {
+public interface PersonelAracRepository extends JpaRepository<PersonelArac, Long>, JpaSpecificationExecutor<PersonelArac> {
 
 }

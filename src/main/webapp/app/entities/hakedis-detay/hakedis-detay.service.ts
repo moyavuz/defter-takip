@@ -27,15 +27,6 @@ export class HakedisDetayService {
         return this.http.get<IHakedisDetay>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    findByHakedis(id: number): Observable<EntityArrayResponseType> {
-        return this.http.get<IHakedisDetay[]>(`${this.resourceUrl}/hakedis/${id}`, { observe: 'response' });
-    }
-
-    queryByHakedis(req?: any): Observable<EntityArrayResponseType> {
-        const options = createRequestOption(req);
-        return this.http.get<IHakedisDetay[]>(this.resourceUrl + '/hakedis/', { params: options, observe: 'response' });
-    }
-
     query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
         return this.http.get<IHakedisDetay[]>(this.resourceUrl, { params: options, observe: 'response' });

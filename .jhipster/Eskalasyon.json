@@ -19,21 +19,20 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "eskalasyonTuru",
+            "otherEntityRelationshipName": "eskalasyon",
             "relationshipValidateRules": "required",
             "relationshipName": "turu",
-            "otherEntityName": "eskalasyonTuru",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "eskalasyon"
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095640",
     "entityTableName": "eskalasyon",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

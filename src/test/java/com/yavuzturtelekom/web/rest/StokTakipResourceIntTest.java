@@ -5,9 +5,12 @@ import com.yavuzturtelekom.DefterTakipApp;
 import com.yavuzturtelekom.domain.StokTakip;
 import com.yavuzturtelekom.domain.Ekip;
 import com.yavuzturtelekom.domain.Malzeme;
+import com.yavuzturtelekom.domain.Depo;
 import com.yavuzturtelekom.repository.StokTakipRepository;
 import com.yavuzturtelekom.service.StokTakipService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.StokTakipCriteria;
+import com.yavuzturtelekom.service.StokTakipQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +69,9 @@ public class StokTakipResourceIntTest {
     private StokTakipService stokTakipService;
 
     @Autowired
+    private StokTakipQueryService stokTakipQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -87,7 +93,7 @@ public class StokTakipResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final StokTakipResource stokTakipResource = new StokTakipResource(stokTakipService);
+        final StokTakipResource stokTakipResource = new StokTakipResource(stokTakipService, stokTakipQueryService);
         this.restStokTakipMockMvc = MockMvcBuilders.standaloneSetup(stokTakipResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -217,6 +223,271 @@ public class StokTakipResourceIntTest {
             .andExpect(jsonPath("$.tarih").value(DEFAULT_TARIH.toString()))
             .andExpect(jsonPath("$.hareketTuru").value(DEFAULT_HAREKET_TURU.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByMiktarIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where miktar equals to DEFAULT_MIKTAR
+        defaultStokTakipShouldBeFound("miktar.equals=" + DEFAULT_MIKTAR);
+
+        // Get all the stokTakipList where miktar equals to UPDATED_MIKTAR
+        defaultStokTakipShouldNotBeFound("miktar.equals=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByMiktarIsInShouldWork() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where miktar in DEFAULT_MIKTAR or UPDATED_MIKTAR
+        defaultStokTakipShouldBeFound("miktar.in=" + DEFAULT_MIKTAR + "," + UPDATED_MIKTAR);
+
+        // Get all the stokTakipList where miktar equals to UPDATED_MIKTAR
+        defaultStokTakipShouldNotBeFound("miktar.in=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByMiktarIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where miktar is not null
+        defaultStokTakipShouldBeFound("miktar.specified=true");
+
+        // Get all the stokTakipList where miktar is null
+        defaultStokTakipShouldNotBeFound("miktar.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByMiktarIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where miktar greater than or equals to DEFAULT_MIKTAR
+        defaultStokTakipShouldBeFound("miktar.greaterOrEqualThan=" + DEFAULT_MIKTAR);
+
+        // Get all the stokTakipList where miktar greater than or equals to UPDATED_MIKTAR
+        defaultStokTakipShouldNotBeFound("miktar.greaterOrEqualThan=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByMiktarIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where miktar less than or equals to DEFAULT_MIKTAR
+        defaultStokTakipShouldNotBeFound("miktar.lessThan=" + DEFAULT_MIKTAR);
+
+        // Get all the stokTakipList where miktar less than or equals to UPDATED_MIKTAR
+        defaultStokTakipShouldBeFound("miktar.lessThan=" + UPDATED_MIKTAR);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where tarih equals to DEFAULT_TARIH
+        defaultStokTakipShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the stokTakipList where tarih equals to UPDATED_TARIH
+        defaultStokTakipShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultStokTakipShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the stokTakipList where tarih equals to UPDATED_TARIH
+        defaultStokTakipShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where tarih is not null
+        defaultStokTakipShouldBeFound("tarih.specified=true");
+
+        // Get all the stokTakipList where tarih is null
+        defaultStokTakipShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where tarih greater than or equals to DEFAULT_TARIH
+        defaultStokTakipShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the stokTakipList where tarih greater than or equals to UPDATED_TARIH
+        defaultStokTakipShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where tarih less than or equals to DEFAULT_TARIH
+        defaultStokTakipShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the stokTakipList where tarih less than or equals to UPDATED_TARIH
+        defaultStokTakipShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByHareketTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where hareketTuru equals to DEFAULT_HAREKET_TURU
+        defaultStokTakipShouldBeFound("hareketTuru.equals=" + DEFAULT_HAREKET_TURU);
+
+        // Get all the stokTakipList where hareketTuru equals to UPDATED_HAREKET_TURU
+        defaultStokTakipShouldNotBeFound("hareketTuru.equals=" + UPDATED_HAREKET_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByHareketTuruIsInShouldWork() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where hareketTuru in DEFAULT_HAREKET_TURU or UPDATED_HAREKET_TURU
+        defaultStokTakipShouldBeFound("hareketTuru.in=" + DEFAULT_HAREKET_TURU + "," + UPDATED_HAREKET_TURU);
+
+        // Get all the stokTakipList where hareketTuru equals to UPDATED_HAREKET_TURU
+        defaultStokTakipShouldNotBeFound("hareketTuru.in=" + UPDATED_HAREKET_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByHareketTuruIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stokTakipRepository.saveAndFlush(stokTakip);
+
+        // Get all the stokTakipList where hareketTuru is not null
+        defaultStokTakipShouldBeFound("hareketTuru.specified=true");
+
+        // Get all the stokTakipList where hareketTuru is null
+        defaultStokTakipShouldNotBeFound("hareketTuru.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByEkipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Ekip ekip = EkipResourceIntTest.createEntity(em);
+        em.persist(ekip);
+        em.flush();
+        stokTakip.setEkip(ekip);
+        stokTakipRepository.saveAndFlush(stokTakip);
+        Long ekipId = ekip.getId();
+
+        // Get all the stokTakipList where ekip equals to ekipId
+        defaultStokTakipShouldBeFound("ekipId.equals=" + ekipId);
+
+        // Get all the stokTakipList where ekip equals to ekipId + 1
+        defaultStokTakipShouldNotBeFound("ekipId.equals=" + (ekipId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByMalzemeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Malzeme malzeme = MalzemeResourceIntTest.createEntity(em);
+        em.persist(malzeme);
+        em.flush();
+        stokTakip.setMalzeme(malzeme);
+        stokTakipRepository.saveAndFlush(stokTakip);
+        Long malzemeId = malzeme.getId();
+
+        // Get all the stokTakipList where malzeme equals to malzemeId
+        defaultStokTakipShouldBeFound("malzemeId.equals=" + malzemeId);
+
+        // Get all the stokTakipList where malzeme equals to malzemeId + 1
+        defaultStokTakipShouldNotBeFound("malzemeId.equals=" + (malzemeId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStokTakipsByDepoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Depo depo = DepoResourceIntTest.createEntity(em);
+        em.persist(depo);
+        em.flush();
+        stokTakip.setDepo(depo);
+        stokTakipRepository.saveAndFlush(stokTakip);
+        Long depoId = depo.getId();
+
+        // Get all the stokTakipList where depo equals to depoId
+        defaultStokTakipShouldBeFound("depoId.equals=" + depoId);
+
+        // Get all the stokTakipList where depo equals to depoId + 1
+        defaultStokTakipShouldNotBeFound("depoId.equals=" + (depoId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultStokTakipShouldBeFound(String filter) throws Exception {
+        restStokTakipMockMvc.perform(get("/api/stok-takips?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(stokTakip.getId().intValue())))
+            .andExpect(jsonPath("$.[*].miktar").value(hasItem(DEFAULT_MIKTAR.intValue())))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA.toString())))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())))
+            .andExpect(jsonPath("$.[*].hareketTuru").value(hasItem(DEFAULT_HAREKET_TURU.toString())));
+
+        // Check, that the count call also returns 1
+        restStokTakipMockMvc.perform(get("/api/stok-takips/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultStokTakipShouldNotBeFound(String filter) throws Exception {
+        restStokTakipMockMvc.perform(get("/api/stok-takips?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restStokTakipMockMvc.perform(get("/api/stok-takips/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

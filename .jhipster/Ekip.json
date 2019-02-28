@@ -22,41 +22,45 @@
             "fieldName": "turu",
             "fieldType": "PersonelTuru",
             "fieldValues": "MAASLI,GOTURU,YEVMIYE"
+        },
+        {
+            "fieldName": "tenzilatOran",
+            "fieldType": "Double"
         }
     ],
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "hakedis",
             "otherEntityName": "hakedis",
-            "otherEntityRelationshipName": "ekip"
+            "otherEntityRelationshipName": "ekip",
+            "relationshipName": "hakedis"
         },
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "stokTakip",
             "otherEntityName": "stokTakip",
-            "otherEntityRelationshipName": "ekip"
+            "otherEntityRelationshipName": "ekip",
+            "relationshipName": "stokTakip"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "personel",
+            "otherEntityRelationshipName": "ekip",
             "relationshipValidateRules": "required",
             "relationshipName": "ekipSorumlu",
-            "otherEntityName": "personel",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "ekip"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "mudurluk",
             "otherEntityName": "mudurluk",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "ekip"
+            "otherEntityRelationshipName": "ekip",
+            "relationshipName": "mudurluk",
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-many",
+            "otherEntityName": "personel",
             "otherEntityRelationshipName": "ekip",
             "relationshipName": "ekipPersonel",
-            "otherEntityName": "personel",
             "otherEntityField": "ad",
             "ownerSide": true
         }
@@ -64,11 +68,10 @@
     "changelogDate": "20190221095619",
     "entityTableName": "ekip",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

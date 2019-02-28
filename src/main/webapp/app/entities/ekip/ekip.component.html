@@ -13,15 +13,15 @@
     <div class="table-responsive" *ngIf="ekips">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="defterTakipApp.ekip.ad">Ad</span></th>
-            <th><span jhiTranslate="defterTakipApp.ekip.telefon">Telefon</span></th>
-            <th><span jhiTranslate="defterTakipApp.ekip.eposta">Eposta</span></th>
-            <th><span jhiTranslate="defterTakipApp.ekip.turu">Turu</span></th>
-            <th><span jhiTranslate="defterTakipApp.ekip.ekipSorumlu">Ekip Sorumlu</span></th>
-            <th><span jhiTranslate="defterTakipApp.ekip.mudurluk">Mudurluk</span></th>
-            <th><span jhiTranslate="defterTakipApp.ekip.ekipPersonel">Ekip Personel</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ad"><span jhiTranslate="defterTakipApp.ekip.ad">Ad</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="telefon"><span jhiTranslate="defterTakipApp.ekip.telefon">Telefon</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eposta"><span jhiTranslate="defterTakipApp.ekip.eposta">Eposta</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="turu"><span jhiTranslate="defterTakipApp.ekip.turu">Turu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="tenzilatOran"><span jhiTranslate="defterTakipApp.ekip.tenzilatOran">Tenzilat Oran</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ekipSorumlu.ad"><span jhiTranslate="defterTakipApp.ekip.ekipSorumlu">Ekip Sorumlu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mudurluk.ad"><span jhiTranslate="defterTakipApp.ekip.mudurluk">Mudurluk</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -32,6 +32,7 @@
                 <td>{{ekip.telefon}}</td>
                 <td>{{ekip.eposta}}</td>
                 <td jhiTranslate="{{'defterTakipApp.PersonelTuru.' + ekip.turu}}">{{ekip.turu}}</td>
+                <td>{{ekip.tenzilatOran}}</td>
                 <td>
                     <div *ngIf="ekip.ekipSorumlu">
                         <a [routerLink]="['../personel', ekip.ekipSorumlu?.id, 'view' ]" >{{ekip.ekipSorumlu?.ad}}</a>
@@ -41,11 +42,6 @@
                     <div *ngIf="ekip.mudurluk">
                         <a [routerLink]="['../mudurluk', ekip.mudurluk?.id, 'view' ]" >{{ekip.mudurluk?.ad}}</a>
                     </div>
-                </td>
-                <td>
-                    <span *ngFor="let ekipPersonel of ekip.ekipPersonels; let last = last">
-                            <a class="form-control-static" [routerLink]="['../personel', ekipPersonel?.id, 'view' ]">{{ekipPersonel.ad}}</a>{{last ? '' : ', '}}
-                        </span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
@@ -74,5 +70,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="ekips && ekips.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
     </div>
 </div>

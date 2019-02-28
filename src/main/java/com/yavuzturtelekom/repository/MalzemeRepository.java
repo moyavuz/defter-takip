@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MalzemeRepository extends JpaRepository<Malzeme, Long> {
+public interface MalzemeRepository extends JpaRepository<Malzeme, Long>, JpaSpecificationExecutor<Malzeme> {
 
 }

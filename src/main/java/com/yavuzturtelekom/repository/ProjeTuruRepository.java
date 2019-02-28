@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProjeTuruRepository extends JpaRepository<ProjeTuru, Long> {
+public interface ProjeTuruRepository extends JpaRepository<ProjeTuru, Long>, JpaSpecificationExecutor<ProjeTuru> {
 
 }

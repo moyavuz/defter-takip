@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.ProjeTuru;
 import com.yavuzturtelekom.repository.ProjeTuruRepository;
 import com.yavuzturtelekom.service.ProjeTuruService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.ProjeTuruCriteria;
+import com.yavuzturtelekom.service.ProjeTuruQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +59,9 @@ public class ProjeTuruResourceIntTest {
     private ProjeTuruService projeTuruService;
 
     @Autowired
+    private ProjeTuruQueryService projeTuruQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -78,7 +83,7 @@ public class ProjeTuruResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProjeTuruResource projeTuruResource = new ProjeTuruResource(projeTuruService);
+        final ProjeTuruResource projeTuruResource = new ProjeTuruResource(projeTuruService, projeTuruQueryService);
         this.restProjeTuruMockMvc = MockMvcBuilders.standaloneSetup(projeTuruResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -194,6 +199,159 @@ public class ProjeTuruResourceIntTest {
             .andExpect(jsonPath("$.aciklama").value(DEFAULT_ACIKLAMA.toString()))
             .andExpect(jsonPath("$.kisaltma").value(DEFAULT_KISALTMA.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where ad equals to DEFAULT_AD
+        defaultProjeTuruShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the projeTuruList where ad equals to UPDATED_AD
+        defaultProjeTuruShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where ad in DEFAULT_AD or UPDATED_AD
+        defaultProjeTuruShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the projeTuruList where ad equals to UPDATED_AD
+        defaultProjeTuruShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where ad is not null
+        defaultProjeTuruShouldBeFound("ad.specified=true");
+
+        // Get all the projeTuruList where ad is null
+        defaultProjeTuruShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultProjeTuruShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the projeTuruList where aciklama equals to UPDATED_ACIKLAMA
+        defaultProjeTuruShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultProjeTuruShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the projeTuruList where aciklama equals to UPDATED_ACIKLAMA
+        defaultProjeTuruShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where aciklama is not null
+        defaultProjeTuruShouldBeFound("aciklama.specified=true");
+
+        // Get all the projeTuruList where aciklama is null
+        defaultProjeTuruShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByKisaltmaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where kisaltma equals to DEFAULT_KISALTMA
+        defaultProjeTuruShouldBeFound("kisaltma.equals=" + DEFAULT_KISALTMA);
+
+        // Get all the projeTuruList where kisaltma equals to UPDATED_KISALTMA
+        defaultProjeTuruShouldNotBeFound("kisaltma.equals=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByKisaltmaIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where kisaltma in DEFAULT_KISALTMA or UPDATED_KISALTMA
+        defaultProjeTuruShouldBeFound("kisaltma.in=" + DEFAULT_KISALTMA + "," + UPDATED_KISALTMA);
+
+        // Get all the projeTuruList where kisaltma equals to UPDATED_KISALTMA
+        defaultProjeTuruShouldNotBeFound("kisaltma.in=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjeTurusByKisaltmaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeTuruRepository.saveAndFlush(projeTuru);
+
+        // Get all the projeTuruList where kisaltma is not null
+        defaultProjeTuruShouldBeFound("kisaltma.specified=true");
+
+        // Get all the projeTuruList where kisaltma is null
+        defaultProjeTuruShouldNotBeFound("kisaltma.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultProjeTuruShouldBeFound(String filter) throws Exception {
+        restProjeTuruMockMvc.perform(get("/api/proje-turus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(projeTuru.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)))
+            .andExpect(jsonPath("$.[*].kisaltma").value(hasItem(DEFAULT_KISALTMA)));
+
+        // Check, that the count call also returns 1
+        restProjeTuruMockMvc.perform(get("/api/proje-turus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultProjeTuruShouldNotBeFound(String filter) throws Exception {
+        restProjeTuruMockMvc.perform(get("/api/proje-turus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restProjeTuruMockMvc.perform(get("/api/proje-turus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

@@ -42,6 +42,11 @@
                         <option value="YEVMIYE">{{'defterTakipApp.PersonelTuru.YEVMIYE' | translate}}</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="defterTakipApp.ekip.tenzilatOran" for="field_tenzilatOran">Tenzilat Oran</label>
+                    <input type="number" class="form-control" name="tenzilatOran" id="field_tenzilatOran"
+                        [(ngModel)]="ekip.tenzilatOran" />
+                </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="defterTakipApp.ekip.ekipSorumlu" for="field_ekipSorumlu">Ekip Sorumlu</label>

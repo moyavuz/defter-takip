@@ -2,7 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
 import { JhiLanguageHelper } from 'app/core';
-import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { DefterTakipSharedModule } from 'app/shared';
 import {
@@ -18,7 +17,7 @@ import {
 const ENTITY_STATES = [...hakedisDetayRoute, ...hakedisDetayPopupRoute];
 
 @NgModule({
-    imports: [AutoCompleteModule, DefterTakipSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    imports: [DefterTakipSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         HakedisDetayComponent,
         HakedisDetayDetailComponent,

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MudurlukRepository extends JpaRepository<Mudurluk, Long> {
+public interface MudurlukRepository extends JpaRepository<Mudurluk, Long>, JpaSpecificationExecutor<Mudurluk> {
 
 }

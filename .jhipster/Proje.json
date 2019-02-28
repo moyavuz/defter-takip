@@ -52,24 +52,24 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "hakedis",
             "otherEntityName": "hakedis",
-            "otherEntityRelationshipName": "proje"
+            "otherEntityRelationshipName": "proje",
+            "relationshipName": "hakedis"
         },
         {
             "relationshipType": "many-to-one",
+            "otherEntityName": "projeTuru",
+            "otherEntityRelationshipName": "proje",
             "relationshipValidateRules": "required",
             "relationshipName": "turu",
-            "otherEntityName": "projeTuru",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "proje"
+            "otherEntityField": "ad"
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "mudurluk",
             "otherEntityName": "mudurluk",
-            "otherEntityField": "ad",
-            "otherEntityRelationshipName": "proje"
+            "otherEntityRelationshipName": "proje",
+            "relationshipName": "mudurluk",
+            "otherEntityField": "ad"
         }
     ],
     "changelogDate": "20190221095636",
@@ -77,9 +77,8 @@
     "dto": "no",
     "pagination": "pagination",
     "service": "serviceImpl",
-    "jpaMetamodelFiltering": false,
+    "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "clientRootFolder": "",
-    "applications": "*",
-    "enableEntityAudit": true
+    "applications": "*"
 }

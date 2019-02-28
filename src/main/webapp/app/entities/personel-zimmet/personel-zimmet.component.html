@@ -13,14 +13,14 @@
     <div class="table-responsive" *ngIf="personelZimmets">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="defterTakipApp.personelZimmet.tarih">Tarih</span></th>
-            <th><span jhiTranslate="defterTakipApp.personelZimmet.durumu">Durumu</span></th>
-            <th><span jhiTranslate="defterTakipApp.personelZimmet.resim">Resim</span></th>
-            <th><span jhiTranslate="defterTakipApp.personelZimmet.dosya">Dosya</span></th>
-            <th><span jhiTranslate="defterTakipApp.personelZimmet.personel">Personel</span></th>
-            <th><span jhiTranslate="defterTakipApp.personelZimmet.zimmet">Zimmet</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="tarih"><span jhiTranslate="defterTakipApp.personelZimmet.tarih">Tarih</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="durumu"><span jhiTranslate="defterTakipApp.personelZimmet.durumu">Durumu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="resim"><span jhiTranslate="defterTakipApp.personelZimmet.resim">Resim</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dosya"><span jhiTranslate="defterTakipApp.personelZimmet.dosya">Dosya</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="personel.ad"><span jhiTranslate="defterTakipApp.personelZimmet.personel">Personel</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="zimmet.ad"><span jhiTranslate="defterTakipApp.personelZimmet.zimmet">Zimmet</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -76,5 +76,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="personelZimmets && personelZimmets.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
     </div>
 </div>

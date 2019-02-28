@@ -20,7 +20,7 @@ import com.yavuzturtelekom.domain.enumeration.StokHareketTuru;
 @Entity
 @Table(name = "stok_takip")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class StokTakip extends AbstractAuditingEntity implements Serializable {
+public class StokTakip implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -46,16 +46,16 @@ public class StokTakip extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties("ekips")
+    @JsonIgnoreProperties("stokTakips")
     private Ekip ekip;
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties("malzemes")
+    @JsonIgnoreProperties("stokTakips")
     private Malzeme malzeme;
 
     @ManyToOne
-    @JsonIgnoreProperties("depos")
+    @JsonIgnoreProperties("stokTakips")
     private Depo depo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
