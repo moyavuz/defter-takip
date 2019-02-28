@@ -8,6 +8,8 @@ import com.yavuzturtelekom.domain.Personel;
 import com.yavuzturtelekom.repository.PersonelAracRepository;
 import com.yavuzturtelekom.service.PersonelAracService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.PersonelAracCriteria;
+import com.yavuzturtelekom.service.PersonelAracQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -69,6 +71,9 @@ public class PersonelAracResourceIntTest {
     private PersonelAracService personelAracService;
 
     @Autowired
+    private PersonelAracQueryService personelAracQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -90,7 +95,7 @@ public class PersonelAracResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PersonelAracResource personelAracResource = new PersonelAracResource(personelAracService);
+        final PersonelAracResource personelAracResource = new PersonelAracResource(personelAracService, personelAracQueryService);
         this.restPersonelAracMockMvc = MockMvcBuilders.standaloneSetup(personelAracResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -210,6 +215,149 @@ public class PersonelAracResourceIntTest {
             .andExpect(jsonPath("$.dosyaContentType").value(DEFAULT_DOSYA_CONTENT_TYPE))
             .andExpect(jsonPath("$.dosya").value(Base64Utils.encodeToString(DEFAULT_DOSYA)));
     }
+
+    @Test
+    @Transactional
+    public void getAllPersonelAracsByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelAracRepository.saveAndFlush(personelArac);
+
+        // Get all the personelAracList where tarih equals to DEFAULT_TARIH
+        defaultPersonelAracShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the personelAracList where tarih equals to UPDATED_TARIH
+        defaultPersonelAracShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelAracsByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelAracRepository.saveAndFlush(personelArac);
+
+        // Get all the personelAracList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultPersonelAracShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the personelAracList where tarih equals to UPDATED_TARIH
+        defaultPersonelAracShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelAracsByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelAracRepository.saveAndFlush(personelArac);
+
+        // Get all the personelAracList where tarih is not null
+        defaultPersonelAracShouldBeFound("tarih.specified=true");
+
+        // Get all the personelAracList where tarih is null
+        defaultPersonelAracShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelAracsByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personelAracRepository.saveAndFlush(personelArac);
+
+        // Get all the personelAracList where tarih greater than or equals to DEFAULT_TARIH
+        defaultPersonelAracShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the personelAracList where tarih greater than or equals to UPDATED_TARIH
+        defaultPersonelAracShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelAracsByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personelAracRepository.saveAndFlush(personelArac);
+
+        // Get all the personelAracList where tarih less than or equals to DEFAULT_TARIH
+        defaultPersonelAracShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the personelAracList where tarih less than or equals to UPDATED_TARIH
+        defaultPersonelAracShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelAracsByAracIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Arac arac = AracResourceIntTest.createEntity(em);
+        em.persist(arac);
+        em.flush();
+        personelArac.setArac(arac);
+        personelAracRepository.saveAndFlush(personelArac);
+        Long aracId = arac.getId();
+
+        // Get all the personelAracList where arac equals to aracId
+        defaultPersonelAracShouldBeFound("aracId.equals=" + aracId);
+
+        // Get all the personelAracList where arac equals to aracId + 1
+        defaultPersonelAracShouldNotBeFound("aracId.equals=" + (aracId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelAracsByPersonelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel personel = PersonelResourceIntTest.createEntity(em);
+        em.persist(personel);
+        em.flush();
+        personelArac.setPersonel(personel);
+        personelAracRepository.saveAndFlush(personelArac);
+        Long personelId = personel.getId();
+
+        // Get all the personelAracList where personel equals to personelId
+        defaultPersonelAracShouldBeFound("personelId.equals=" + personelId);
+
+        // Get all the personelAracList where personel equals to personelId + 1
+        defaultPersonelAracShouldNotBeFound("personelId.equals=" + (personelId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultPersonelAracShouldBeFound(String filter) throws Exception {
+        restPersonelAracMockMvc.perform(get("/api/personel-aracs?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(personelArac.getId().intValue())))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())))
+            .andExpect(jsonPath("$.[*].detay").value(hasItem(DEFAULT_DETAY.toString())))
+            .andExpect(jsonPath("$.[*].resimContentType").value(hasItem(DEFAULT_RESIM_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].resim").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESIM))))
+            .andExpect(jsonPath("$.[*].dosyaContentType").value(hasItem(DEFAULT_DOSYA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].dosya").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOSYA))));
+
+        // Check, that the count call also returns 1
+        restPersonelAracMockMvc.perform(get("/api/personel-aracs/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultPersonelAracShouldNotBeFound(String filter) throws Exception {
+        restPersonelAracMockMvc.perform(get("/api/personel-aracs?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restPersonelAracMockMvc.perform(get("/api/personel-aracs/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

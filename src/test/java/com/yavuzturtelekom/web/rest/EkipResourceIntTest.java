@@ -3,10 +3,15 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Ekip;
+import com.yavuzturtelekom.domain.Hakedis;
+import com.yavuzturtelekom.domain.StokTakip;
 import com.yavuzturtelekom.domain.Personel;
+import com.yavuzturtelekom.domain.Mudurluk;
 import com.yavuzturtelekom.repository.EkipRepository;
 import com.yavuzturtelekom.service.EkipService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.EkipCriteria;
+import com.yavuzturtelekom.service.EkipQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +78,9 @@ public class EkipResourceIntTest {
     private EkipService ekipService;
 
     @Autowired
+    private EkipQueryService ekipQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -94,7 +102,7 @@ public class EkipResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final EkipResource ekipResource = new EkipResource(ekipService);
+        final EkipResource ekipResource = new EkipResource(ekipService, ekipQueryService);
         this.restEkipMockMvc = MockMvcBuilders.standaloneSetup(ekipResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -205,7 +213,7 @@ public class EkipResourceIntTest {
     
     @SuppressWarnings({"unchecked"})
     public void getAllEkipsWithEagerRelationshipsIsEnabled() throws Exception {
-        EkipResource ekipResource = new EkipResource(ekipServiceMock);
+        EkipResource ekipResource = new EkipResource(ekipServiceMock, ekipQueryService);
         when(ekipServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         MockMvc restEkipMockMvc = MockMvcBuilders.standaloneSetup(ekipResource)
@@ -222,7 +230,7 @@ public class EkipResourceIntTest {
 
     @SuppressWarnings({"unchecked"})
     public void getAllEkipsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        EkipResource ekipResource = new EkipResource(ekipServiceMock);
+        EkipResource ekipResource = new EkipResource(ekipServiceMock, ekipQueryService);
             when(ekipServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
             MockMvc restEkipMockMvc = MockMvcBuilders.standaloneSetup(ekipResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -252,6 +260,294 @@ public class EkipResourceIntTest {
             .andExpect(jsonPath("$.eposta").value(DEFAULT_EPOSTA.toString()))
             .andExpect(jsonPath("$.turu").value(DEFAULT_TURU.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where ad equals to DEFAULT_AD
+        defaultEkipShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the ekipList where ad equals to UPDATED_AD
+        defaultEkipShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where ad in DEFAULT_AD or UPDATED_AD
+        defaultEkipShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the ekipList where ad equals to UPDATED_AD
+        defaultEkipShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where ad is not null
+        defaultEkipShouldBeFound("ad.specified=true");
+
+        // Get all the ekipList where ad is null
+        defaultEkipShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByTelefonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where telefon equals to DEFAULT_TELEFON
+        defaultEkipShouldBeFound("telefon.equals=" + DEFAULT_TELEFON);
+
+        // Get all the ekipList where telefon equals to UPDATED_TELEFON
+        defaultEkipShouldNotBeFound("telefon.equals=" + UPDATED_TELEFON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByTelefonIsInShouldWork() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where telefon in DEFAULT_TELEFON or UPDATED_TELEFON
+        defaultEkipShouldBeFound("telefon.in=" + DEFAULT_TELEFON + "," + UPDATED_TELEFON);
+
+        // Get all the ekipList where telefon equals to UPDATED_TELEFON
+        defaultEkipShouldNotBeFound("telefon.in=" + UPDATED_TELEFON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByTelefonIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where telefon is not null
+        defaultEkipShouldBeFound("telefon.specified=true");
+
+        // Get all the ekipList where telefon is null
+        defaultEkipShouldNotBeFound("telefon.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByEpostaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where eposta equals to DEFAULT_EPOSTA
+        defaultEkipShouldBeFound("eposta.equals=" + DEFAULT_EPOSTA);
+
+        // Get all the ekipList where eposta equals to UPDATED_EPOSTA
+        defaultEkipShouldNotBeFound("eposta.equals=" + UPDATED_EPOSTA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByEpostaIsInShouldWork() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where eposta in DEFAULT_EPOSTA or UPDATED_EPOSTA
+        defaultEkipShouldBeFound("eposta.in=" + DEFAULT_EPOSTA + "," + UPDATED_EPOSTA);
+
+        // Get all the ekipList where eposta equals to UPDATED_EPOSTA
+        defaultEkipShouldNotBeFound("eposta.in=" + UPDATED_EPOSTA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByEpostaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where eposta is not null
+        defaultEkipShouldBeFound("eposta.specified=true");
+
+        // Get all the ekipList where eposta is null
+        defaultEkipShouldNotBeFound("eposta.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where turu equals to DEFAULT_TURU
+        defaultEkipShouldBeFound("turu.equals=" + DEFAULT_TURU);
+
+        // Get all the ekipList where turu equals to UPDATED_TURU
+        defaultEkipShouldNotBeFound("turu.equals=" + UPDATED_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByTuruIsInShouldWork() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where turu in DEFAULT_TURU or UPDATED_TURU
+        defaultEkipShouldBeFound("turu.in=" + DEFAULT_TURU + "," + UPDATED_TURU);
+
+        // Get all the ekipList where turu equals to UPDATED_TURU
+        defaultEkipShouldNotBeFound("turu.in=" + UPDATED_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByTuruIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ekipRepository.saveAndFlush(ekip);
+
+        // Get all the ekipList where turu is not null
+        defaultEkipShouldBeFound("turu.specified=true");
+
+        // Get all the ekipList where turu is null
+        defaultEkipShouldNotBeFound("turu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllEkipsByHakedisIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Hakedis hakedis = HakedisResourceIntTest.createEntity(em);
+        em.persist(hakedis);
+        em.flush();
+        ekip.addHakedis(hakedis);
+        ekipRepository.saveAndFlush(ekip);
+        Long hakedisId = hakedis.getId();
+
+        // Get all the ekipList where hakedis equals to hakedisId
+        defaultEkipShouldBeFound("hakedisId.equals=" + hakedisId);
+
+        // Get all the ekipList where hakedis equals to hakedisId + 1
+        defaultEkipShouldNotBeFound("hakedisId.equals=" + (hakedisId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllEkipsByStokTakipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        StokTakip stokTakip = StokTakipResourceIntTest.createEntity(em);
+        em.persist(stokTakip);
+        em.flush();
+        ekip.addStokTakip(stokTakip);
+        ekipRepository.saveAndFlush(ekip);
+        Long stokTakipId = stokTakip.getId();
+
+        // Get all the ekipList where stokTakip equals to stokTakipId
+        defaultEkipShouldBeFound("stokTakipId.equals=" + stokTakipId);
+
+        // Get all the ekipList where stokTakip equals to stokTakipId + 1
+        defaultEkipShouldNotBeFound("stokTakipId.equals=" + (stokTakipId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllEkipsByEkipSorumluIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel ekipSorumlu = PersonelResourceIntTest.createEntity(em);
+        em.persist(ekipSorumlu);
+        em.flush();
+        ekip.setEkipSorumlu(ekipSorumlu);
+        ekipRepository.saveAndFlush(ekip);
+        Long ekipSorumluId = ekipSorumlu.getId();
+
+        // Get all the ekipList where ekipSorumlu equals to ekipSorumluId
+        defaultEkipShouldBeFound("ekipSorumluId.equals=" + ekipSorumluId);
+
+        // Get all the ekipList where ekipSorumlu equals to ekipSorumluId + 1
+        defaultEkipShouldNotBeFound("ekipSorumluId.equals=" + (ekipSorumluId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllEkipsByMudurlukIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Mudurluk mudurluk = MudurlukResourceIntTest.createEntity(em);
+        em.persist(mudurluk);
+        em.flush();
+        ekip.setMudurluk(mudurluk);
+        ekipRepository.saveAndFlush(ekip);
+        Long mudurlukId = mudurluk.getId();
+
+        // Get all the ekipList where mudurluk equals to mudurlukId
+        defaultEkipShouldBeFound("mudurlukId.equals=" + mudurlukId);
+
+        // Get all the ekipList where mudurluk equals to mudurlukId + 1
+        defaultEkipShouldNotBeFound("mudurlukId.equals=" + (mudurlukId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllEkipsByEkipPersonelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel ekipPersonel = PersonelResourceIntTest.createEntity(em);
+        em.persist(ekipPersonel);
+        em.flush();
+        ekip.addEkipPersonel(ekipPersonel);
+        ekipRepository.saveAndFlush(ekip);
+        Long ekipPersonelId = ekipPersonel.getId();
+
+        // Get all the ekipList where ekipPersonel equals to ekipPersonelId
+        defaultEkipShouldBeFound("ekipPersonelId.equals=" + ekipPersonelId);
+
+        // Get all the ekipList where ekipPersonel equals to ekipPersonelId + 1
+        defaultEkipShouldNotBeFound("ekipPersonelId.equals=" + (ekipPersonelId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultEkipShouldBeFound(String filter) throws Exception {
+        restEkipMockMvc.perform(get("/api/ekips?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(ekip.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].telefon").value(hasItem(DEFAULT_TELEFON)))
+            .andExpect(jsonPath("$.[*].eposta").value(hasItem(DEFAULT_EPOSTA)))
+            .andExpect(jsonPath("$.[*].turu").value(hasItem(DEFAULT_TURU.toString())));
+
+        // Check, that the count call also returns 1
+        restEkipMockMvc.perform(get("/api/ekips/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultEkipShouldNotBeFound(String filter) throws Exception {
+        restEkipMockMvc.perform(get("/api/ekips?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restEkipMockMvc.perform(get("/api/ekips/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

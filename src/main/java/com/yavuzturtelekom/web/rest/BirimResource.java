@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.Birim;
 import com.yavuzturtelekom.service.BirimService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.BirimCriteria;
+import com.yavuzturtelekom.service.BirimQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class BirimResource {
 
     private final BirimService birimService;
 
-    public BirimResource(BirimService birimService) {
+    private final BirimQueryService birimQueryService;
+
+    public BirimResource(BirimService birimService, BirimQueryService birimQueryService) {
         this.birimService = birimService;
+        this.birimQueryService = birimQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class BirimResource {
     /**
      * GET  /birims : get all the birims.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of birims in body
      */
     @GetMapping("/birims")
-    public List<Birim> getAllBirims() {
-        log.debug("REST request to get all Birims");
-        return birimService.findAll();
+    public ResponseEntity<List<Birim>> getAllBirims(BirimCriteria criteria) {
+        log.debug("REST request to get Birims by criteria: {}", criteria);
+        List<Birim> entityList = birimQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /birims/count : count all the birims.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/birims/count")
+    public ResponseEntity<Long> countBirims(BirimCriteria criteria) {
+        log.debug("REST request to count Birims by criteria: {}", criteria);
+        return ResponseEntity.ok().body(birimQueryService.countByCriteria(criteria));
     }
 
     /**

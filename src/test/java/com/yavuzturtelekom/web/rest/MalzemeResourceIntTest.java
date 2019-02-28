@@ -3,10 +3,15 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Malzeme;
+import com.yavuzturtelekom.domain.StokTakip;
 import com.yavuzturtelekom.domain.Birim;
+import com.yavuzturtelekom.domain.Depo;
+import com.yavuzturtelekom.domain.MalzemeGrubu;
 import com.yavuzturtelekom.repository.MalzemeRepository;
 import com.yavuzturtelekom.service.MalzemeService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.MalzemeCriteria;
+import com.yavuzturtelekom.service.MalzemeQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -74,6 +79,9 @@ public class MalzemeResourceIntTest {
     private MalzemeService malzemeService;
 
     @Autowired
+    private MalzemeQueryService malzemeQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -95,7 +103,7 @@ public class MalzemeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MalzemeResource malzemeResource = new MalzemeResource(malzemeService);
+        final MalzemeResource malzemeResource = new MalzemeResource(malzemeService, malzemeQueryService);
         this.restMalzemeMockMvc = MockMvcBuilders.standaloneSetup(malzemeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -236,6 +244,462 @@ public class MalzemeResourceIntTest {
             .andExpect(jsonPath("$.taseronFiyat").value(DEFAULT_TASERON_FIYAT.doubleValue()))
             .andExpect(jsonPath("$.paraBirimi").value(DEFAULT_PARA_BIRIMI.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where ad equals to DEFAULT_AD
+        defaultMalzemeShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the malzemeList where ad equals to UPDATED_AD
+        defaultMalzemeShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where ad in DEFAULT_AD or UPDATED_AD
+        defaultMalzemeShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the malzemeList where ad equals to UPDATED_AD
+        defaultMalzemeShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where ad is not null
+        defaultMalzemeShouldBeFound("ad.specified=true");
+
+        // Get all the malzemeList where ad is null
+        defaultMalzemeShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByMalzemeNoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where malzemeNo equals to DEFAULT_MALZEME_NO
+        defaultMalzemeShouldBeFound("malzemeNo.equals=" + DEFAULT_MALZEME_NO);
+
+        // Get all the malzemeList where malzemeNo equals to UPDATED_MALZEME_NO
+        defaultMalzemeShouldNotBeFound("malzemeNo.equals=" + UPDATED_MALZEME_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByMalzemeNoIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where malzemeNo in DEFAULT_MALZEME_NO or UPDATED_MALZEME_NO
+        defaultMalzemeShouldBeFound("malzemeNo.in=" + DEFAULT_MALZEME_NO + "," + UPDATED_MALZEME_NO);
+
+        // Get all the malzemeList where malzemeNo equals to UPDATED_MALZEME_NO
+        defaultMalzemeShouldNotBeFound("malzemeNo.in=" + UPDATED_MALZEME_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByMalzemeNoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where malzemeNo is not null
+        defaultMalzemeShouldBeFound("malzemeNo.specified=true");
+
+        // Get all the malzemeList where malzemeNo is null
+        defaultMalzemeShouldNotBeFound("malzemeNo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByMalzemeNoIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where malzemeNo greater than or equals to DEFAULT_MALZEME_NO
+        defaultMalzemeShouldBeFound("malzemeNo.greaterOrEqualThan=" + DEFAULT_MALZEME_NO);
+
+        // Get all the malzemeList where malzemeNo greater than or equals to UPDATED_MALZEME_NO
+        defaultMalzemeShouldNotBeFound("malzemeNo.greaterOrEqualThan=" + UPDATED_MALZEME_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByMalzemeNoIsLessThanSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where malzemeNo less than or equals to DEFAULT_MALZEME_NO
+        defaultMalzemeShouldNotBeFound("malzemeNo.lessThan=" + DEFAULT_MALZEME_NO);
+
+        // Get all the malzemeList where malzemeNo less than or equals to UPDATED_MALZEME_NO
+        defaultMalzemeShouldBeFound("malzemeNo.lessThan=" + UPDATED_MALZEME_NO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultMalzemeShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the malzemeList where aciklama equals to UPDATED_ACIKLAMA
+        defaultMalzemeShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultMalzemeShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the malzemeList where aciklama equals to UPDATED_ACIKLAMA
+        defaultMalzemeShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where aciklama is not null
+        defaultMalzemeShouldBeFound("aciklama.specified=true");
+
+        // Get all the malzemeList where aciklama is null
+        defaultMalzemeShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByKisaltmaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where kisaltma equals to DEFAULT_KISALTMA
+        defaultMalzemeShouldBeFound("kisaltma.equals=" + DEFAULT_KISALTMA);
+
+        // Get all the malzemeList where kisaltma equals to UPDATED_KISALTMA
+        defaultMalzemeShouldNotBeFound("kisaltma.equals=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByKisaltmaIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where kisaltma in DEFAULT_KISALTMA or UPDATED_KISALTMA
+        defaultMalzemeShouldBeFound("kisaltma.in=" + DEFAULT_KISALTMA + "," + UPDATED_KISALTMA);
+
+        // Get all the malzemeList where kisaltma equals to UPDATED_KISALTMA
+        defaultMalzemeShouldNotBeFound("kisaltma.in=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByKisaltmaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where kisaltma is not null
+        defaultMalzemeShouldBeFound("kisaltma.specified=true");
+
+        // Get all the malzemeList where kisaltma is null
+        defaultMalzemeShouldNotBeFound("kisaltma.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTenzilatsizFiyatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where tenzilatsizFiyat equals to DEFAULT_TENZILATSIZ_FIYAT
+        defaultMalzemeShouldBeFound("tenzilatsizFiyat.equals=" + DEFAULT_TENZILATSIZ_FIYAT);
+
+        // Get all the malzemeList where tenzilatsizFiyat equals to UPDATED_TENZILATSIZ_FIYAT
+        defaultMalzemeShouldNotBeFound("tenzilatsizFiyat.equals=" + UPDATED_TENZILATSIZ_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTenzilatsizFiyatIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where tenzilatsizFiyat in DEFAULT_TENZILATSIZ_FIYAT or UPDATED_TENZILATSIZ_FIYAT
+        defaultMalzemeShouldBeFound("tenzilatsizFiyat.in=" + DEFAULT_TENZILATSIZ_FIYAT + "," + UPDATED_TENZILATSIZ_FIYAT);
+
+        // Get all the malzemeList where tenzilatsizFiyat equals to UPDATED_TENZILATSIZ_FIYAT
+        defaultMalzemeShouldNotBeFound("tenzilatsizFiyat.in=" + UPDATED_TENZILATSIZ_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTenzilatsizFiyatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where tenzilatsizFiyat is not null
+        defaultMalzemeShouldBeFound("tenzilatsizFiyat.specified=true");
+
+        // Get all the malzemeList where tenzilatsizFiyat is null
+        defaultMalzemeShouldNotBeFound("tenzilatsizFiyat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTenzilatliFiyatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where tenzilatliFiyat equals to DEFAULT_TENZILATLI_FIYAT
+        defaultMalzemeShouldBeFound("tenzilatliFiyat.equals=" + DEFAULT_TENZILATLI_FIYAT);
+
+        // Get all the malzemeList where tenzilatliFiyat equals to UPDATED_TENZILATLI_FIYAT
+        defaultMalzemeShouldNotBeFound("tenzilatliFiyat.equals=" + UPDATED_TENZILATLI_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTenzilatliFiyatIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where tenzilatliFiyat in DEFAULT_TENZILATLI_FIYAT or UPDATED_TENZILATLI_FIYAT
+        defaultMalzemeShouldBeFound("tenzilatliFiyat.in=" + DEFAULT_TENZILATLI_FIYAT + "," + UPDATED_TENZILATLI_FIYAT);
+
+        // Get all the malzemeList where tenzilatliFiyat equals to UPDATED_TENZILATLI_FIYAT
+        defaultMalzemeShouldNotBeFound("tenzilatliFiyat.in=" + UPDATED_TENZILATLI_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTenzilatliFiyatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where tenzilatliFiyat is not null
+        defaultMalzemeShouldBeFound("tenzilatliFiyat.specified=true");
+
+        // Get all the malzemeList where tenzilatliFiyat is null
+        defaultMalzemeShouldNotBeFound("tenzilatliFiyat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTaseronFiyatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where taseronFiyat equals to DEFAULT_TASERON_FIYAT
+        defaultMalzemeShouldBeFound("taseronFiyat.equals=" + DEFAULT_TASERON_FIYAT);
+
+        // Get all the malzemeList where taseronFiyat equals to UPDATED_TASERON_FIYAT
+        defaultMalzemeShouldNotBeFound("taseronFiyat.equals=" + UPDATED_TASERON_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTaseronFiyatIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where taseronFiyat in DEFAULT_TASERON_FIYAT or UPDATED_TASERON_FIYAT
+        defaultMalzemeShouldBeFound("taseronFiyat.in=" + DEFAULT_TASERON_FIYAT + "," + UPDATED_TASERON_FIYAT);
+
+        // Get all the malzemeList where taseronFiyat equals to UPDATED_TASERON_FIYAT
+        defaultMalzemeShouldNotBeFound("taseronFiyat.in=" + UPDATED_TASERON_FIYAT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByTaseronFiyatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where taseronFiyat is not null
+        defaultMalzemeShouldBeFound("taseronFiyat.specified=true");
+
+        // Get all the malzemeList where taseronFiyat is null
+        defaultMalzemeShouldNotBeFound("taseronFiyat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByParaBirimiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where paraBirimi equals to DEFAULT_PARA_BIRIMI
+        defaultMalzemeShouldBeFound("paraBirimi.equals=" + DEFAULT_PARA_BIRIMI);
+
+        // Get all the malzemeList where paraBirimi equals to UPDATED_PARA_BIRIMI
+        defaultMalzemeShouldNotBeFound("paraBirimi.equals=" + UPDATED_PARA_BIRIMI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByParaBirimiIsInShouldWork() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where paraBirimi in DEFAULT_PARA_BIRIMI or UPDATED_PARA_BIRIMI
+        defaultMalzemeShouldBeFound("paraBirimi.in=" + DEFAULT_PARA_BIRIMI + "," + UPDATED_PARA_BIRIMI);
+
+        // Get all the malzemeList where paraBirimi equals to UPDATED_PARA_BIRIMI
+        defaultMalzemeShouldNotBeFound("paraBirimi.in=" + UPDATED_PARA_BIRIMI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByParaBirimiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        malzemeRepository.saveAndFlush(malzeme);
+
+        // Get all the malzemeList where paraBirimi is not null
+        defaultMalzemeShouldBeFound("paraBirimi.specified=true");
+
+        // Get all the malzemeList where paraBirimi is null
+        defaultMalzemeShouldNotBeFound("paraBirimi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByStokTakipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        StokTakip stokTakip = StokTakipResourceIntTest.createEntity(em);
+        em.persist(stokTakip);
+        em.flush();
+        malzeme.addStokTakip(stokTakip);
+        malzemeRepository.saveAndFlush(malzeme);
+        Long stokTakipId = stokTakip.getId();
+
+        // Get all the malzemeList where stokTakip equals to stokTakipId
+        defaultMalzemeShouldBeFound("stokTakipId.equals=" + stokTakipId);
+
+        // Get all the malzemeList where stokTakip equals to stokTakipId + 1
+        defaultMalzemeShouldNotBeFound("stokTakipId.equals=" + (stokTakipId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByBirimIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Birim birim = BirimResourceIntTest.createEntity(em);
+        em.persist(birim);
+        em.flush();
+        malzeme.setBirim(birim);
+        malzemeRepository.saveAndFlush(malzeme);
+        Long birimId = birim.getId();
+
+        // Get all the malzemeList where birim equals to birimId
+        defaultMalzemeShouldBeFound("birimId.equals=" + birimId);
+
+        // Get all the malzemeList where birim equals to birimId + 1
+        defaultMalzemeShouldNotBeFound("birimId.equals=" + (birimId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByDepoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Depo depo = DepoResourceIntTest.createEntity(em);
+        em.persist(depo);
+        em.flush();
+        malzeme.setDepo(depo);
+        malzemeRepository.saveAndFlush(malzeme);
+        Long depoId = depo.getId();
+
+        // Get all the malzemeList where depo equals to depoId
+        defaultMalzemeShouldBeFound("depoId.equals=" + depoId);
+
+        // Get all the malzemeList where depo equals to depoId + 1
+        defaultMalzemeShouldNotBeFound("depoId.equals=" + (depoId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllMalzemesByGrupIsEqualToSomething() throws Exception {
+        // Initialize the database
+        MalzemeGrubu grup = MalzemeGrubuResourceIntTest.createEntity(em);
+        em.persist(grup);
+        em.flush();
+        malzeme.addGrup(grup);
+        malzemeRepository.saveAndFlush(malzeme);
+        Long grupId = grup.getId();
+
+        // Get all the malzemeList where grup equals to grupId
+        defaultMalzemeShouldBeFound("grupId.equals=" + grupId);
+
+        // Get all the malzemeList where grup equals to grupId + 1
+        defaultMalzemeShouldNotBeFound("grupId.equals=" + (grupId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultMalzemeShouldBeFound(String filter) throws Exception {
+        restMalzemeMockMvc.perform(get("/api/malzemes?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(malzeme.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].malzemeNo").value(hasItem(DEFAULT_MALZEME_NO.intValue())))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)))
+            .andExpect(jsonPath("$.[*].kisaltma").value(hasItem(DEFAULT_KISALTMA)))
+            .andExpect(jsonPath("$.[*].tenzilatsizFiyat").value(hasItem(DEFAULT_TENZILATSIZ_FIYAT.doubleValue())))
+            .andExpect(jsonPath("$.[*].tenzilatliFiyat").value(hasItem(DEFAULT_TENZILATLI_FIYAT.doubleValue())))
+            .andExpect(jsonPath("$.[*].taseronFiyat").value(hasItem(DEFAULT_TASERON_FIYAT.doubleValue())))
+            .andExpect(jsonPath("$.[*].paraBirimi").value(hasItem(DEFAULT_PARA_BIRIMI.toString())));
+
+        // Check, that the count call also returns 1
+        restMalzemeMockMvc.perform(get("/api/malzemes/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultMalzemeShouldNotBeFound(String filter) throws Exception {
+        restMalzemeMockMvc.perform(get("/api/malzemes?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restMalzemeMockMvc.perform(get("/api/malzemes/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

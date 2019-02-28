@@ -22,7 +22,7 @@ import com.yavuzturtelekom.domain.enumeration.DepoTuru;
 @Entity
 @Table(name = "depo")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Depo extends AbstractAuditingEntity implements Serializable {
+public class Depo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

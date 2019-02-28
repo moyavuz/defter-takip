@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.Eskalasyon;
 import com.yavuzturtelekom.service.EskalasyonService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.EskalasyonCriteria;
+import com.yavuzturtelekom.service.EskalasyonQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class EskalasyonResource {
 
     private final EskalasyonService eskalasyonService;
 
-    public EskalasyonResource(EskalasyonService eskalasyonService) {
+    private final EskalasyonQueryService eskalasyonQueryService;
+
+    public EskalasyonResource(EskalasyonService eskalasyonService, EskalasyonQueryService eskalasyonQueryService) {
         this.eskalasyonService = eskalasyonService;
+        this.eskalasyonQueryService = eskalasyonQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class EskalasyonResource {
     /**
      * GET  /eskalasyons : get all the eskalasyons.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of eskalasyons in body
      */
     @GetMapping("/eskalasyons")
-    public List<Eskalasyon> getAllEskalasyons() {
-        log.debug("REST request to get all Eskalasyons");
-        return eskalasyonService.findAll();
+    public ResponseEntity<List<Eskalasyon>> getAllEskalasyons(EskalasyonCriteria criteria) {
+        log.debug("REST request to get Eskalasyons by criteria: {}", criteria);
+        List<Eskalasyon> entityList = eskalasyonQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /eskalasyons/count : count all the eskalasyons.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/eskalasyons/count")
+    public ResponseEntity<Long> countEskalasyons(EskalasyonCriteria criteria) {
+        log.debug("REST request to count Eskalasyons by criteria: {}", criteria);
+        return ResponseEntity.ok().body(eskalasyonQueryService.countByCriteria(criteria));
     }
 
     /**

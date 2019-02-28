@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.PersonelArac;
 import com.yavuzturtelekom.service.PersonelAracService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.PersonelAracCriteria;
+import com.yavuzturtelekom.service.PersonelAracQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class PersonelAracResource {
 
     private final PersonelAracService personelAracService;
 
-    public PersonelAracResource(PersonelAracService personelAracService) {
+    private final PersonelAracQueryService personelAracQueryService;
+
+    public PersonelAracResource(PersonelAracService personelAracService, PersonelAracQueryService personelAracQueryService) {
         this.personelAracService = personelAracService;
+        this.personelAracQueryService = personelAracQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class PersonelAracResource {
     /**
      * GET  /personel-aracs : get all the personelAracs.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of personelAracs in body
      */
     @GetMapping("/personel-aracs")
-    public List<PersonelArac> getAllPersonelAracs() {
-        log.debug("REST request to get all PersonelAracs");
-        return personelAracService.findAll();
+    public ResponseEntity<List<PersonelArac>> getAllPersonelAracs(PersonelAracCriteria criteria) {
+        log.debug("REST request to get PersonelAracs by criteria: {}", criteria);
+        List<PersonelArac> entityList = personelAracQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /personel-aracs/count : count all the personelAracs.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/personel-aracs/count")
+    public ResponseEntity<Long> countPersonelAracs(PersonelAracCriteria criteria) {
+        log.debug("REST request to count PersonelAracs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(personelAracQueryService.countByCriteria(criteria));
     }
 
     /**

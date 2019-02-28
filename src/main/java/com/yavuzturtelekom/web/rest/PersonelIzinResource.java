@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.PersonelIzin;
 import com.yavuzturtelekom.service.PersonelIzinService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.PersonelIzinCriteria;
+import com.yavuzturtelekom.service.PersonelIzinQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class PersonelIzinResource {
 
     private final PersonelIzinService personelIzinService;
 
-    public PersonelIzinResource(PersonelIzinService personelIzinService) {
+    private final PersonelIzinQueryService personelIzinQueryService;
+
+    public PersonelIzinResource(PersonelIzinService personelIzinService, PersonelIzinQueryService personelIzinQueryService) {
         this.personelIzinService = personelIzinService;
+        this.personelIzinQueryService = personelIzinQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class PersonelIzinResource {
     /**
      * GET  /personel-izins : get all the personelIzins.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of personelIzins in body
      */
     @GetMapping("/personel-izins")
-    public List<PersonelIzin> getAllPersonelIzins() {
-        log.debug("REST request to get all PersonelIzins");
-        return personelIzinService.findAll();
+    public ResponseEntity<List<PersonelIzin>> getAllPersonelIzins(PersonelIzinCriteria criteria) {
+        log.debug("REST request to get PersonelIzins by criteria: {}", criteria);
+        List<PersonelIzin> entityList = personelIzinQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /personel-izins/count : count all the personelIzins.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/personel-izins/count")
+    public ResponseEntity<Long> countPersonelIzins(PersonelIzinCriteria criteria) {
+        log.debug("REST request to count PersonelIzins by criteria: {}", criteria);
+        return ResponseEntity.ok().body(personelIzinQueryService.countByCriteria(criteria));
     }
 
     /**

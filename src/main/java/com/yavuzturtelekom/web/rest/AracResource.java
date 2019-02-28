@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.Arac;
 import com.yavuzturtelekom.service.AracService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.AracCriteria;
+import com.yavuzturtelekom.service.AracQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +30,11 @@ public class AracResource {
 
     private final AracService aracService;
 
-    public AracResource(AracService aracService) {
+    private final AracQueryService aracQueryService;
+
+    public AracResource(AracService aracService, AracQueryService aracQueryService) {
         this.aracService = aracService;
+        this.aracQueryService = aracQueryService;
     }
 
     /**
@@ -75,12 +80,26 @@ public class AracResource {
     /**
      * GET  /aracs : get all the aracs.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of aracs in body
      */
     @GetMapping("/aracs")
-    public List<Arac> getAllAracs() {
-        log.debug("REST request to get all Aracs");
-        return aracService.findAll();
+    public ResponseEntity<List<Arac>> getAllAracs(AracCriteria criteria) {
+        log.debug("REST request to get Aracs by criteria: {}", criteria);
+        List<Arac> entityList = aracQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /aracs/count : count all the aracs.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/aracs/count")
+    public ResponseEntity<Long> countAracs(AracCriteria criteria) {
+        log.debug("REST request to count Aracs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(aracQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.ZimmetTuru;
 import com.yavuzturtelekom.repository.ZimmetTuruRepository;
 import com.yavuzturtelekom.service.ZimmetTuruService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.ZimmetTuruCriteria;
+import com.yavuzturtelekom.service.ZimmetTuruQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +56,9 @@ public class ZimmetTuruResourceIntTest {
     private ZimmetTuruService zimmetTuruService;
 
     @Autowired
+    private ZimmetTuruQueryService zimmetTuruQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -75,7 +80,7 @@ public class ZimmetTuruResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ZimmetTuruResource zimmetTuruResource = new ZimmetTuruResource(zimmetTuruService);
+        final ZimmetTuruResource zimmetTuruResource = new ZimmetTuruResource(zimmetTuruService, zimmetTuruQueryService);
         this.restZimmetTuruMockMvc = MockMvcBuilders.standaloneSetup(zimmetTuruResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -187,6 +192,119 @@ public class ZimmetTuruResourceIntTest {
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()))
             .andExpect(jsonPath("$.aciklama").value(DEFAULT_ACIKLAMA.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllZimmetTurusByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        zimmetTuruRepository.saveAndFlush(zimmetTuru);
+
+        // Get all the zimmetTuruList where ad equals to DEFAULT_AD
+        defaultZimmetTuruShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the zimmetTuruList where ad equals to UPDATED_AD
+        defaultZimmetTuruShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllZimmetTurusByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        zimmetTuruRepository.saveAndFlush(zimmetTuru);
+
+        // Get all the zimmetTuruList where ad in DEFAULT_AD or UPDATED_AD
+        defaultZimmetTuruShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the zimmetTuruList where ad equals to UPDATED_AD
+        defaultZimmetTuruShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllZimmetTurusByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        zimmetTuruRepository.saveAndFlush(zimmetTuru);
+
+        // Get all the zimmetTuruList where ad is not null
+        defaultZimmetTuruShouldBeFound("ad.specified=true");
+
+        // Get all the zimmetTuruList where ad is null
+        defaultZimmetTuruShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllZimmetTurusByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        zimmetTuruRepository.saveAndFlush(zimmetTuru);
+
+        // Get all the zimmetTuruList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultZimmetTuruShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the zimmetTuruList where aciklama equals to UPDATED_ACIKLAMA
+        defaultZimmetTuruShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllZimmetTurusByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        zimmetTuruRepository.saveAndFlush(zimmetTuru);
+
+        // Get all the zimmetTuruList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultZimmetTuruShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the zimmetTuruList where aciklama equals to UPDATED_ACIKLAMA
+        defaultZimmetTuruShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllZimmetTurusByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        zimmetTuruRepository.saveAndFlush(zimmetTuru);
+
+        // Get all the zimmetTuruList where aciklama is not null
+        defaultZimmetTuruShouldBeFound("aciklama.specified=true");
+
+        // Get all the zimmetTuruList where aciklama is null
+        defaultZimmetTuruShouldNotBeFound("aciklama.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultZimmetTuruShouldBeFound(String filter) throws Exception {
+        restZimmetTuruMockMvc.perform(get("/api/zimmet-turus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(zimmetTuru.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)));
+
+        // Check, that the count call also returns 1
+        restZimmetTuruMockMvc.perform(get("/api/zimmet-turus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultZimmetTuruShouldNotBeFound(String filter) throws Exception {
+        restZimmetTuruMockMvc.perform(get("/api/zimmet-turus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restZimmetTuruMockMvc.perform(get("/api/zimmet-turus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

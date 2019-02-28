@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.Unvan;
 import com.yavuzturtelekom.service.UnvanService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.UnvanCriteria;
+import com.yavuzturtelekom.service.UnvanQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class UnvanResource {
 
     private final UnvanService unvanService;
 
-    public UnvanResource(UnvanService unvanService) {
+    private final UnvanQueryService unvanQueryService;
+
+    public UnvanResource(UnvanService unvanService, UnvanQueryService unvanQueryService) {
         this.unvanService = unvanService;
+        this.unvanQueryService = unvanQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class UnvanResource {
     /**
      * GET  /unvans : get all the unvans.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of unvans in body
      */
     @GetMapping("/unvans")
-    public List<Unvan> getAllUnvans() {
-        log.debug("REST request to get all Unvans");
-        return unvanService.findAll();
+    public ResponseEntity<List<Unvan>> getAllUnvans(UnvanCriteria criteria) {
+        log.debug("REST request to get Unvans by criteria: {}", criteria);
+        List<Unvan> entityList = unvanQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /unvans/count : count all the unvans.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/unvans/count")
+    public ResponseEntity<Long> countUnvans(UnvanCriteria criteria) {
+        log.debug("REST request to count Unvans by criteria: {}", criteria);
+        return ResponseEntity.ok().body(unvanQueryService.countByCriteria(criteria));
     }
 
     /**

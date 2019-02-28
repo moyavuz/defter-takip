@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PersonelIzinRepository extends JpaRepository<PersonelIzin, Long> {
+public interface PersonelIzinRepository extends JpaRepository<PersonelIzin, Long>, JpaSpecificationExecutor<PersonelIzin> {
 
 }

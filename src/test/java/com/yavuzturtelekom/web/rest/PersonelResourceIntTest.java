@@ -3,9 +3,14 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Personel;
+import com.yavuzturtelekom.domain.Personel;
+import com.yavuzturtelekom.domain.Unvan;
+import com.yavuzturtelekom.domain.Ekip;
 import com.yavuzturtelekom.repository.PersonelRepository;
 import com.yavuzturtelekom.service.PersonelService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.PersonelCriteria;
+import com.yavuzturtelekom.service.PersonelQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -117,6 +122,9 @@ public class PersonelResourceIntTest {
     private PersonelService personelService;
 
     @Autowired
+    private PersonelQueryService personelQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -138,7 +146,7 @@ public class PersonelResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PersonelResource personelResource = new PersonelResource(personelService);
+        final PersonelResource personelResource = new PersonelResource(personelService, personelQueryService);
         this.restPersonelMockMvc = MockMvcBuilders.standaloneSetup(personelResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -344,6 +352,849 @@ public class PersonelResourceIntTest {
             .andExpect(jsonPath("$.dosya").value(Base64Utils.encodeToString(DEFAULT_DOSYA)))
             .andExpect(jsonPath("$.not").value(DEFAULT_NOT.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByTckimliknoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where tckimlikno equals to DEFAULT_TCKIMLIKNO
+        defaultPersonelShouldBeFound("tckimlikno.equals=" + DEFAULT_TCKIMLIKNO);
+
+        // Get all the personelList where tckimlikno equals to UPDATED_TCKIMLIKNO
+        defaultPersonelShouldNotBeFound("tckimlikno.equals=" + UPDATED_TCKIMLIKNO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByTckimliknoIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where tckimlikno in DEFAULT_TCKIMLIKNO or UPDATED_TCKIMLIKNO
+        defaultPersonelShouldBeFound("tckimlikno.in=" + DEFAULT_TCKIMLIKNO + "," + UPDATED_TCKIMLIKNO);
+
+        // Get all the personelList where tckimlikno equals to UPDATED_TCKIMLIKNO
+        defaultPersonelShouldNotBeFound("tckimlikno.in=" + UPDATED_TCKIMLIKNO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByTckimliknoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where tckimlikno is not null
+        defaultPersonelShouldBeFound("tckimlikno.specified=true");
+
+        // Get all the personelList where tckimlikno is null
+        defaultPersonelShouldNotBeFound("tckimlikno.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByTckimliknoIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where tckimlikno greater than or equals to DEFAULT_TCKIMLIKNO
+        defaultPersonelShouldBeFound("tckimlikno.greaterOrEqualThan=" + DEFAULT_TCKIMLIKNO);
+
+        // Get all the personelList where tckimlikno greater than or equals to UPDATED_TCKIMLIKNO
+        defaultPersonelShouldNotBeFound("tckimlikno.greaterOrEqualThan=" + UPDATED_TCKIMLIKNO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByTckimliknoIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where tckimlikno less than or equals to DEFAULT_TCKIMLIKNO
+        defaultPersonelShouldNotBeFound("tckimlikno.lessThan=" + DEFAULT_TCKIMLIKNO);
+
+        // Get all the personelList where tckimlikno less than or equals to UPDATED_TCKIMLIKNO
+        defaultPersonelShouldBeFound("tckimlikno.lessThan=" + UPDATED_TCKIMLIKNO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where ad equals to DEFAULT_AD
+        defaultPersonelShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the personelList where ad equals to UPDATED_AD
+        defaultPersonelShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where ad in DEFAULT_AD or UPDATED_AD
+        defaultPersonelShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the personelList where ad equals to UPDATED_AD
+        defaultPersonelShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where ad is not null
+        defaultPersonelShouldBeFound("ad.specified=true");
+
+        // Get all the personelList where ad is null
+        defaultPersonelShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCepTelefonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cepTelefon equals to DEFAULT_CEP_TELEFON
+        defaultPersonelShouldBeFound("cepTelefon.equals=" + DEFAULT_CEP_TELEFON);
+
+        // Get all the personelList where cepTelefon equals to UPDATED_CEP_TELEFON
+        defaultPersonelShouldNotBeFound("cepTelefon.equals=" + UPDATED_CEP_TELEFON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCepTelefonIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cepTelefon in DEFAULT_CEP_TELEFON or UPDATED_CEP_TELEFON
+        defaultPersonelShouldBeFound("cepTelefon.in=" + DEFAULT_CEP_TELEFON + "," + UPDATED_CEP_TELEFON);
+
+        // Get all the personelList where cepTelefon equals to UPDATED_CEP_TELEFON
+        defaultPersonelShouldNotBeFound("cepTelefon.in=" + UPDATED_CEP_TELEFON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCepTelefonIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cepTelefon is not null
+        defaultPersonelShouldBeFound("cepTelefon.specified=true");
+
+        // Get all the personelList where cepTelefon is null
+        defaultPersonelShouldNotBeFound("cepTelefon.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsBySabitTelefonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where sabitTelefon equals to DEFAULT_SABIT_TELEFON
+        defaultPersonelShouldBeFound("sabitTelefon.equals=" + DEFAULT_SABIT_TELEFON);
+
+        // Get all the personelList where sabitTelefon equals to UPDATED_SABIT_TELEFON
+        defaultPersonelShouldNotBeFound("sabitTelefon.equals=" + UPDATED_SABIT_TELEFON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsBySabitTelefonIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where sabitTelefon in DEFAULT_SABIT_TELEFON or UPDATED_SABIT_TELEFON
+        defaultPersonelShouldBeFound("sabitTelefon.in=" + DEFAULT_SABIT_TELEFON + "," + UPDATED_SABIT_TELEFON);
+
+        // Get all the personelList where sabitTelefon equals to UPDATED_SABIT_TELEFON
+        defaultPersonelShouldNotBeFound("sabitTelefon.in=" + UPDATED_SABIT_TELEFON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsBySabitTelefonIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where sabitTelefon is not null
+        defaultPersonelShouldBeFound("sabitTelefon.specified=true");
+
+        // Get all the personelList where sabitTelefon is null
+        defaultPersonelShouldNotBeFound("sabitTelefon.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByEpostaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where eposta equals to DEFAULT_EPOSTA
+        defaultPersonelShouldBeFound("eposta.equals=" + DEFAULT_EPOSTA);
+
+        // Get all the personelList where eposta equals to UPDATED_EPOSTA
+        defaultPersonelShouldNotBeFound("eposta.equals=" + UPDATED_EPOSTA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByEpostaIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where eposta in DEFAULT_EPOSTA or UPDATED_EPOSTA
+        defaultPersonelShouldBeFound("eposta.in=" + DEFAULT_EPOSTA + "," + UPDATED_EPOSTA);
+
+        // Get all the personelList where eposta equals to UPDATED_EPOSTA
+        defaultPersonelShouldNotBeFound("eposta.in=" + UPDATED_EPOSTA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByEpostaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where eposta is not null
+        defaultPersonelShouldBeFound("eposta.specified=true");
+
+        // Get all the personelList where eposta is null
+        defaultPersonelShouldNotBeFound("eposta.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCinsiyetIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cinsiyet equals to DEFAULT_CINSIYET
+        defaultPersonelShouldBeFound("cinsiyet.equals=" + DEFAULT_CINSIYET);
+
+        // Get all the personelList where cinsiyet equals to UPDATED_CINSIYET
+        defaultPersonelShouldNotBeFound("cinsiyet.equals=" + UPDATED_CINSIYET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCinsiyetIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cinsiyet in DEFAULT_CINSIYET or UPDATED_CINSIYET
+        defaultPersonelShouldBeFound("cinsiyet.in=" + DEFAULT_CINSIYET + "," + UPDATED_CINSIYET);
+
+        // Get all the personelList where cinsiyet equals to UPDATED_CINSIYET
+        defaultPersonelShouldNotBeFound("cinsiyet.in=" + UPDATED_CINSIYET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCinsiyetIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cinsiyet is not null
+        defaultPersonelShouldBeFound("cinsiyet.specified=true");
+
+        // Get all the personelList where cinsiyet is null
+        defaultPersonelShouldNotBeFound("cinsiyet.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByEgitimDurumuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where egitimDurumu equals to DEFAULT_EGITIM_DURUMU
+        defaultPersonelShouldBeFound("egitimDurumu.equals=" + DEFAULT_EGITIM_DURUMU);
+
+        // Get all the personelList where egitimDurumu equals to UPDATED_EGITIM_DURUMU
+        defaultPersonelShouldNotBeFound("egitimDurumu.equals=" + UPDATED_EGITIM_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByEgitimDurumuIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where egitimDurumu in DEFAULT_EGITIM_DURUMU or UPDATED_EGITIM_DURUMU
+        defaultPersonelShouldBeFound("egitimDurumu.in=" + DEFAULT_EGITIM_DURUMU + "," + UPDATED_EGITIM_DURUMU);
+
+        // Get all the personelList where egitimDurumu equals to UPDATED_EGITIM_DURUMU
+        defaultPersonelShouldNotBeFound("egitimDurumu.in=" + UPDATED_EGITIM_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByEgitimDurumuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where egitimDurumu is not null
+        defaultPersonelShouldBeFound("egitimDurumu.specified=true");
+
+        // Get all the personelList where egitimDurumu is null
+        defaultPersonelShouldNotBeFound("egitimDurumu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByKanGrubuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where kanGrubu equals to DEFAULT_KAN_GRUBU
+        defaultPersonelShouldBeFound("kanGrubu.equals=" + DEFAULT_KAN_GRUBU);
+
+        // Get all the personelList where kanGrubu equals to UPDATED_KAN_GRUBU
+        defaultPersonelShouldNotBeFound("kanGrubu.equals=" + UPDATED_KAN_GRUBU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByKanGrubuIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where kanGrubu in DEFAULT_KAN_GRUBU or UPDATED_KAN_GRUBU
+        defaultPersonelShouldBeFound("kanGrubu.in=" + DEFAULT_KAN_GRUBU + "," + UPDATED_KAN_GRUBU);
+
+        // Get all the personelList where kanGrubu equals to UPDATED_KAN_GRUBU
+        defaultPersonelShouldNotBeFound("kanGrubu.in=" + UPDATED_KAN_GRUBU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByKanGrubuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where kanGrubu is not null
+        defaultPersonelShouldBeFound("kanGrubu.specified=true");
+
+        // Get all the personelList where kanGrubu is null
+        defaultPersonelShouldNotBeFound("kanGrubu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByPersonelTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where personelTuru equals to DEFAULT_PERSONEL_TURU
+        defaultPersonelShouldBeFound("personelTuru.equals=" + DEFAULT_PERSONEL_TURU);
+
+        // Get all the personelList where personelTuru equals to UPDATED_PERSONEL_TURU
+        defaultPersonelShouldNotBeFound("personelTuru.equals=" + UPDATED_PERSONEL_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByPersonelTuruIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where personelTuru in DEFAULT_PERSONEL_TURU or UPDATED_PERSONEL_TURU
+        defaultPersonelShouldBeFound("personelTuru.in=" + DEFAULT_PERSONEL_TURU + "," + UPDATED_PERSONEL_TURU);
+
+        // Get all the personelList where personelTuru equals to UPDATED_PERSONEL_TURU
+        defaultPersonelShouldNotBeFound("personelTuru.in=" + UPDATED_PERSONEL_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByPersonelTuruIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where personelTuru is not null
+        defaultPersonelShouldBeFound("personelTuru.specified=true");
+
+        // Get all the personelList where personelTuru is null
+        defaultPersonelShouldNotBeFound("personelTuru.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByUcretIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where ucret equals to DEFAULT_UCRET
+        defaultPersonelShouldBeFound("ucret.equals=" + DEFAULT_UCRET);
+
+        // Get all the personelList where ucret equals to UPDATED_UCRET
+        defaultPersonelShouldNotBeFound("ucret.equals=" + UPDATED_UCRET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByUcretIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where ucret in DEFAULT_UCRET or UPDATED_UCRET
+        defaultPersonelShouldBeFound("ucret.in=" + DEFAULT_UCRET + "," + UPDATED_UCRET);
+
+        // Get all the personelList where ucret equals to UPDATED_UCRET
+        defaultPersonelShouldNotBeFound("ucret.in=" + UPDATED_UCRET);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByUcretIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where ucret is not null
+        defaultPersonelShouldBeFound("ucret.specified=true");
+
+        // Get all the personelList where ucret is null
+        defaultPersonelShouldNotBeFound("ucret.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByIbanIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where iban equals to DEFAULT_IBAN
+        defaultPersonelShouldBeFound("iban.equals=" + DEFAULT_IBAN);
+
+        // Get all the personelList where iban equals to UPDATED_IBAN
+        defaultPersonelShouldNotBeFound("iban.equals=" + UPDATED_IBAN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByIbanIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where iban in DEFAULT_IBAN or UPDATED_IBAN
+        defaultPersonelShouldBeFound("iban.in=" + DEFAULT_IBAN + "," + UPDATED_IBAN);
+
+        // Get all the personelList where iban equals to UPDATED_IBAN
+        defaultPersonelShouldNotBeFound("iban.in=" + UPDATED_IBAN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByIbanIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where iban is not null
+        defaultPersonelShouldBeFound("iban.specified=true");
+
+        // Get all the personelList where iban is null
+        defaultPersonelShouldNotBeFound("iban.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByMedeniHaliIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where medeniHali equals to DEFAULT_MEDENI_HALI
+        defaultPersonelShouldBeFound("medeniHali.equals=" + DEFAULT_MEDENI_HALI);
+
+        // Get all the personelList where medeniHali equals to UPDATED_MEDENI_HALI
+        defaultPersonelShouldNotBeFound("medeniHali.equals=" + UPDATED_MEDENI_HALI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByMedeniHaliIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where medeniHali in DEFAULT_MEDENI_HALI or UPDATED_MEDENI_HALI
+        defaultPersonelShouldBeFound("medeniHali.in=" + DEFAULT_MEDENI_HALI + "," + UPDATED_MEDENI_HALI);
+
+        // Get all the personelList where medeniHali equals to UPDATED_MEDENI_HALI
+        defaultPersonelShouldNotBeFound("medeniHali.in=" + UPDATED_MEDENI_HALI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByMedeniHaliIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where medeniHali is not null
+        defaultPersonelShouldBeFound("medeniHali.specified=true");
+
+        // Get all the personelList where medeniHali is null
+        defaultPersonelShouldNotBeFound("medeniHali.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByDogumTarihiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where dogumTarihi equals to DEFAULT_DOGUM_TARIHI
+        defaultPersonelShouldBeFound("dogumTarihi.equals=" + DEFAULT_DOGUM_TARIHI);
+
+        // Get all the personelList where dogumTarihi equals to UPDATED_DOGUM_TARIHI
+        defaultPersonelShouldNotBeFound("dogumTarihi.equals=" + UPDATED_DOGUM_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByDogumTarihiIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where dogumTarihi in DEFAULT_DOGUM_TARIHI or UPDATED_DOGUM_TARIHI
+        defaultPersonelShouldBeFound("dogumTarihi.in=" + DEFAULT_DOGUM_TARIHI + "," + UPDATED_DOGUM_TARIHI);
+
+        // Get all the personelList where dogumTarihi equals to UPDATED_DOGUM_TARIHI
+        defaultPersonelShouldNotBeFound("dogumTarihi.in=" + UPDATED_DOGUM_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByDogumTarihiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where dogumTarihi is not null
+        defaultPersonelShouldBeFound("dogumTarihi.specified=true");
+
+        // Get all the personelList where dogumTarihi is null
+        defaultPersonelShouldNotBeFound("dogumTarihi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByDogumTarihiIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where dogumTarihi greater than or equals to DEFAULT_DOGUM_TARIHI
+        defaultPersonelShouldBeFound("dogumTarihi.greaterOrEqualThan=" + DEFAULT_DOGUM_TARIHI);
+
+        // Get all the personelList where dogumTarihi greater than or equals to UPDATED_DOGUM_TARIHI
+        defaultPersonelShouldNotBeFound("dogumTarihi.greaterOrEqualThan=" + UPDATED_DOGUM_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByDogumTarihiIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where dogumTarihi less than or equals to DEFAULT_DOGUM_TARIHI
+        defaultPersonelShouldNotBeFound("dogumTarihi.lessThan=" + DEFAULT_DOGUM_TARIHI);
+
+        // Get all the personelList where dogumTarihi less than or equals to UPDATED_DOGUM_TARIHI
+        defaultPersonelShouldBeFound("dogumTarihi.lessThan=" + UPDATED_DOGUM_TARIHI);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByGirisTarihiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where girisTarihi equals to DEFAULT_GIRIS_TARIHI
+        defaultPersonelShouldBeFound("girisTarihi.equals=" + DEFAULT_GIRIS_TARIHI);
+
+        // Get all the personelList where girisTarihi equals to UPDATED_GIRIS_TARIHI
+        defaultPersonelShouldNotBeFound("girisTarihi.equals=" + UPDATED_GIRIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByGirisTarihiIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where girisTarihi in DEFAULT_GIRIS_TARIHI or UPDATED_GIRIS_TARIHI
+        defaultPersonelShouldBeFound("girisTarihi.in=" + DEFAULT_GIRIS_TARIHI + "," + UPDATED_GIRIS_TARIHI);
+
+        // Get all the personelList where girisTarihi equals to UPDATED_GIRIS_TARIHI
+        defaultPersonelShouldNotBeFound("girisTarihi.in=" + UPDATED_GIRIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByGirisTarihiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where girisTarihi is not null
+        defaultPersonelShouldBeFound("girisTarihi.specified=true");
+
+        // Get all the personelList where girisTarihi is null
+        defaultPersonelShouldNotBeFound("girisTarihi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByGirisTarihiIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where girisTarihi greater than or equals to DEFAULT_GIRIS_TARIHI
+        defaultPersonelShouldBeFound("girisTarihi.greaterOrEqualThan=" + DEFAULT_GIRIS_TARIHI);
+
+        // Get all the personelList where girisTarihi greater than or equals to UPDATED_GIRIS_TARIHI
+        defaultPersonelShouldNotBeFound("girisTarihi.greaterOrEqualThan=" + UPDATED_GIRIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByGirisTarihiIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where girisTarihi less than or equals to DEFAULT_GIRIS_TARIHI
+        defaultPersonelShouldNotBeFound("girisTarihi.lessThan=" + DEFAULT_GIRIS_TARIHI);
+
+        // Get all the personelList where girisTarihi less than or equals to UPDATED_GIRIS_TARIHI
+        defaultPersonelShouldBeFound("girisTarihi.lessThan=" + UPDATED_GIRIS_TARIHI);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByIzinHakedisIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where izinHakedis equals to DEFAULT_IZIN_HAKEDIS
+        defaultPersonelShouldBeFound("izinHakedis.equals=" + DEFAULT_IZIN_HAKEDIS);
+
+        // Get all the personelList where izinHakedis equals to UPDATED_IZIN_HAKEDIS
+        defaultPersonelShouldNotBeFound("izinHakedis.equals=" + UPDATED_IZIN_HAKEDIS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByIzinHakedisIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where izinHakedis in DEFAULT_IZIN_HAKEDIS or UPDATED_IZIN_HAKEDIS
+        defaultPersonelShouldBeFound("izinHakedis.in=" + DEFAULT_IZIN_HAKEDIS + "," + UPDATED_IZIN_HAKEDIS);
+
+        // Get all the personelList where izinHakedis equals to UPDATED_IZIN_HAKEDIS
+        defaultPersonelShouldNotBeFound("izinHakedis.in=" + UPDATED_IZIN_HAKEDIS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByIzinHakedisIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where izinHakedis is not null
+        defaultPersonelShouldBeFound("izinHakedis.specified=true");
+
+        // Get all the personelList where izinHakedis is null
+        defaultPersonelShouldNotBeFound("izinHakedis.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCikisTarihiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cikisTarihi equals to DEFAULT_CIKIS_TARIHI
+        defaultPersonelShouldBeFound("cikisTarihi.equals=" + DEFAULT_CIKIS_TARIHI);
+
+        // Get all the personelList where cikisTarihi equals to UPDATED_CIKIS_TARIHI
+        defaultPersonelShouldNotBeFound("cikisTarihi.equals=" + UPDATED_CIKIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCikisTarihiIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cikisTarihi in DEFAULT_CIKIS_TARIHI or UPDATED_CIKIS_TARIHI
+        defaultPersonelShouldBeFound("cikisTarihi.in=" + DEFAULT_CIKIS_TARIHI + "," + UPDATED_CIKIS_TARIHI);
+
+        // Get all the personelList where cikisTarihi equals to UPDATED_CIKIS_TARIHI
+        defaultPersonelShouldNotBeFound("cikisTarihi.in=" + UPDATED_CIKIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCikisTarihiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cikisTarihi is not null
+        defaultPersonelShouldBeFound("cikisTarihi.specified=true");
+
+        // Get all the personelList where cikisTarihi is null
+        defaultPersonelShouldNotBeFound("cikisTarihi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCikisTarihiIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cikisTarihi greater than or equals to DEFAULT_CIKIS_TARIHI
+        defaultPersonelShouldBeFound("cikisTarihi.greaterOrEqualThan=" + DEFAULT_CIKIS_TARIHI);
+
+        // Get all the personelList where cikisTarihi greater than or equals to UPDATED_CIKIS_TARIHI
+        defaultPersonelShouldNotBeFound("cikisTarihi.greaterOrEqualThan=" + UPDATED_CIKIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByCikisTarihiIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personelRepository.saveAndFlush(personel);
+
+        // Get all the personelList where cikisTarihi less than or equals to DEFAULT_CIKIS_TARIHI
+        defaultPersonelShouldNotBeFound("cikisTarihi.lessThan=" + DEFAULT_CIKIS_TARIHI);
+
+        // Get all the personelList where cikisTarihi less than or equals to UPDATED_CIKIS_TARIHI
+        defaultPersonelShouldBeFound("cikisTarihi.lessThan=" + UPDATED_CIKIS_TARIHI);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByYoneticiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel yonetici = PersonelResourceIntTest.createEntity(em);
+        em.persist(yonetici);
+        em.flush();
+        personel.setYonetici(yonetici);
+        personelRepository.saveAndFlush(personel);
+        Long yoneticiId = yonetici.getId();
+
+        // Get all the personelList where yonetici equals to yoneticiId
+        defaultPersonelShouldBeFound("yoneticiId.equals=" + yoneticiId);
+
+        // Get all the personelList where yonetici equals to yoneticiId + 1
+        defaultPersonelShouldNotBeFound("yoneticiId.equals=" + (yoneticiId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByUnvanIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Unvan unvan = UnvanResourceIntTest.createEntity(em);
+        em.persist(unvan);
+        em.flush();
+        personel.setUnvan(unvan);
+        personelRepository.saveAndFlush(personel);
+        Long unvanId = unvan.getId();
+
+        // Get all the personelList where unvan equals to unvanId
+        defaultPersonelShouldBeFound("unvanId.equals=" + unvanId);
+
+        // Get all the personelList where unvan equals to unvanId + 1
+        defaultPersonelShouldNotBeFound("unvanId.equals=" + (unvanId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelsByEkipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Ekip ekip = EkipResourceIntTest.createEntity(em);
+        em.persist(ekip);
+        em.flush();
+        personel.addEkip(ekip);
+        personelRepository.saveAndFlush(personel);
+        Long ekipId = ekip.getId();
+
+        // Get all the personelList where ekip equals to ekipId
+        defaultPersonelShouldBeFound("ekipId.equals=" + ekipId);
+
+        // Get all the personelList where ekip equals to ekipId + 1
+        defaultPersonelShouldNotBeFound("ekipId.equals=" + (ekipId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultPersonelShouldBeFound(String filter) throws Exception {
+        restPersonelMockMvc.perform(get("/api/personels?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(personel.getId().intValue())))
+            .andExpect(jsonPath("$.[*].tckimlikno").value(hasItem(DEFAULT_TCKIMLIKNO.intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].cepTelefon").value(hasItem(DEFAULT_CEP_TELEFON)))
+            .andExpect(jsonPath("$.[*].sabitTelefon").value(hasItem(DEFAULT_SABIT_TELEFON)))
+            .andExpect(jsonPath("$.[*].eposta").value(hasItem(DEFAULT_EPOSTA)))
+            .andExpect(jsonPath("$.[*].cinsiyet").value(hasItem(DEFAULT_CINSIYET.toString())))
+            .andExpect(jsonPath("$.[*].egitimDurumu").value(hasItem(DEFAULT_EGITIM_DURUMU.toString())))
+            .andExpect(jsonPath("$.[*].kanGrubu").value(hasItem(DEFAULT_KAN_GRUBU.toString())))
+            .andExpect(jsonPath("$.[*].personelTuru").value(hasItem(DEFAULT_PERSONEL_TURU.toString())))
+            .andExpect(jsonPath("$.[*].ucret").value(hasItem(DEFAULT_UCRET.doubleValue())))
+            .andExpect(jsonPath("$.[*].iban").value(hasItem(DEFAULT_IBAN)))
+            .andExpect(jsonPath("$.[*].medeniHali").value(hasItem(DEFAULT_MEDENI_HALI.toString())))
+            .andExpect(jsonPath("$.[*].dogumTarihi").value(hasItem(DEFAULT_DOGUM_TARIHI.toString())))
+            .andExpect(jsonPath("$.[*].girisTarihi").value(hasItem(DEFAULT_GIRIS_TARIHI.toString())))
+            .andExpect(jsonPath("$.[*].izinHakedis").value(hasItem(DEFAULT_IZIN_HAKEDIS.doubleValue())))
+            .andExpect(jsonPath("$.[*].cikisTarihi").value(hasItem(DEFAULT_CIKIS_TARIHI.toString())))
+            .andExpect(jsonPath("$.[*].resimContentType").value(hasItem(DEFAULT_RESIM_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].resim").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESIM))))
+            .andExpect(jsonPath("$.[*].dosyaContentType").value(hasItem(DEFAULT_DOSYA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].dosya").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOSYA))))
+            .andExpect(jsonPath("$.[*].not").value(hasItem(DEFAULT_NOT.toString())));
+
+        // Check, that the count call also returns 1
+        restPersonelMockMvc.perform(get("/api/personels/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultPersonelShouldNotBeFound(String filter) throws Exception {
+        restPersonelMockMvc.perform(get("/api/personels?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restPersonelMockMvc.perform(get("/api/personels/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

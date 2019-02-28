@@ -7,6 +7,8 @@ import com.yavuzturtelekom.domain.Personel;
 import com.yavuzturtelekom.repository.PersonelIzinRepository;
 import com.yavuzturtelekom.service.PersonelIzinService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.PersonelIzinCriteria;
+import com.yavuzturtelekom.service.PersonelIzinQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -67,6 +69,9 @@ public class PersonelIzinResourceIntTest {
     private PersonelIzinService personelIzinService;
 
     @Autowired
+    private PersonelIzinQueryService personelIzinQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -88,7 +93,7 @@ public class PersonelIzinResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PersonelIzinResource personelIzinResource = new PersonelIzinResource(personelIzinService);
+        final PersonelIzinResource personelIzinResource = new PersonelIzinResource(personelIzinService, personelIzinQueryService);
         this.restPersonelIzinMockMvc = MockMvcBuilders.standaloneSetup(personelIzinResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -199,6 +204,207 @@ public class PersonelIzinResourceIntTest {
             .andExpect(jsonPath("$.dosyaContentType").value(DEFAULT_DOSYA_CONTENT_TYPE))
             .andExpect(jsonPath("$.dosya").value(Base64Utils.encodeToString(DEFAULT_DOSYA)));
     }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where tarih equals to DEFAULT_TARIH
+        defaultPersonelIzinShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the personelIzinList where tarih equals to UPDATED_TARIH
+        defaultPersonelIzinShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultPersonelIzinShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the personelIzinList where tarih equals to UPDATED_TARIH
+        defaultPersonelIzinShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where tarih is not null
+        defaultPersonelIzinShouldBeFound("tarih.specified=true");
+
+        // Get all the personelIzinList where tarih is null
+        defaultPersonelIzinShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where tarih greater than or equals to DEFAULT_TARIH
+        defaultPersonelIzinShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the personelIzinList where tarih greater than or equals to UPDATED_TARIH
+        defaultPersonelIzinShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where tarih less than or equals to DEFAULT_TARIH
+        defaultPersonelIzinShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the personelIzinList where tarih less than or equals to UPDATED_TARIH
+        defaultPersonelIzinShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByMiktarIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where miktar equals to DEFAULT_MIKTAR
+        defaultPersonelIzinShouldBeFound("miktar.equals=" + DEFAULT_MIKTAR);
+
+        // Get all the personelIzinList where miktar equals to UPDATED_MIKTAR
+        defaultPersonelIzinShouldNotBeFound("miktar.equals=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByMiktarIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where miktar in DEFAULT_MIKTAR or UPDATED_MIKTAR
+        defaultPersonelIzinShouldBeFound("miktar.in=" + DEFAULT_MIKTAR + "," + UPDATED_MIKTAR);
+
+        // Get all the personelIzinList where miktar equals to UPDATED_MIKTAR
+        defaultPersonelIzinShouldNotBeFound("miktar.in=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByMiktarIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where miktar is not null
+        defaultPersonelIzinShouldBeFound("miktar.specified=true");
+
+        // Get all the personelIzinList where miktar is null
+        defaultPersonelIzinShouldNotBeFound("miktar.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where turu equals to DEFAULT_TURU
+        defaultPersonelIzinShouldBeFound("turu.equals=" + DEFAULT_TURU);
+
+        // Get all the personelIzinList where turu equals to UPDATED_TURU
+        defaultPersonelIzinShouldNotBeFound("turu.equals=" + UPDATED_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByTuruIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where turu in DEFAULT_TURU or UPDATED_TURU
+        defaultPersonelIzinShouldBeFound("turu.in=" + DEFAULT_TURU + "," + UPDATED_TURU);
+
+        // Get all the personelIzinList where turu equals to UPDATED_TURU
+        defaultPersonelIzinShouldNotBeFound("turu.in=" + UPDATED_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByTuruIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelIzinRepository.saveAndFlush(personelIzin);
+
+        // Get all the personelIzinList where turu is not null
+        defaultPersonelIzinShouldBeFound("turu.specified=true");
+
+        // Get all the personelIzinList where turu is null
+        defaultPersonelIzinShouldNotBeFound("turu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelIzinsByPersonelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel personel = PersonelResourceIntTest.createEntity(em);
+        em.persist(personel);
+        em.flush();
+        personelIzin.setPersonel(personel);
+        personelIzinRepository.saveAndFlush(personelIzin);
+        Long personelId = personel.getId();
+
+        // Get all the personelIzinList where personel equals to personelId
+        defaultPersonelIzinShouldBeFound("personelId.equals=" + personelId);
+
+        // Get all the personelIzinList where personel equals to personelId + 1
+        defaultPersonelIzinShouldNotBeFound("personelId.equals=" + (personelId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultPersonelIzinShouldBeFound(String filter) throws Exception {
+        restPersonelIzinMockMvc.perform(get("/api/personel-izins?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(personelIzin.getId().intValue())))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())))
+            .andExpect(jsonPath("$.[*].miktar").value(hasItem(DEFAULT_MIKTAR.doubleValue())))
+            .andExpect(jsonPath("$.[*].turu").value(hasItem(DEFAULT_TURU.toString())))
+            .andExpect(jsonPath("$.[*].dosyaContentType").value(hasItem(DEFAULT_DOSYA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].dosya").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOSYA))));
+
+        // Check, that the count call also returns 1
+        restPersonelIzinMockMvc.perform(get("/api/personel-izins/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultPersonelIzinShouldNotBeFound(String filter) throws Exception {
+        restPersonelIzinMockMvc.perform(get("/api/personel-izins?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restPersonelIzinMockMvc.perform(get("/api/personel-izins/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

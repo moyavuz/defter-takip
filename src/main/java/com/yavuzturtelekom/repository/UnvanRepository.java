@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface UnvanRepository extends JpaRepository<Unvan, Long> {
+public interface UnvanRepository extends JpaRepository<Unvan, Long>, JpaSpecificationExecutor<Unvan> {
 
 }
