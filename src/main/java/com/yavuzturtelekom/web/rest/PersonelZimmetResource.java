@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.PersonelZimmet;
 import com.yavuzturtelekom.service.PersonelZimmetService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.PersonelZimmetCriteria;
+import com.yavuzturtelekom.service.PersonelZimmetQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class PersonelZimmetResource {
 
     private final PersonelZimmetService personelZimmetService;
 
-    public PersonelZimmetResource(PersonelZimmetService personelZimmetService) {
+    private final PersonelZimmetQueryService personelZimmetQueryService;
+
+    public PersonelZimmetResource(PersonelZimmetService personelZimmetService, PersonelZimmetQueryService personelZimmetQueryService) {
         this.personelZimmetService = personelZimmetService;
+        this.personelZimmetQueryService = personelZimmetQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class PersonelZimmetResource {
     /**
      * GET  /personel-zimmets : get all the personelZimmets.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of personelZimmets in body
      */
     @GetMapping("/personel-zimmets")
-    public List<PersonelZimmet> getAllPersonelZimmets() {
-        log.debug("REST request to get all PersonelZimmets");
-        return personelZimmetService.findAll();
+    public ResponseEntity<List<PersonelZimmet>> getAllPersonelZimmets(PersonelZimmetCriteria criteria) {
+        log.debug("REST request to get PersonelZimmets by criteria: {}", criteria);
+        List<PersonelZimmet> entityList = personelZimmetQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /personel-zimmets/count : count all the personelZimmets.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/personel-zimmets/count")
+    public ResponseEntity<Long> countPersonelZimmets(PersonelZimmetCriteria criteria) {
+        log.debug("REST request to count PersonelZimmets by criteria: {}", criteria);
+        return ResponseEntity.ok().body(personelZimmetQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MalzemeGrubuRepository extends JpaRepository<MalzemeGrubu, Long> {
+public interface MalzemeGrubuRepository extends JpaRepository<MalzemeGrubu, Long>, JpaSpecificationExecutor<MalzemeGrubu> {
 
     @Query(value = "select distinct malzeme_grubu from MalzemeGrubu malzeme_grubu left join fetch malzeme_grubu.malzemeListesis",
         countQuery = "select count(distinct malzeme_grubu) from MalzemeGrubu malzeme_grubu")

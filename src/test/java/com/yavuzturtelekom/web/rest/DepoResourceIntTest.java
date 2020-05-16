@@ -3,9 +3,13 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Depo;
+import com.yavuzturtelekom.domain.StokTakip;
+import com.yavuzturtelekom.domain.Personel;
 import com.yavuzturtelekom.repository.DepoRepository;
 import com.yavuzturtelekom.service.DepoService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.DepoCriteria;
+import com.yavuzturtelekom.service.DepoQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +62,9 @@ public class DepoResourceIntTest {
     private DepoService depoService;
 
     @Autowired
+    private DepoQueryService depoQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -79,7 +86,7 @@ public class DepoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DepoResource depoResource = new DepoResource(depoService);
+        final DepoResource depoResource = new DepoResource(depoService, depoQueryService);
         this.restDepoMockMvc = MockMvcBuilders.standaloneSetup(depoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -179,7 +186,7 @@ public class DepoResourceIntTest {
             .andExpect(jsonPath("$.[*].adres").value(hasItem(DEFAULT_ADRES.toString())))
             .andExpect(jsonPath("$.[*].turu").value(hasItem(DEFAULT_TURU.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getDepo() throws Exception {
@@ -195,6 +202,197 @@ public class DepoResourceIntTest {
             .andExpect(jsonPath("$.adres").value(DEFAULT_ADRES.toString()))
             .andExpect(jsonPath("$.turu").value(DEFAULT_TURU.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllDeposByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where ad equals to DEFAULT_AD
+        defaultDepoShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the depoList where ad equals to UPDATED_AD
+        defaultDepoShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where ad in DEFAULT_AD or UPDATED_AD
+        defaultDepoShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the depoList where ad equals to UPDATED_AD
+        defaultDepoShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where ad is not null
+        defaultDepoShouldBeFound("ad.specified=true");
+
+        // Get all the depoList where ad is null
+        defaultDepoShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByAdresIsEqualToSomething() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where adres equals to DEFAULT_ADRES
+        defaultDepoShouldBeFound("adres.equals=" + DEFAULT_ADRES);
+
+        // Get all the depoList where adres equals to UPDATED_ADRES
+        defaultDepoShouldNotBeFound("adres.equals=" + UPDATED_ADRES);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByAdresIsInShouldWork() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where adres in DEFAULT_ADRES or UPDATED_ADRES
+        defaultDepoShouldBeFound("adres.in=" + DEFAULT_ADRES + "," + UPDATED_ADRES);
+
+        // Get all the depoList where adres equals to UPDATED_ADRES
+        defaultDepoShouldNotBeFound("adres.in=" + UPDATED_ADRES);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByAdresIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where adres is not null
+        defaultDepoShouldBeFound("adres.specified=true");
+
+        // Get all the depoList where adres is null
+        defaultDepoShouldNotBeFound("adres.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where turu equals to DEFAULT_TURU
+        defaultDepoShouldBeFound("turu.equals=" + DEFAULT_TURU);
+
+        // Get all the depoList where turu equals to UPDATED_TURU
+        defaultDepoShouldNotBeFound("turu.equals=" + UPDATED_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByTuruIsInShouldWork() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where turu in DEFAULT_TURU or UPDATED_TURU
+        defaultDepoShouldBeFound("turu.in=" + DEFAULT_TURU + "," + UPDATED_TURU);
+
+        // Get all the depoList where turu equals to UPDATED_TURU
+        defaultDepoShouldNotBeFound("turu.in=" + UPDATED_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByTuruIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        depoRepository.saveAndFlush(depo);
+
+        // Get all the depoList where turu is not null
+        defaultDepoShouldBeFound("turu.specified=true");
+
+        // Get all the depoList where turu is null
+        defaultDepoShouldNotBeFound("turu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDeposByStokTakipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        StokTakip stokTakip = StokTakipResourceIntTest.createEntity(em);
+        em.persist(stokTakip);
+        em.flush();
+        depo.addStokTakip(stokTakip);
+        depoRepository.saveAndFlush(depo);
+        Long stokTakipId = stokTakip.getId();
+
+        // Get all the depoList where stokTakip equals to stokTakipId
+        defaultDepoShouldBeFound("stokTakipId.equals=" + stokTakipId);
+
+        // Get all the depoList where stokTakip equals to stokTakipId + 1
+        defaultDepoShouldNotBeFound("stokTakipId.equals=" + (stokTakipId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllDeposBySorumluIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel sorumlu = PersonelResourceIntTest.createEntity(em);
+        em.persist(sorumlu);
+        em.flush();
+        depo.setSorumlu(sorumlu);
+        depoRepository.saveAndFlush(depo);
+        Long sorumluId = sorumlu.getId();
+
+        // Get all the depoList where sorumlu equals to sorumluId
+        defaultDepoShouldBeFound("sorumluId.equals=" + sorumluId);
+
+        // Get all the depoList where sorumlu equals to sorumluId + 1
+        defaultDepoShouldNotBeFound("sorumluId.equals=" + (sorumluId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultDepoShouldBeFound(String filter) throws Exception {
+        restDepoMockMvc.perform(get("/api/depos?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(depo.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].adres").value(hasItem(DEFAULT_ADRES)))
+            .andExpect(jsonPath("$.[*].turu").value(hasItem(DEFAULT_TURU.toString())));
+
+        // Check, that the count call also returns 1
+        restDepoMockMvc.perform(get("/api/depos/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultDepoShouldNotBeFound(String filter) throws Exception {
+        restDepoMockMvc.perform(get("/api/depos?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restDepoMockMvc.perform(get("/api/depos/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

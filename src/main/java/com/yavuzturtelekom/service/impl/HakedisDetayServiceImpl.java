@@ -1,7 +1,5 @@
 package com.yavuzturtelekom.service.impl;
 
-import com.yavuzturtelekom.domain.Hakedis;
-import com.yavuzturtelekom.repository.HakedisRepository;
 import com.yavuzturtelekom.service.HakedisDetayService;
 import com.yavuzturtelekom.domain.HakedisDetay;
 import com.yavuzturtelekom.repository.HakedisDetayRepository;
@@ -13,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,11 +24,8 @@ public class HakedisDetayServiceImpl implements HakedisDetayService {
 
     private final HakedisDetayRepository hakedisDetayRepository;
 
-    private final HakedisRepository hakedisRepository;
-
-    public HakedisDetayServiceImpl(HakedisDetayRepository hakedisDetayRepository, HakedisRepository hakedisRepository) {
+    public HakedisDetayServiceImpl(HakedisDetayRepository hakedisDetayRepository) {
         this.hakedisDetayRepository = hakedisDetayRepository;
-        this.hakedisRepository = hakedisRepository;
     }
 
     /**
@@ -82,13 +76,4 @@ public class HakedisDetayServiceImpl implements HakedisDetayService {
     public void delete(Long id) {
         log.debug("Request to delete HakedisDetay : {}", id);        hakedisDetayRepository.deleteById(id);
     }
-
-
-    @Override
-    public List<HakedisDetay> findHakedisDetayByHakedisId(Long id) {
-        Optional<Hakedis> hakedis = hakedisRepository.findById(id);
-        List<HakedisDetay> hakedisDetayList = hakedisDetayRepository.findHakedisDetayByHakedis(hakedis.get());
-        return hakedisDetayList;
-    }
-
 }

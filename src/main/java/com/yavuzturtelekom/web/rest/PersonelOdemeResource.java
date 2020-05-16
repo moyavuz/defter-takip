@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.PersonelOdeme;
 import com.yavuzturtelekom.service.PersonelOdemeService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.PersonelOdemeCriteria;
+import com.yavuzturtelekom.service.PersonelOdemeQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class PersonelOdemeResource {
 
     private final PersonelOdemeService personelOdemeService;
 
-    public PersonelOdemeResource(PersonelOdemeService personelOdemeService) {
+    private final PersonelOdemeQueryService personelOdemeQueryService;
+
+    public PersonelOdemeResource(PersonelOdemeService personelOdemeService, PersonelOdemeQueryService personelOdemeQueryService) {
         this.personelOdemeService = personelOdemeService;
+        this.personelOdemeQueryService = personelOdemeQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class PersonelOdemeResource {
     /**
      * GET  /personel-odemes : get all the personelOdemes.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of personelOdemes in body
      */
     @GetMapping("/personel-odemes")
-    public List<PersonelOdeme> getAllPersonelOdemes() {
-        log.debug("REST request to get all PersonelOdemes");
-        return personelOdemeService.findAll();
+    public ResponseEntity<List<PersonelOdeme>> getAllPersonelOdemes(PersonelOdemeCriteria criteria) {
+        log.debug("REST request to get PersonelOdemes by criteria: {}", criteria);
+        List<PersonelOdeme> entityList = personelOdemeQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /personel-odemes/count : count all the personelOdemes.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/personel-odemes/count")
+    public ResponseEntity<Long> countPersonelOdemes(PersonelOdemeCriteria criteria) {
+        log.debug("REST request to count PersonelOdemes by criteria: {}", criteria);
+        return ResponseEntity.ok().body(personelOdemeQueryService.countByCriteria(criteria));
     }
 
     /**

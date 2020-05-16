@@ -3,10 +3,14 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Proje;
+import com.yavuzturtelekom.domain.Hakedis;
 import com.yavuzturtelekom.domain.ProjeTuru;
+import com.yavuzturtelekom.domain.Mudurluk;
 import com.yavuzturtelekom.repository.ProjeRepository;
 import com.yavuzturtelekom.service.ProjeService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.ProjeCriteria;
+import com.yavuzturtelekom.service.ProjeQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -87,6 +91,9 @@ public class ProjeResourceIntTest {
     private ProjeService projeService;
 
     @Autowired
+    private ProjeQueryService projeQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -108,7 +115,7 @@ public class ProjeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProjeResource projeResource = new ProjeResource(projeService);
+        final ProjeResource projeResource = new ProjeResource(projeService, projeQueryService);
         this.restProjeMockMvc = MockMvcBuilders.standaloneSetup(projeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -265,6 +272,489 @@ public class ProjeResourceIntTest {
             .andExpect(jsonPath("$.baslamaTarihi").value(DEFAULT_BASLAMA_TARIHI.toString()))
             .andExpect(jsonPath("$.bitisTarihi").value(DEFAULT_BITIS_TARIHI.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllProjesByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where ad equals to DEFAULT_AD
+        defaultProjeShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the projeList where ad equals to UPDATED_AD
+        defaultProjeShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where ad in DEFAULT_AD or UPDATED_AD
+        defaultProjeShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the projeList where ad equals to UPDATED_AD
+        defaultProjeShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where ad is not null
+        defaultProjeShouldBeFound("ad.specified=true");
+
+        // Get all the projeList where ad is null
+        defaultProjeShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultProjeShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the projeList where aciklama equals to UPDATED_ACIKLAMA
+        defaultProjeShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultProjeShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the projeList where aciklama equals to UPDATED_ACIKLAMA
+        defaultProjeShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where aciklama is not null
+        defaultProjeShouldBeFound("aciklama.specified=true");
+
+        // Get all the projeList where aciklama is null
+        defaultProjeShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByProtokolNoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where protokolNo equals to DEFAULT_PROTOKOL_NO
+        defaultProjeShouldBeFound("protokolNo.equals=" + DEFAULT_PROTOKOL_NO);
+
+        // Get all the projeList where protokolNo equals to UPDATED_PROTOKOL_NO
+        defaultProjeShouldNotBeFound("protokolNo.equals=" + UPDATED_PROTOKOL_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByProtokolNoIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where protokolNo in DEFAULT_PROTOKOL_NO or UPDATED_PROTOKOL_NO
+        defaultProjeShouldBeFound("protokolNo.in=" + DEFAULT_PROTOKOL_NO + "," + UPDATED_PROTOKOL_NO);
+
+        // Get all the projeList where protokolNo equals to UPDATED_PROTOKOL_NO
+        defaultProjeShouldNotBeFound("protokolNo.in=" + UPDATED_PROTOKOL_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByProtokolNoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where protokolNo is not null
+        defaultProjeShouldBeFound("protokolNo.specified=true");
+
+        // Get all the projeList where protokolNo is null
+        defaultProjeShouldNotBeFound("protokolNo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByProtokolNoIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where protokolNo greater than or equals to DEFAULT_PROTOKOL_NO
+        defaultProjeShouldBeFound("protokolNo.greaterOrEqualThan=" + DEFAULT_PROTOKOL_NO);
+
+        // Get all the projeList where protokolNo greater than or equals to UPDATED_PROTOKOL_NO
+        defaultProjeShouldNotBeFound("protokolNo.greaterOrEqualThan=" + UPDATED_PROTOKOL_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByProtokolNoIsLessThanSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where protokolNo less than or equals to DEFAULT_PROTOKOL_NO
+        defaultProjeShouldNotBeFound("protokolNo.lessThan=" + DEFAULT_PROTOKOL_NO);
+
+        // Get all the projeList where protokolNo less than or equals to UPDATED_PROTOKOL_NO
+        defaultProjeShouldBeFound("protokolNo.lessThan=" + UPDATED_PROTOKOL_NO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllProjesByDurumuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where durumu equals to DEFAULT_DURUMU
+        defaultProjeShouldBeFound("durumu.equals=" + DEFAULT_DURUMU);
+
+        // Get all the projeList where durumu equals to UPDATED_DURUMU
+        defaultProjeShouldNotBeFound("durumu.equals=" + UPDATED_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByDurumuIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where durumu in DEFAULT_DURUMU or UPDATED_DURUMU
+        defaultProjeShouldBeFound("durumu.in=" + DEFAULT_DURUMU + "," + UPDATED_DURUMU);
+
+        // Get all the projeList where durumu equals to UPDATED_DURUMU
+        defaultProjeShouldNotBeFound("durumu.in=" + UPDATED_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByDurumuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where durumu is not null
+        defaultProjeShouldBeFound("durumu.specified=true");
+
+        // Get all the projeList where durumu is null
+        defaultProjeShouldNotBeFound("durumu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where tarih equals to DEFAULT_TARIH
+        defaultProjeShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the projeList where tarih equals to UPDATED_TARIH
+        defaultProjeShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultProjeShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the projeList where tarih equals to UPDATED_TARIH
+        defaultProjeShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where tarih is not null
+        defaultProjeShouldBeFound("tarih.specified=true");
+
+        // Get all the projeList where tarih is null
+        defaultProjeShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where tarih greater than or equals to DEFAULT_TARIH
+        defaultProjeShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the projeList where tarih greater than or equals to UPDATED_TARIH
+        defaultProjeShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where tarih less than or equals to DEFAULT_TARIH
+        defaultProjeShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the projeList where tarih less than or equals to UPDATED_TARIH
+        defaultProjeShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllProjesByBaslamaTarihiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where baslamaTarihi equals to DEFAULT_BASLAMA_TARIHI
+        defaultProjeShouldBeFound("baslamaTarihi.equals=" + DEFAULT_BASLAMA_TARIHI);
+
+        // Get all the projeList where baslamaTarihi equals to UPDATED_BASLAMA_TARIHI
+        defaultProjeShouldNotBeFound("baslamaTarihi.equals=" + UPDATED_BASLAMA_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByBaslamaTarihiIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where baslamaTarihi in DEFAULT_BASLAMA_TARIHI or UPDATED_BASLAMA_TARIHI
+        defaultProjeShouldBeFound("baslamaTarihi.in=" + DEFAULT_BASLAMA_TARIHI + "," + UPDATED_BASLAMA_TARIHI);
+
+        // Get all the projeList where baslamaTarihi equals to UPDATED_BASLAMA_TARIHI
+        defaultProjeShouldNotBeFound("baslamaTarihi.in=" + UPDATED_BASLAMA_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByBaslamaTarihiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where baslamaTarihi is not null
+        defaultProjeShouldBeFound("baslamaTarihi.specified=true");
+
+        // Get all the projeList where baslamaTarihi is null
+        defaultProjeShouldNotBeFound("baslamaTarihi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByBaslamaTarihiIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where baslamaTarihi greater than or equals to DEFAULT_BASLAMA_TARIHI
+        defaultProjeShouldBeFound("baslamaTarihi.greaterOrEqualThan=" + DEFAULT_BASLAMA_TARIHI);
+
+        // Get all the projeList where baslamaTarihi greater than or equals to UPDATED_BASLAMA_TARIHI
+        defaultProjeShouldNotBeFound("baslamaTarihi.greaterOrEqualThan=" + UPDATED_BASLAMA_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByBaslamaTarihiIsLessThanSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where baslamaTarihi less than or equals to DEFAULT_BASLAMA_TARIHI
+        defaultProjeShouldNotBeFound("baslamaTarihi.lessThan=" + DEFAULT_BASLAMA_TARIHI);
+
+        // Get all the projeList where baslamaTarihi less than or equals to UPDATED_BASLAMA_TARIHI
+        defaultProjeShouldBeFound("baslamaTarihi.lessThan=" + UPDATED_BASLAMA_TARIHI);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllProjesByBitisTarihiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where bitisTarihi equals to DEFAULT_BITIS_TARIHI
+        defaultProjeShouldBeFound("bitisTarihi.equals=" + DEFAULT_BITIS_TARIHI);
+
+        // Get all the projeList where bitisTarihi equals to UPDATED_BITIS_TARIHI
+        defaultProjeShouldNotBeFound("bitisTarihi.equals=" + UPDATED_BITIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByBitisTarihiIsInShouldWork() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where bitisTarihi in DEFAULT_BITIS_TARIHI or UPDATED_BITIS_TARIHI
+        defaultProjeShouldBeFound("bitisTarihi.in=" + DEFAULT_BITIS_TARIHI + "," + UPDATED_BITIS_TARIHI);
+
+        // Get all the projeList where bitisTarihi equals to UPDATED_BITIS_TARIHI
+        defaultProjeShouldNotBeFound("bitisTarihi.in=" + UPDATED_BITIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByBitisTarihiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where bitisTarihi is not null
+        defaultProjeShouldBeFound("bitisTarihi.specified=true");
+
+        // Get all the projeList where bitisTarihi is null
+        defaultProjeShouldNotBeFound("bitisTarihi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByBitisTarihiIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where bitisTarihi greater than or equals to DEFAULT_BITIS_TARIHI
+        defaultProjeShouldBeFound("bitisTarihi.greaterOrEqualThan=" + DEFAULT_BITIS_TARIHI);
+
+        // Get all the projeList where bitisTarihi greater than or equals to UPDATED_BITIS_TARIHI
+        defaultProjeShouldNotBeFound("bitisTarihi.greaterOrEqualThan=" + UPDATED_BITIS_TARIHI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProjesByBitisTarihiIsLessThanSomething() throws Exception {
+        // Initialize the database
+        projeRepository.saveAndFlush(proje);
+
+        // Get all the projeList where bitisTarihi less than or equals to DEFAULT_BITIS_TARIHI
+        defaultProjeShouldNotBeFound("bitisTarihi.lessThan=" + DEFAULT_BITIS_TARIHI);
+
+        // Get all the projeList where bitisTarihi less than or equals to UPDATED_BITIS_TARIHI
+        defaultProjeShouldBeFound("bitisTarihi.lessThan=" + UPDATED_BITIS_TARIHI);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllProjesByHakedisIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Hakedis hakedis = HakedisResourceIntTest.createEntity(em);
+        em.persist(hakedis);
+        em.flush();
+        proje.addHakedis(hakedis);
+        projeRepository.saveAndFlush(proje);
+        Long hakedisId = hakedis.getId();
+
+        // Get all the projeList where hakedis equals to hakedisId
+        defaultProjeShouldBeFound("hakedisId.equals=" + hakedisId);
+
+        // Get all the projeList where hakedis equals to hakedisId + 1
+        defaultProjeShouldNotBeFound("hakedisId.equals=" + (hakedisId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllProjesByTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ProjeTuru turu = ProjeTuruResourceIntTest.createEntity(em);
+        em.persist(turu);
+        em.flush();
+        proje.setTuru(turu);
+        projeRepository.saveAndFlush(proje);
+        Long turuId = turu.getId();
+
+        // Get all the projeList where turu equals to turuId
+        defaultProjeShouldBeFound("turuId.equals=" + turuId);
+
+        // Get all the projeList where turu equals to turuId + 1
+        defaultProjeShouldNotBeFound("turuId.equals=" + (turuId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllProjesByMudurlukIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Mudurluk mudurluk = MudurlukResourceIntTest.createEntity(em);
+        em.persist(mudurluk);
+        em.flush();
+        proje.setMudurluk(mudurluk);
+        projeRepository.saveAndFlush(proje);
+        Long mudurlukId = mudurluk.getId();
+
+        // Get all the projeList where mudurluk equals to mudurlukId
+        defaultProjeShouldBeFound("mudurlukId.equals=" + mudurlukId);
+
+        // Get all the projeList where mudurluk equals to mudurlukId + 1
+        defaultProjeShouldNotBeFound("mudurlukId.equals=" + (mudurlukId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultProjeShouldBeFound(String filter) throws Exception {
+        restProjeMockMvc.perform(get("/api/projes?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(proje.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)))
+            .andExpect(jsonPath("$.[*].protokolNo").value(hasItem(DEFAULT_PROTOKOL_NO.intValue())))
+            .andExpect(jsonPath("$.[*].durumu").value(hasItem(DEFAULT_DURUMU.toString())))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())))
+            .andExpect(jsonPath("$.[*].detay").value(hasItem(DEFAULT_DETAY.toString())))
+            .andExpect(jsonPath("$.[*].resimContentType").value(hasItem(DEFAULT_RESIM_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].resim").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESIM))))
+            .andExpect(jsonPath("$.[*].dosyaContentType").value(hasItem(DEFAULT_DOSYA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].dosya").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOSYA))))
+            .andExpect(jsonPath("$.[*].baslamaTarihi").value(hasItem(DEFAULT_BASLAMA_TARIHI.toString())))
+            .andExpect(jsonPath("$.[*].bitisTarihi").value(hasItem(DEFAULT_BITIS_TARIHI.toString())));
+
+        // Check, that the count call also returns 1
+        restProjeMockMvc.perform(get("/api/projes/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultProjeShouldNotBeFound(String filter) throws Exception {
+        restProjeMockMvc.perform(get("/api/projes?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restProjeMockMvc.perform(get("/api/projes/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

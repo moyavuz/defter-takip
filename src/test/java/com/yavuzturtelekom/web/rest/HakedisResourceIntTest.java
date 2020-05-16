@@ -3,11 +3,16 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Hakedis;
+import com.yavuzturtelekom.domain.HakedisDetay;
+import com.yavuzturtelekom.domain.Santral;
+import com.yavuzturtelekom.domain.HakedisTuru;
 import com.yavuzturtelekom.domain.Ekip;
 import com.yavuzturtelekom.domain.Proje;
 import com.yavuzturtelekom.repository.HakedisRepository;
 import com.yavuzturtelekom.service.HakedisService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.HakedisCriteria;
+import com.yavuzturtelekom.service.HakedisQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -99,6 +104,9 @@ public class HakedisResourceIntTest {
     private HakedisService hakedisService;
 
     @Autowired
+    private HakedisQueryService hakedisQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -120,7 +128,7 @@ public class HakedisResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final HakedisResource hakedisResource = new HakedisResource(hakedisService);
+        final HakedisResource hakedisResource = new HakedisResource(hakedisService, hakedisQueryService);
         this.restHakedisMockMvc = MockMvcBuilders.standaloneSetup(hakedisResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -294,6 +302,620 @@ public class HakedisResourceIntTest {
             .andExpect(jsonPath("$.dosyaContentType").value(DEFAULT_DOSYA_CONTENT_TYPE))
             .andExpect(jsonPath("$.dosya").value(Base64Utils.encodeToString(DEFAULT_DOSYA)));
     }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where ad equals to DEFAULT_AD
+        defaultHakedisShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the hakedisList where ad equals to UPDATED_AD
+        defaultHakedisShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where ad in DEFAULT_AD or UPDATED_AD
+        defaultHakedisShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the hakedisList where ad equals to UPDATED_AD
+        defaultHakedisShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where ad is not null
+        defaultHakedisShouldBeFound("ad.specified=true");
+
+        // Get all the hakedisList where ad is null
+        defaultHakedisShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where tarih equals to DEFAULT_TARIH
+        defaultHakedisShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the hakedisList where tarih equals to UPDATED_TARIH
+        defaultHakedisShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultHakedisShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the hakedisList where tarih equals to UPDATED_TARIH
+        defaultHakedisShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where tarih is not null
+        defaultHakedisShouldBeFound("tarih.specified=true");
+
+        // Get all the hakedisList where tarih is null
+        defaultHakedisShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where tarih greater than or equals to DEFAULT_TARIH
+        defaultHakedisShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the hakedisList where tarih greater than or equals to UPDATED_TARIH
+        defaultHakedisShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where tarih less than or equals to DEFAULT_TARIH
+        defaultHakedisShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the hakedisList where tarih less than or equals to UPDATED_TARIH
+        defaultHakedisShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllHakedisBySeriNoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where seriNo equals to DEFAULT_SERI_NO
+        defaultHakedisShouldBeFound("seriNo.equals=" + DEFAULT_SERI_NO);
+
+        // Get all the hakedisList where seriNo equals to UPDATED_SERI_NO
+        defaultHakedisShouldNotBeFound("seriNo.equals=" + UPDATED_SERI_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisBySeriNoIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where seriNo in DEFAULT_SERI_NO or UPDATED_SERI_NO
+        defaultHakedisShouldBeFound("seriNo.in=" + DEFAULT_SERI_NO + "," + UPDATED_SERI_NO);
+
+        // Get all the hakedisList where seriNo equals to UPDATED_SERI_NO
+        defaultHakedisShouldNotBeFound("seriNo.in=" + UPDATED_SERI_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisBySeriNoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where seriNo is not null
+        defaultHakedisShouldBeFound("seriNo.specified=true");
+
+        // Get all the hakedisList where seriNo is null
+        defaultHakedisShouldNotBeFound("seriNo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisBySeriNoIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where seriNo greater than or equals to DEFAULT_SERI_NO
+        defaultHakedisShouldBeFound("seriNo.greaterOrEqualThan=" + DEFAULT_SERI_NO);
+
+        // Get all the hakedisList where seriNo greater than or equals to UPDATED_SERI_NO
+        defaultHakedisShouldNotBeFound("seriNo.greaterOrEqualThan=" + UPDATED_SERI_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisBySeriNoIsLessThanSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where seriNo less than or equals to DEFAULT_SERI_NO
+        defaultHakedisShouldNotBeFound("seriNo.lessThan=" + DEFAULT_SERI_NO);
+
+        // Get all the hakedisList where seriNo less than or equals to UPDATED_SERI_NO
+        defaultHakedisShouldBeFound("seriNo.lessThan=" + UPDATED_SERI_NO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllHakedisByDefterNoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where defterNo equals to DEFAULT_DEFTER_NO
+        defaultHakedisShouldBeFound("defterNo.equals=" + DEFAULT_DEFTER_NO);
+
+        // Get all the hakedisList where defterNo equals to UPDATED_DEFTER_NO
+        defaultHakedisShouldNotBeFound("defterNo.equals=" + UPDATED_DEFTER_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByDefterNoIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where defterNo in DEFAULT_DEFTER_NO or UPDATED_DEFTER_NO
+        defaultHakedisShouldBeFound("defterNo.in=" + DEFAULT_DEFTER_NO + "," + UPDATED_DEFTER_NO);
+
+        // Get all the hakedisList where defterNo equals to UPDATED_DEFTER_NO
+        defaultHakedisShouldNotBeFound("defterNo.in=" + UPDATED_DEFTER_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByDefterNoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where defterNo is not null
+        defaultHakedisShouldBeFound("defterNo.specified=true");
+
+        // Get all the hakedisList where defterNo is null
+        defaultHakedisShouldNotBeFound("defterNo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByCizimNoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where cizimNo equals to DEFAULT_CIZIM_NO
+        defaultHakedisShouldBeFound("cizimNo.equals=" + DEFAULT_CIZIM_NO);
+
+        // Get all the hakedisList where cizimNo equals to UPDATED_CIZIM_NO
+        defaultHakedisShouldNotBeFound("cizimNo.equals=" + UPDATED_CIZIM_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByCizimNoIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where cizimNo in DEFAULT_CIZIM_NO or UPDATED_CIZIM_NO
+        defaultHakedisShouldBeFound("cizimNo.in=" + DEFAULT_CIZIM_NO + "," + UPDATED_CIZIM_NO);
+
+        // Get all the hakedisList where cizimNo equals to UPDATED_CIZIM_NO
+        defaultHakedisShouldNotBeFound("cizimNo.in=" + UPDATED_CIZIM_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByCizimNoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where cizimNo is not null
+        defaultHakedisShouldBeFound("cizimNo.specified=true");
+
+        // Get all the hakedisList where cizimNo is null
+        defaultHakedisShouldNotBeFound("cizimNo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByCizimNoIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where cizimNo greater than or equals to DEFAULT_CIZIM_NO
+        defaultHakedisShouldBeFound("cizimNo.greaterOrEqualThan=" + DEFAULT_CIZIM_NO);
+
+        // Get all the hakedisList where cizimNo greater than or equals to UPDATED_CIZIM_NO
+        defaultHakedisShouldNotBeFound("cizimNo.greaterOrEqualThan=" + UPDATED_CIZIM_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByCizimNoIsLessThanSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where cizimNo less than or equals to DEFAULT_CIZIM_NO
+        defaultHakedisShouldNotBeFound("cizimNo.lessThan=" + DEFAULT_CIZIM_NO);
+
+        // Get all the hakedisList where cizimNo less than or equals to UPDATED_CIZIM_NO
+        defaultHakedisShouldBeFound("cizimNo.lessThan=" + UPDATED_CIZIM_NO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOnemDerecesiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where onemDerecesi equals to DEFAULT_ONEM_DERECESI
+        defaultHakedisShouldBeFound("onemDerecesi.equals=" + DEFAULT_ONEM_DERECESI);
+
+        // Get all the hakedisList where onemDerecesi equals to UPDATED_ONEM_DERECESI
+        defaultHakedisShouldNotBeFound("onemDerecesi.equals=" + UPDATED_ONEM_DERECESI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOnemDerecesiIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where onemDerecesi in DEFAULT_ONEM_DERECESI or UPDATED_ONEM_DERECESI
+        defaultHakedisShouldBeFound("onemDerecesi.in=" + DEFAULT_ONEM_DERECESI + "," + UPDATED_ONEM_DERECESI);
+
+        // Get all the hakedisList where onemDerecesi equals to UPDATED_ONEM_DERECESI
+        defaultHakedisShouldNotBeFound("onemDerecesi.in=" + UPDATED_ONEM_DERECESI);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOnemDerecesiIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where onemDerecesi is not null
+        defaultHakedisShouldBeFound("onemDerecesi.specified=true");
+
+        // Get all the hakedisList where onemDerecesi is null
+        defaultHakedisShouldNotBeFound("onemDerecesi.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByIsDurumuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where isDurumu equals to DEFAULT_IS_DURUMU
+        defaultHakedisShouldBeFound("isDurumu.equals=" + DEFAULT_IS_DURUMU);
+
+        // Get all the hakedisList where isDurumu equals to UPDATED_IS_DURUMU
+        defaultHakedisShouldNotBeFound("isDurumu.equals=" + UPDATED_IS_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByIsDurumuIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where isDurumu in DEFAULT_IS_DURUMU or UPDATED_IS_DURUMU
+        defaultHakedisShouldBeFound("isDurumu.in=" + DEFAULT_IS_DURUMU + "," + UPDATED_IS_DURUMU);
+
+        // Get all the hakedisList where isDurumu equals to UPDATED_IS_DURUMU
+        defaultHakedisShouldNotBeFound("isDurumu.in=" + UPDATED_IS_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByIsDurumuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where isDurumu is not null
+        defaultHakedisShouldBeFound("isDurumu.specified=true");
+
+        // Get all the hakedisList where isDurumu is null
+        defaultHakedisShouldNotBeFound("isDurumu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOdemeDurumuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where odemeDurumu equals to DEFAULT_ODEME_DURUMU
+        defaultHakedisShouldBeFound("odemeDurumu.equals=" + DEFAULT_ODEME_DURUMU);
+
+        // Get all the hakedisList where odemeDurumu equals to UPDATED_ODEME_DURUMU
+        defaultHakedisShouldNotBeFound("odemeDurumu.equals=" + UPDATED_ODEME_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOdemeDurumuIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where odemeDurumu in DEFAULT_ODEME_DURUMU or UPDATED_ODEME_DURUMU
+        defaultHakedisShouldBeFound("odemeDurumu.in=" + DEFAULT_ODEME_DURUMU + "," + UPDATED_ODEME_DURUMU);
+
+        // Get all the hakedisList where odemeDurumu equals to UPDATED_ODEME_DURUMU
+        defaultHakedisShouldNotBeFound("odemeDurumu.in=" + UPDATED_ODEME_DURUMU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOdemeDurumuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where odemeDurumu is not null
+        defaultHakedisShouldBeFound("odemeDurumu.specified=true");
+
+        // Get all the hakedisList where odemeDurumu is null
+        defaultHakedisShouldNotBeFound("odemeDurumu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOdemeNoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where odemeNo equals to DEFAULT_ODEME_NO
+        defaultHakedisShouldBeFound("odemeNo.equals=" + DEFAULT_ODEME_NO);
+
+        // Get all the hakedisList where odemeNo equals to UPDATED_ODEME_NO
+        defaultHakedisShouldNotBeFound("odemeNo.equals=" + UPDATED_ODEME_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOdemeNoIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where odemeNo in DEFAULT_ODEME_NO or UPDATED_ODEME_NO
+        defaultHakedisShouldBeFound("odemeNo.in=" + DEFAULT_ODEME_NO + "," + UPDATED_ODEME_NO);
+
+        // Get all the hakedisList where odemeNo equals to UPDATED_ODEME_NO
+        defaultHakedisShouldNotBeFound("odemeNo.in=" + UPDATED_ODEME_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByOdemeNoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where odemeNo is not null
+        defaultHakedisShouldBeFound("odemeNo.specified=true");
+
+        // Get all the hakedisList where odemeNo is null
+        defaultHakedisShouldNotBeFound("odemeNo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultHakedisShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the hakedisList where aciklama equals to UPDATED_ACIKLAMA
+        defaultHakedisShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultHakedisShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the hakedisList where aciklama equals to UPDATED_ACIKLAMA
+        defaultHakedisShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        hakedisRepository.saveAndFlush(hakedis);
+
+        // Get all the hakedisList where aciklama is not null
+        defaultHakedisShouldBeFound("aciklama.specified=true");
+
+        // Get all the hakedisList where aciklama is null
+        defaultHakedisShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllHakedisByHakedisDetayIsEqualToSomething() throws Exception {
+        // Initialize the database
+        HakedisDetay hakedisDetay = HakedisDetayResourceIntTest.createEntity(em);
+        em.persist(hakedisDetay);
+        em.flush();
+        hakedis.addHakedisDetay(hakedisDetay);
+        hakedisRepository.saveAndFlush(hakedis);
+        Long hakedisDetayId = hakedisDetay.getId();
+
+        // Get all the hakedisList where hakedisDetay equals to hakedisDetayId
+        defaultHakedisShouldBeFound("hakedisDetayId.equals=" + hakedisDetayId);
+
+        // Get all the hakedisList where hakedisDetay equals to hakedisDetayId + 1
+        defaultHakedisShouldNotBeFound("hakedisDetayId.equals=" + (hakedisDetayId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllHakedisBySantralIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Santral santral = SantralResourceIntTest.createEntity(em);
+        em.persist(santral);
+        em.flush();
+        hakedis.setSantral(santral);
+        hakedisRepository.saveAndFlush(hakedis);
+        Long santralId = santral.getId();
+
+        // Get all the hakedisList where santral equals to santralId
+        defaultHakedisShouldBeFound("santralId.equals=" + santralId);
+
+        // Get all the hakedisList where santral equals to santralId + 1
+        defaultHakedisShouldNotBeFound("santralId.equals=" + (santralId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllHakedisByTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        HakedisTuru turu = HakedisTuruResourceIntTest.createEntity(em);
+        em.persist(turu);
+        em.flush();
+        hakedis.setTuru(turu);
+        hakedisRepository.saveAndFlush(hakedis);
+        Long turuId = turu.getId();
+
+        // Get all the hakedisList where turu equals to turuId
+        defaultHakedisShouldBeFound("turuId.equals=" + turuId);
+
+        // Get all the hakedisList where turu equals to turuId + 1
+        defaultHakedisShouldNotBeFound("turuId.equals=" + (turuId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllHakedisByEkipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Ekip ekip = EkipResourceIntTest.createEntity(em);
+        em.persist(ekip);
+        em.flush();
+        hakedis.setEkip(ekip);
+        hakedisRepository.saveAndFlush(hakedis);
+        Long ekipId = ekip.getId();
+
+        // Get all the hakedisList where ekip equals to ekipId
+        defaultHakedisShouldBeFound("ekipId.equals=" + ekipId);
+
+        // Get all the hakedisList where ekip equals to ekipId + 1
+        defaultHakedisShouldNotBeFound("ekipId.equals=" + (ekipId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllHakedisByProjeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Proje proje = ProjeResourceIntTest.createEntity(em);
+        em.persist(proje);
+        em.flush();
+        hakedis.setProje(proje);
+        hakedisRepository.saveAndFlush(hakedis);
+        Long projeId = proje.getId();
+
+        // Get all the hakedisList where proje equals to projeId
+        defaultHakedisShouldBeFound("projeId.equals=" + projeId);
+
+        // Get all the hakedisList where proje equals to projeId + 1
+        defaultHakedisShouldNotBeFound("projeId.equals=" + (projeId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultHakedisShouldBeFound(String filter) throws Exception {
+        restHakedisMockMvc.perform(get("/api/hakedis?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(hakedis.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())))
+            .andExpect(jsonPath("$.[*].seriNo").value(hasItem(DEFAULT_SERI_NO.intValue())))
+            .andExpect(jsonPath("$.[*].defterNo").value(hasItem(DEFAULT_DEFTER_NO)))
+            .andExpect(jsonPath("$.[*].cizimNo").value(hasItem(DEFAULT_CIZIM_NO.intValue())))
+            .andExpect(jsonPath("$.[*].onemDerecesi").value(hasItem(DEFAULT_ONEM_DERECESI.toString())))
+            .andExpect(jsonPath("$.[*].isDurumu").value(hasItem(DEFAULT_IS_DURUMU.toString())))
+            .andExpect(jsonPath("$.[*].odemeDurumu").value(hasItem(DEFAULT_ODEME_DURUMU.toString())))
+            .andExpect(jsonPath("$.[*].odemeNo").value(hasItem(DEFAULT_ODEME_NO)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)))
+            .andExpect(jsonPath("$.[*].detay").value(hasItem(DEFAULT_DETAY.toString())))
+            .andExpect(jsonPath("$.[*].resimContentType").value(hasItem(DEFAULT_RESIM_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].resim").value(hasItem(Base64Utils.encodeToString(DEFAULT_RESIM))))
+            .andExpect(jsonPath("$.[*].dosyaContentType").value(hasItem(DEFAULT_DOSYA_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].dosya").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOSYA))));
+
+        // Check, that the count call also returns 1
+        restHakedisMockMvc.perform(get("/api/hakedis/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultHakedisShouldNotBeFound(String filter) throws Exception {
+        restHakedisMockMvc.perform(get("/api/hakedis?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restHakedisMockMvc.perform(get("/api/hakedis/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

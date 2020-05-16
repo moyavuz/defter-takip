@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.Model;
 import com.yavuzturtelekom.service.ModelService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.ModelCriteria;
+import com.yavuzturtelekom.service.ModelQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class ModelResource {
 
     private final ModelService modelService;
 
-    public ModelResource(ModelService modelService) {
+    private final ModelQueryService modelQueryService;
+
+    public ModelResource(ModelService modelService, ModelQueryService modelQueryService) {
         this.modelService = modelService;
+        this.modelQueryService = modelQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class ModelResource {
     /**
      * GET  /models : get all the models.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of models in body
      */
     @GetMapping("/models")
-    public List<Model> getAllModels() {
-        log.debug("REST request to get all Models");
-        return modelService.findAll();
+    public ResponseEntity<List<Model>> getAllModels(ModelCriteria criteria) {
+        log.debug("REST request to get Models by criteria: {}", criteria);
+        List<Model> entityList = modelQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /models/count : count all the models.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/models/count")
+    public ResponseEntity<Long> countModels(ModelCriteria criteria) {
+        log.debug("REST request to count Models by criteria: {}", criteria);
+        return ResponseEntity.ok().body(modelQueryService.countByCriteria(criteria));
     }
 
     /**

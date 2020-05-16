@@ -52,7 +52,7 @@ enum YakitTuru{
 entity DovizKur {
 	paraBirimi ParaBirimi,
 	deger Double,
-	tarih LocalDate
+	tarih LocalDate	
 }
 
 entity Personel {
@@ -156,13 +156,13 @@ entity Mudurluk {
 	adres String
 }
 entity Santral {
-	ad String required
+	ad String required 
 }
 entity Marka {
-	ad String required
+	ad String required 
 }
 entity Model {
-	ad String required
+	ad String required 
 }
 
 entity Proje {
@@ -228,34 +228,34 @@ entity Arac {
     dosya Blob
 }
 entity PersonelArac {
-	tarih LocalDate,
+	tarih LocalDate, 
 	detay TextBlob,
     resim ImageBlob,
     dosya Blob
 }
 
 entity PersonelIzin {
-	tarih LocalDate,
+	tarih LocalDate, 
     miktar Double,
 	turu IzinTuru,
     dosya Blob
 }
 entity PersonelOdeme {
-	tarih LocalDate,
+	tarih LocalDate, 
     miktar Double,
 	turu OdemeTuru,
 	yontem OdemeYontemi
-}
+} 
 
 //iliskiler
-
+ 
 relationship OneToMany {
   Ekip to Hakedis{ekip(ad) required},
   Proje to Hakedis{proje(ad) required} ,
   Hakedis to HakedisDetay{hakedis required},
   Poz to HakedisDetay{poz(ad) required}
   }
-
+  
 relationship OneToMany {
   Ekip to StokTakip{ekip(ad) required},
   Malzeme to StokTakip{malzeme(ad) required},
@@ -281,7 +281,7 @@ relationship ManyToOne {
 	PersonelZimmet{zimmet(ad) required} to ZimmetTuru,
 	PersonelArac{arac(ad) required} to Arac,
 	PersonelArac{personel(ad) required} to Personel,
-	PersonelIzin{personel(ad) required} to Personel,
+	PersonelIzin{personel(ad) required} to Personel, 
 	PersonelOdeme{personel(ad) required} to Personel,
 	Model{marka(ad)} to Marka,
 	Arac{model(ad)} to Model,
@@ -294,7 +294,7 @@ relationship ManyToMany {
 	MalzemeGrubu{malzemeListesi(ad)} to Malzeme{grup},
     Ekip{ekipPersonel(ad)} to Personel{ekip},
 	PozGrubu{pozListesi(ad)} to Poz{grup}
-
+	
 }
 
 // Set pagination options
@@ -304,6 +304,7 @@ paginate Personel, Malzeme, Proje, StokTakip with pagination
 // Use Data Transfert Objects (DTO)
 // dto * with mapstruct
 
+filter all 
 // Set service options to all except few
 service all with serviceImpl
 

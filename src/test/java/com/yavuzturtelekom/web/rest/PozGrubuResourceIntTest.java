@@ -3,9 +3,12 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.PozGrubu;
+import com.yavuzturtelekom.domain.Poz;
 import com.yavuzturtelekom.repository.PozGrubuRepository;
 import com.yavuzturtelekom.service.PozGrubuService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.PozGrubuCriteria;
+import com.yavuzturtelekom.service.PozGrubuQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -68,6 +71,9 @@ public class PozGrubuResourceIntTest {
     private PozGrubuService pozGrubuService;
 
     @Autowired
+    private PozGrubuQueryService pozGrubuQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -89,7 +95,7 @@ public class PozGrubuResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PozGrubuResource pozGrubuResource = new PozGrubuResource(pozGrubuService);
+        final PozGrubuResource pozGrubuResource = new PozGrubuResource(pozGrubuService, pozGrubuQueryService);
         this.restPozGrubuMockMvc = MockMvcBuilders.standaloneSetup(pozGrubuResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -192,7 +198,7 @@ public class PozGrubuResourceIntTest {
     
     @SuppressWarnings({"unchecked"})
     public void getAllPozGrubusWithEagerRelationshipsIsEnabled() throws Exception {
-        PozGrubuResource pozGrubuResource = new PozGrubuResource(pozGrubuServiceMock);
+        PozGrubuResource pozGrubuResource = new PozGrubuResource(pozGrubuServiceMock, pozGrubuQueryService);
         when(pozGrubuServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         MockMvc restPozGrubuMockMvc = MockMvcBuilders.standaloneSetup(pozGrubuResource)
@@ -209,7 +215,7 @@ public class PozGrubuResourceIntTest {
 
     @SuppressWarnings({"unchecked"})
     public void getAllPozGrubusWithEagerRelationshipsIsNotEnabled() throws Exception {
-        PozGrubuResource pozGrubuResource = new PozGrubuResource(pozGrubuServiceMock);
+        PozGrubuResource pozGrubuResource = new PozGrubuResource(pozGrubuServiceMock, pozGrubuQueryService);
             when(pozGrubuServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
             MockMvc restPozGrubuMockMvc = MockMvcBuilders.standaloneSetup(pozGrubuResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -238,6 +244,178 @@ public class PozGrubuResourceIntTest {
             .andExpect(jsonPath("$.aciklama").value(DEFAULT_ACIKLAMA.toString()))
             .andExpect(jsonPath("$.kisaltma").value(DEFAULT_KISALTMA.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where ad equals to DEFAULT_AD
+        defaultPozGrubuShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the pozGrubuList where ad equals to UPDATED_AD
+        defaultPozGrubuShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where ad in DEFAULT_AD or UPDATED_AD
+        defaultPozGrubuShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the pozGrubuList where ad equals to UPDATED_AD
+        defaultPozGrubuShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where ad is not null
+        defaultPozGrubuShouldBeFound("ad.specified=true");
+
+        // Get all the pozGrubuList where ad is null
+        defaultPozGrubuShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultPozGrubuShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the pozGrubuList where aciklama equals to UPDATED_ACIKLAMA
+        defaultPozGrubuShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultPozGrubuShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the pozGrubuList where aciklama equals to UPDATED_ACIKLAMA
+        defaultPozGrubuShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where aciklama is not null
+        defaultPozGrubuShouldBeFound("aciklama.specified=true");
+
+        // Get all the pozGrubuList where aciklama is null
+        defaultPozGrubuShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByKisaltmaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where kisaltma equals to DEFAULT_KISALTMA
+        defaultPozGrubuShouldBeFound("kisaltma.equals=" + DEFAULT_KISALTMA);
+
+        // Get all the pozGrubuList where kisaltma equals to UPDATED_KISALTMA
+        defaultPozGrubuShouldNotBeFound("kisaltma.equals=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByKisaltmaIsInShouldWork() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where kisaltma in DEFAULT_KISALTMA or UPDATED_KISALTMA
+        defaultPozGrubuShouldBeFound("kisaltma.in=" + DEFAULT_KISALTMA + "," + UPDATED_KISALTMA);
+
+        // Get all the pozGrubuList where kisaltma equals to UPDATED_KISALTMA
+        defaultPozGrubuShouldNotBeFound("kisaltma.in=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByKisaltmaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+
+        // Get all the pozGrubuList where kisaltma is not null
+        defaultPozGrubuShouldBeFound("kisaltma.specified=true");
+
+        // Get all the pozGrubuList where kisaltma is null
+        defaultPozGrubuShouldNotBeFound("kisaltma.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPozGrubusByPozListesiIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Poz pozListesi = PozResourceIntTest.createEntity(em);
+        em.persist(pozListesi);
+        em.flush();
+        pozGrubu.addPozListesi(pozListesi);
+        pozGrubuRepository.saveAndFlush(pozGrubu);
+        Long pozListesiId = pozListesi.getId();
+
+        // Get all the pozGrubuList where pozListesi equals to pozListesiId
+        defaultPozGrubuShouldBeFound("pozListesiId.equals=" + pozListesiId);
+
+        // Get all the pozGrubuList where pozListesi equals to pozListesiId + 1
+        defaultPozGrubuShouldNotBeFound("pozListesiId.equals=" + (pozListesiId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultPozGrubuShouldBeFound(String filter) throws Exception {
+        restPozGrubuMockMvc.perform(get("/api/poz-grubus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(pozGrubu.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)))
+            .andExpect(jsonPath("$.[*].kisaltma").value(hasItem(DEFAULT_KISALTMA)));
+
+        // Check, that the count call also returns 1
+        restPozGrubuMockMvc.perform(get("/api/poz-grubus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultPozGrubuShouldNotBeFound(String filter) throws Exception {
+        restPozGrubuMockMvc.perform(get("/api/poz-grubus?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restPozGrubuMockMvc.perform(get("/api/poz-grubus/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

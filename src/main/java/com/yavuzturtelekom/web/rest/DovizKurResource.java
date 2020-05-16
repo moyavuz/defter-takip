@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.DovizKur;
 import com.yavuzturtelekom.service.DovizKurService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.DovizKurCriteria;
+import com.yavuzturtelekom.service.DovizKurQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +30,11 @@ public class DovizKurResource {
 
     private final DovizKurService dovizKurService;
 
-    public DovizKurResource(DovizKurService dovizKurService) {
+    private final DovizKurQueryService dovizKurQueryService;
+
+    public DovizKurResource(DovizKurService dovizKurService, DovizKurQueryService dovizKurQueryService) {
         this.dovizKurService = dovizKurService;
+        this.dovizKurQueryService = dovizKurQueryService;
     }
 
     /**
@@ -75,12 +80,26 @@ public class DovizKurResource {
     /**
      * GET  /doviz-kurs : get all the dovizKurs.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of dovizKurs in body
      */
     @GetMapping("/doviz-kurs")
-    public List<DovizKur> getAllDovizKurs() {
-        log.debug("REST request to get all DovizKurs");
-        return dovizKurService.findAll();
+    public ResponseEntity<List<DovizKur>> getAllDovizKurs(DovizKurCriteria criteria) {
+        log.debug("REST request to get DovizKurs by criteria: {}", criteria);
+        List<DovizKur> entityList = dovizKurQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /doviz-kurs/count : count all the dovizKurs.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/doviz-kurs/count")
+    public ResponseEntity<Long> countDovizKurs(DovizKurCriteria criteria) {
+        log.debug("REST request to count DovizKurs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(dovizKurQueryService.countByCriteria(criteria));
     }
 
     /**

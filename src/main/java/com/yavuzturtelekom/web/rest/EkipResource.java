@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.Ekip;
 import com.yavuzturtelekom.service.EkipService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.EkipCriteria;
+import com.yavuzturtelekom.service.EkipQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class EkipResource {
 
     private final EkipService ekipService;
 
-    public EkipResource(EkipService ekipService) {
+    private final EkipQueryService ekipQueryService;
+
+    public EkipResource(EkipService ekipService, EkipQueryService ekipQueryService) {
         this.ekipService = ekipService;
+        this.ekipQueryService = ekipQueryService;
     }
 
     /**
@@ -76,13 +81,26 @@ public class EkipResource {
     /**
      * GET  /ekips : get all the ekips.
      *
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of ekips in body
      */
     @GetMapping("/ekips")
-    public List<Ekip> getAllEkips(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all Ekips");
-        return ekipService.findAll();
+    public ResponseEntity<List<Ekip>> getAllEkips(EkipCriteria criteria) {
+        log.debug("REST request to get Ekips by criteria: {}", criteria);
+        List<Ekip> entityList = ekipQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /ekips/count : count all the ekips.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/ekips/count")
+    public ResponseEntity<Long> countEkips(EkipCriteria criteria) {
+        log.debug("REST request to count Ekips by criteria: {}", criteria);
+        return ResponseEntity.ok().body(ekipQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -4,6 +4,8 @@ import com.yavuzturtelekom.service.PozService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
 import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.PozCriteria;
+import com.yavuzturtelekom.service.PozQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +36,11 @@ public class PozResource {
 
     private final PozService pozService;
 
-    public PozResource(PozService pozService) {
+    private final PozQueryService pozQueryService;
+
+    public PozResource(PozService pozService, PozQueryService pozQueryService) {
         this.pozService = pozService;
+        this.pozQueryService = pozQueryService;
     }
 
     /**
@@ -82,14 +87,27 @@ public class PozResource {
      * GET  /pozs : get all the pozs.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of pozs in body
      */
     @GetMapping("/pozs")
-    public ResponseEntity<List<Poz>> getAllPozs(Pageable pageable) {
-        log.debug("REST request to get a page of Pozs");
-        Page<Poz> page = pozService.findAll(pageable);
+    public ResponseEntity<List<Poz>> getAllPozs(PozCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Pozs by criteria: {}", criteria);
+        Page<Poz> page = pozQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/pozs");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /pozs/count : count all the pozs.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/pozs/count")
+    public ResponseEntity<Long> countPozs(PozCriteria criteria) {
+        log.debug("REST request to count Pozs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(pozQueryService.countByCriteria(criteria));
     }
 
     /**

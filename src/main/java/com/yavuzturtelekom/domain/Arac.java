@@ -19,7 +19,7 @@ import com.yavuzturtelekom.domain.enumeration.YakitTuru;
 @Entity
 @Table(name = "arac")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Arac extends AbstractAuditingEntity implements Serializable {
+public class Arac implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

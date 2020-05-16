@@ -6,6 +6,8 @@ import com.yavuzturtelekom.domain.Birim;
 import com.yavuzturtelekom.repository.BirimRepository;
 import com.yavuzturtelekom.service.BirimService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.BirimCriteria;
+import com.yavuzturtelekom.service.BirimQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -60,6 +62,9 @@ public class BirimResourceIntTest {
     private BirimService birimService;
 
     @Autowired
+    private BirimQueryService birimQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -81,7 +86,7 @@ public class BirimResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final BirimResource birimResource = new BirimResource(birimService);
+        final BirimResource birimResource = new BirimResource(birimService, birimQueryService);
         this.restBirimMockMvc = MockMvcBuilders.standaloneSetup(birimResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -201,6 +206,199 @@ public class BirimResourceIntTest {
             .andExpect(jsonPath("$.kisaltma").value(DEFAULT_KISALTMA.toString()))
             .andExpect(jsonPath("$.carpan").value(DEFAULT_CARPAN.doubleValue()));
     }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where ad equals to DEFAULT_AD
+        defaultBirimShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the birimList where ad equals to UPDATED_AD
+        defaultBirimShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where ad in DEFAULT_AD or UPDATED_AD
+        defaultBirimShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the birimList where ad equals to UPDATED_AD
+        defaultBirimShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where ad is not null
+        defaultBirimShouldBeFound("ad.specified=true");
+
+        // Get all the birimList where ad is null
+        defaultBirimShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByAciklamaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where aciklama equals to DEFAULT_ACIKLAMA
+        defaultBirimShouldBeFound("aciklama.equals=" + DEFAULT_ACIKLAMA);
+
+        // Get all the birimList where aciklama equals to UPDATED_ACIKLAMA
+        defaultBirimShouldNotBeFound("aciklama.equals=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByAciklamaIsInShouldWork() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where aciklama in DEFAULT_ACIKLAMA or UPDATED_ACIKLAMA
+        defaultBirimShouldBeFound("aciklama.in=" + DEFAULT_ACIKLAMA + "," + UPDATED_ACIKLAMA);
+
+        // Get all the birimList where aciklama equals to UPDATED_ACIKLAMA
+        defaultBirimShouldNotBeFound("aciklama.in=" + UPDATED_ACIKLAMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByAciklamaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where aciklama is not null
+        defaultBirimShouldBeFound("aciklama.specified=true");
+
+        // Get all the birimList where aciklama is null
+        defaultBirimShouldNotBeFound("aciklama.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByKisaltmaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where kisaltma equals to DEFAULT_KISALTMA
+        defaultBirimShouldBeFound("kisaltma.equals=" + DEFAULT_KISALTMA);
+
+        // Get all the birimList where kisaltma equals to UPDATED_KISALTMA
+        defaultBirimShouldNotBeFound("kisaltma.equals=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByKisaltmaIsInShouldWork() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where kisaltma in DEFAULT_KISALTMA or UPDATED_KISALTMA
+        defaultBirimShouldBeFound("kisaltma.in=" + DEFAULT_KISALTMA + "," + UPDATED_KISALTMA);
+
+        // Get all the birimList where kisaltma equals to UPDATED_KISALTMA
+        defaultBirimShouldNotBeFound("kisaltma.in=" + UPDATED_KISALTMA);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByKisaltmaIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where kisaltma is not null
+        defaultBirimShouldBeFound("kisaltma.specified=true");
+
+        // Get all the birimList where kisaltma is null
+        defaultBirimShouldNotBeFound("kisaltma.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByCarpanIsEqualToSomething() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where carpan equals to DEFAULT_CARPAN
+        defaultBirimShouldBeFound("carpan.equals=" + DEFAULT_CARPAN);
+
+        // Get all the birimList where carpan equals to UPDATED_CARPAN
+        defaultBirimShouldNotBeFound("carpan.equals=" + UPDATED_CARPAN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByCarpanIsInShouldWork() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where carpan in DEFAULT_CARPAN or UPDATED_CARPAN
+        defaultBirimShouldBeFound("carpan.in=" + DEFAULT_CARPAN + "," + UPDATED_CARPAN);
+
+        // Get all the birimList where carpan equals to UPDATED_CARPAN
+        defaultBirimShouldNotBeFound("carpan.in=" + UPDATED_CARPAN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBirimsByCarpanIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        birimRepository.saveAndFlush(birim);
+
+        // Get all the birimList where carpan is not null
+        defaultBirimShouldBeFound("carpan.specified=true");
+
+        // Get all the birimList where carpan is null
+        defaultBirimShouldNotBeFound("carpan.specified=false");
+    }
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultBirimShouldBeFound(String filter) throws Exception {
+        restBirimMockMvc.perform(get("/api/birims?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(birim.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)))
+            .andExpect(jsonPath("$.[*].aciklama").value(hasItem(DEFAULT_ACIKLAMA)))
+            .andExpect(jsonPath("$.[*].kisaltma").value(hasItem(DEFAULT_KISALTMA)))
+            .andExpect(jsonPath("$.[*].carpan").value(hasItem(DEFAULT_CARPAN.doubleValue())));
+
+        // Check, that the count call also returns 1
+        restBirimMockMvc.perform(get("/api/birims/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultBirimShouldNotBeFound(String filter) throws Exception {
+        restBirimMockMvc.perform(get("/api/birims?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restBirimMockMvc.perform(get("/api/birims/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.EskalasyonTuru;
 import com.yavuzturtelekom.service.EskalasyonTuruService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.EskalasyonTuruCriteria;
+import com.yavuzturtelekom.service.EskalasyonTuruQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class EskalasyonTuruResource {
 
     private final EskalasyonTuruService eskalasyonTuruService;
 
-    public EskalasyonTuruResource(EskalasyonTuruService eskalasyonTuruService) {
+    private final EskalasyonTuruQueryService eskalasyonTuruQueryService;
+
+    public EskalasyonTuruResource(EskalasyonTuruService eskalasyonTuruService, EskalasyonTuruQueryService eskalasyonTuruQueryService) {
         this.eskalasyonTuruService = eskalasyonTuruService;
+        this.eskalasyonTuruQueryService = eskalasyonTuruQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class EskalasyonTuruResource {
     /**
      * GET  /eskalasyon-turus : get all the eskalasyonTurus.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of eskalasyonTurus in body
      */
     @GetMapping("/eskalasyon-turus")
-    public List<EskalasyonTuru> getAllEskalasyonTurus() {
-        log.debug("REST request to get all EskalasyonTurus");
-        return eskalasyonTuruService.findAll();
+    public ResponseEntity<List<EskalasyonTuru>> getAllEskalasyonTurus(EskalasyonTuruCriteria criteria) {
+        log.debug("REST request to get EskalasyonTurus by criteria: {}", criteria);
+        List<EskalasyonTuru> entityList = eskalasyonTuruQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /eskalasyon-turus/count : count all the eskalasyonTurus.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/eskalasyon-turus/count")
+    public ResponseEntity<Long> countEskalasyonTurus(EskalasyonTuruCriteria criteria) {
+        log.debug("REST request to count EskalasyonTurus by criteria: {}", criteria);
+        return ResponseEntity.ok().body(eskalasyonTuruQueryService.countByCriteria(criteria));
     }
 
     /**

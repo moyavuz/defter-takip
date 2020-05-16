@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface StokTakipRepository extends JpaRepository<StokTakip, Long> {
+public interface StokTakipRepository extends JpaRepository<StokTakip, Long>, JpaSpecificationExecutor<StokTakip> {
 
 }

@@ -3,9 +3,12 @@ package com.yavuzturtelekom.web.rest;
 import com.yavuzturtelekom.DefterTakipApp;
 
 import com.yavuzturtelekom.domain.Model;
+import com.yavuzturtelekom.domain.Marka;
 import com.yavuzturtelekom.repository.ModelRepository;
 import com.yavuzturtelekom.service.ModelService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.ModelCriteria;
+import com.yavuzturtelekom.service.ModelQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +54,9 @@ public class ModelResourceIntTest {
     private ModelService modelService;
 
     @Autowired
+    private ModelQueryService modelQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,7 +78,7 @@ public class ModelResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ModelResource modelResource = new ModelResource(modelService);
+        final ModelResource modelResource = new ModelResource(modelService, modelQueryService);
         this.restModelMockMvc = MockMvcBuilders.standaloneSetup(modelResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -180,6 +186,98 @@ public class ModelResourceIntTest {
             .andExpect(jsonPath("$.id").value(model.getId().intValue()))
             .andExpect(jsonPath("$.ad").value(DEFAULT_AD.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllModelsByAdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        modelRepository.saveAndFlush(model);
+
+        // Get all the modelList where ad equals to DEFAULT_AD
+        defaultModelShouldBeFound("ad.equals=" + DEFAULT_AD);
+
+        // Get all the modelList where ad equals to UPDATED_AD
+        defaultModelShouldNotBeFound("ad.equals=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModelsByAdIsInShouldWork() throws Exception {
+        // Initialize the database
+        modelRepository.saveAndFlush(model);
+
+        // Get all the modelList where ad in DEFAULT_AD or UPDATED_AD
+        defaultModelShouldBeFound("ad.in=" + DEFAULT_AD + "," + UPDATED_AD);
+
+        // Get all the modelList where ad equals to UPDATED_AD
+        defaultModelShouldNotBeFound("ad.in=" + UPDATED_AD);
+    }
+
+    @Test
+    @Transactional
+    public void getAllModelsByAdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        modelRepository.saveAndFlush(model);
+
+        // Get all the modelList where ad is not null
+        defaultModelShouldBeFound("ad.specified=true");
+
+        // Get all the modelList where ad is null
+        defaultModelShouldNotBeFound("ad.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllModelsByMarkaIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Marka marka = MarkaResourceIntTest.createEntity(em);
+        em.persist(marka);
+        em.flush();
+        model.setMarka(marka);
+        modelRepository.saveAndFlush(model);
+        Long markaId = marka.getId();
+
+        // Get all the modelList where marka equals to markaId
+        defaultModelShouldBeFound("markaId.equals=" + markaId);
+
+        // Get all the modelList where marka equals to markaId + 1
+        defaultModelShouldNotBeFound("markaId.equals=" + (markaId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultModelShouldBeFound(String filter) throws Exception {
+        restModelMockMvc.perform(get("/api/models?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(model.getId().intValue())))
+            .andExpect(jsonPath("$.[*].ad").value(hasItem(DEFAULT_AD)));
+
+        // Check, that the count call also returns 1
+        restModelMockMvc.perform(get("/api/models/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultModelShouldNotBeFound(String filter) throws Exception {
+        restModelMockMvc.perform(get("/api/models?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restModelMockMvc.perform(get("/api/models/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

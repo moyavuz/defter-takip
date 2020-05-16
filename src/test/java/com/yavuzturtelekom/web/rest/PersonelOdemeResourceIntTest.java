@@ -7,6 +7,8 @@ import com.yavuzturtelekom.domain.Personel;
 import com.yavuzturtelekom.repository.PersonelOdemeRepository;
 import com.yavuzturtelekom.service.PersonelOdemeService;
 import com.yavuzturtelekom.web.rest.errors.ExceptionTranslator;
+import com.yavuzturtelekom.service.dto.PersonelOdemeCriteria;
+import com.yavuzturtelekom.service.PersonelOdemeQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +67,9 @@ public class PersonelOdemeResourceIntTest {
     private PersonelOdemeService personelOdemeService;
 
     @Autowired
+    private PersonelOdemeQueryService personelOdemeQueryService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -86,7 +91,7 @@ public class PersonelOdemeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PersonelOdemeResource personelOdemeResource = new PersonelOdemeResource(personelOdemeService);
+        final PersonelOdemeResource personelOdemeResource = new PersonelOdemeResource(personelOdemeService, personelOdemeQueryService);
         this.restPersonelOdemeMockMvc = MockMvcBuilders.standaloneSetup(personelOdemeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -193,6 +198,245 @@ public class PersonelOdemeResourceIntTest {
             .andExpect(jsonPath("$.turu").value(DEFAULT_TURU.toString()))
             .andExpect(jsonPath("$.yontem").value(DEFAULT_YONTEM.toString()));
     }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByTarihIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where tarih equals to DEFAULT_TARIH
+        defaultPersonelOdemeShouldBeFound("tarih.equals=" + DEFAULT_TARIH);
+
+        // Get all the personelOdemeList where tarih equals to UPDATED_TARIH
+        defaultPersonelOdemeShouldNotBeFound("tarih.equals=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByTarihIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where tarih in DEFAULT_TARIH or UPDATED_TARIH
+        defaultPersonelOdemeShouldBeFound("tarih.in=" + DEFAULT_TARIH + "," + UPDATED_TARIH);
+
+        // Get all the personelOdemeList where tarih equals to UPDATED_TARIH
+        defaultPersonelOdemeShouldNotBeFound("tarih.in=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByTarihIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where tarih is not null
+        defaultPersonelOdemeShouldBeFound("tarih.specified=true");
+
+        // Get all the personelOdemeList where tarih is null
+        defaultPersonelOdemeShouldNotBeFound("tarih.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByTarihIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where tarih greater than or equals to DEFAULT_TARIH
+        defaultPersonelOdemeShouldBeFound("tarih.greaterOrEqualThan=" + DEFAULT_TARIH);
+
+        // Get all the personelOdemeList where tarih greater than or equals to UPDATED_TARIH
+        defaultPersonelOdemeShouldNotBeFound("tarih.greaterOrEqualThan=" + UPDATED_TARIH);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByTarihIsLessThanSomething() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where tarih less than or equals to DEFAULT_TARIH
+        defaultPersonelOdemeShouldNotBeFound("tarih.lessThan=" + DEFAULT_TARIH);
+
+        // Get all the personelOdemeList where tarih less than or equals to UPDATED_TARIH
+        defaultPersonelOdemeShouldBeFound("tarih.lessThan=" + UPDATED_TARIH);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByMiktarIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where miktar equals to DEFAULT_MIKTAR
+        defaultPersonelOdemeShouldBeFound("miktar.equals=" + DEFAULT_MIKTAR);
+
+        // Get all the personelOdemeList where miktar equals to UPDATED_MIKTAR
+        defaultPersonelOdemeShouldNotBeFound("miktar.equals=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByMiktarIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where miktar in DEFAULT_MIKTAR or UPDATED_MIKTAR
+        defaultPersonelOdemeShouldBeFound("miktar.in=" + DEFAULT_MIKTAR + "," + UPDATED_MIKTAR);
+
+        // Get all the personelOdemeList where miktar equals to UPDATED_MIKTAR
+        defaultPersonelOdemeShouldNotBeFound("miktar.in=" + UPDATED_MIKTAR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByMiktarIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where miktar is not null
+        defaultPersonelOdemeShouldBeFound("miktar.specified=true");
+
+        // Get all the personelOdemeList where miktar is null
+        defaultPersonelOdemeShouldNotBeFound("miktar.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByTuruIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where turu equals to DEFAULT_TURU
+        defaultPersonelOdemeShouldBeFound("turu.equals=" + DEFAULT_TURU);
+
+        // Get all the personelOdemeList where turu equals to UPDATED_TURU
+        defaultPersonelOdemeShouldNotBeFound("turu.equals=" + UPDATED_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByTuruIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where turu in DEFAULT_TURU or UPDATED_TURU
+        defaultPersonelOdemeShouldBeFound("turu.in=" + DEFAULT_TURU + "," + UPDATED_TURU);
+
+        // Get all the personelOdemeList where turu equals to UPDATED_TURU
+        defaultPersonelOdemeShouldNotBeFound("turu.in=" + UPDATED_TURU);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByTuruIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where turu is not null
+        defaultPersonelOdemeShouldBeFound("turu.specified=true");
+
+        // Get all the personelOdemeList where turu is null
+        defaultPersonelOdemeShouldNotBeFound("turu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByYontemIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where yontem equals to DEFAULT_YONTEM
+        defaultPersonelOdemeShouldBeFound("yontem.equals=" + DEFAULT_YONTEM);
+
+        // Get all the personelOdemeList where yontem equals to UPDATED_YONTEM
+        defaultPersonelOdemeShouldNotBeFound("yontem.equals=" + UPDATED_YONTEM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByYontemIsInShouldWork() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where yontem in DEFAULT_YONTEM or UPDATED_YONTEM
+        defaultPersonelOdemeShouldBeFound("yontem.in=" + DEFAULT_YONTEM + "," + UPDATED_YONTEM);
+
+        // Get all the personelOdemeList where yontem equals to UPDATED_YONTEM
+        defaultPersonelOdemeShouldNotBeFound("yontem.in=" + UPDATED_YONTEM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByYontemIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+
+        // Get all the personelOdemeList where yontem is not null
+        defaultPersonelOdemeShouldBeFound("yontem.specified=true");
+
+        // Get all the personelOdemeList where yontem is null
+        defaultPersonelOdemeShouldNotBeFound("yontem.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonelOdemesByPersonelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        Personel personel = PersonelResourceIntTest.createEntity(em);
+        em.persist(personel);
+        em.flush();
+        personelOdeme.setPersonel(personel);
+        personelOdemeRepository.saveAndFlush(personelOdeme);
+        Long personelId = personel.getId();
+
+        // Get all the personelOdemeList where personel equals to personelId
+        defaultPersonelOdemeShouldBeFound("personelId.equals=" + personelId);
+
+        // Get all the personelOdemeList where personel equals to personelId + 1
+        defaultPersonelOdemeShouldNotBeFound("personelId.equals=" + (personelId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned
+     */
+    private void defaultPersonelOdemeShouldBeFound(String filter) throws Exception {
+        restPersonelOdemeMockMvc.perform(get("/api/personel-odemes?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(personelOdeme.getId().intValue())))
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(DEFAULT_TARIH.toString())))
+            .andExpect(jsonPath("$.[*].miktar").value(hasItem(DEFAULT_MIKTAR.doubleValue())))
+            .andExpect(jsonPath("$.[*].turu").value(hasItem(DEFAULT_TURU.toString())))
+            .andExpect(jsonPath("$.[*].yontem").value(hasItem(DEFAULT_YONTEM.toString())));
+
+        // Check, that the count call also returns 1
+        restPersonelOdemeMockMvc.perform(get("/api/personel-odemes/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned
+     */
+    private void defaultPersonelOdemeShouldNotBeFound(String filter) throws Exception {
+        restPersonelOdemeMockMvc.perform(get("/api/personel-odemes?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restPersonelOdemeMockMvc.perform(get("/api/personel-odemes/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
+    }
+
 
     @Test
     @Transactional

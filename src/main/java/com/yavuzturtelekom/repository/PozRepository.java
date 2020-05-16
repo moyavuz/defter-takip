@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PozRepository extends JpaRepository<Poz, Long> {
+public interface PozRepository extends JpaRepository<Poz, Long>, JpaSpecificationExecutor<Poz> {
 
 }

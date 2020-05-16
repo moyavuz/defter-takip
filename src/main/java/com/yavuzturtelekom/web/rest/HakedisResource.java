@@ -4,6 +4,8 @@ import com.yavuzturtelekom.service.HakedisService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
 import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.HakedisCriteria;
+import com.yavuzturtelekom.service.HakedisQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +36,11 @@ public class HakedisResource {
 
     private final HakedisService hakedisService;
 
-    public HakedisResource(HakedisService hakedisService) {
+    private final HakedisQueryService hakedisQueryService;
+
+    public HakedisResource(HakedisService hakedisService, HakedisQueryService hakedisQueryService) {
         this.hakedisService = hakedisService;
+        this.hakedisQueryService = hakedisQueryService;
     }
 
     /**
@@ -82,14 +87,27 @@ public class HakedisResource {
      * GET  /hakedis : get all the hakedis.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of hakedis in body
      */
     @GetMapping("/hakedis")
-    public ResponseEntity<List<Hakedis>> getAllHakedis(Pageable pageable) {
-        log.debug("REST request to get a page of Hakedis");
-        Page<Hakedis> page = hakedisService.findAll(pageable);
+    public ResponseEntity<List<Hakedis>> getAllHakedis(HakedisCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Hakedis by criteria: {}", criteria);
+        Page<Hakedis> page = hakedisQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/hakedis");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /hakedis/count : count all the hakedis.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/hakedis/count")
+    public ResponseEntity<Long> countHakedis(HakedisCriteria criteria) {
+        log.debug("REST request to count Hakedis by criteria: {}", criteria);
+        return ResponseEntity.ok().body(hakedisQueryService.countByCriteria(criteria));
     }
 
     /**

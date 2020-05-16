@@ -4,6 +4,8 @@ import com.yavuzturtelekom.service.MalzemeService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
 import com.yavuzturtelekom.web.rest.util.PaginationUtil;
+import com.yavuzturtelekom.service.dto.MalzemeCriteria;
+import com.yavuzturtelekom.service.MalzemeQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +36,11 @@ public class MalzemeResource {
 
     private final MalzemeService malzemeService;
 
-    public MalzemeResource(MalzemeService malzemeService) {
+    private final MalzemeQueryService malzemeQueryService;
+
+    public MalzemeResource(MalzemeService malzemeService, MalzemeQueryService malzemeQueryService) {
         this.malzemeService = malzemeService;
+        this.malzemeQueryService = malzemeQueryService;
     }
 
     /**
@@ -82,14 +87,27 @@ public class MalzemeResource {
      * GET  /malzemes : get all the malzemes.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of malzemes in body
      */
     @GetMapping("/malzemes")
-    public ResponseEntity<List<Malzeme>> getAllMalzemes(Pageable pageable) {
-        log.debug("REST request to get a page of Malzemes");
-        Page<Malzeme> page = malzemeService.findAll(pageable);
+    public ResponseEntity<List<Malzeme>> getAllMalzemes(MalzemeCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Malzemes by criteria: {}", criteria);
+        Page<Malzeme> page = malzemeQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/malzemes");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /malzemes/count : count all the malzemes.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/malzemes/count")
+    public ResponseEntity<Long> countMalzemes(MalzemeCriteria criteria) {
+        log.debug("REST request to count Malzemes by criteria: {}", criteria);
+        return ResponseEntity.ok().body(malzemeQueryService.countByCriteria(criteria));
     }
 
     /**

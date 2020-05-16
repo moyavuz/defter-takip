@@ -3,6 +3,8 @@ import com.yavuzturtelekom.domain.Mudurluk;
 import com.yavuzturtelekom.service.MudurlukService;
 import com.yavuzturtelekom.web.rest.errors.BadRequestAlertException;
 import com.yavuzturtelekom.web.rest.util.HeaderUtil;
+import com.yavuzturtelekom.service.dto.MudurlukCriteria;
+import com.yavuzturtelekom.service.MudurlukQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,11 @@ public class MudurlukResource {
 
     private final MudurlukService mudurlukService;
 
-    public MudurlukResource(MudurlukService mudurlukService) {
+    private final MudurlukQueryService mudurlukQueryService;
+
+    public MudurlukResource(MudurlukService mudurlukService, MudurlukQueryService mudurlukQueryService) {
         this.mudurlukService = mudurlukService;
+        this.mudurlukQueryService = mudurlukQueryService;
     }
 
     /**
@@ -76,12 +81,26 @@ public class MudurlukResource {
     /**
      * GET  /mudurluks : get all the mudurluks.
      *
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of mudurluks in body
      */
     @GetMapping("/mudurluks")
-    public List<Mudurluk> getAllMudurluks() {
-        log.debug("REST request to get all Mudurluks");
-        return mudurlukService.findAll();
+    public ResponseEntity<List<Mudurluk>> getAllMudurluks(MudurlukCriteria criteria) {
+        log.debug("REST request to get Mudurluks by criteria: {}", criteria);
+        List<Mudurluk> entityList = mudurlukQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+    * GET  /mudurluks/count : count all the mudurluks.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/mudurluks/count")
+    public ResponseEntity<Long> countMudurluks(MudurlukCriteria criteria) {
+        log.debug("REST request to count Mudurluks by criteria: {}", criteria);
+        return ResponseEntity.ok().body(mudurlukQueryService.countByCriteria(criteria));
     }
 
     /**

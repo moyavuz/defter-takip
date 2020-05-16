@@ -16,24 +16,41 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="ad"><span jhiTranslate="defterTakipApp.proje.ad">Ad</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="aciklama"><span jhiTranslate="defterTakipApp.proje.aciklama">Aciklama</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="protokolNo"><span jhiTranslate="defterTakipApp.proje.protokolNo">Protokol No</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="turu.ad"><span jhiTranslate="defterTakipApp.proje.turu">Turu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="mudurluk.ad"><span jhiTranslate="defterTakipApp.proje.mudurluk">Mudurluk</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="durumu"><span jhiTranslate="defterTakipApp.proje.durumu">Durumu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="tarih"><span jhiTranslate="defterTakipApp.proje.tarih">Tarih</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="detay"><span jhiTranslate="defterTakipApp.proje.detay">Detay</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="resim"><span jhiTranslate="defterTakipApp.proje.resim">Resim</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dosya"><span jhiTranslate="defterTakipApp.proje.dosya">Dosya</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="baslamaTarihi"><span jhiTranslate="defterTakipApp.proje.baslamaTarihi">Baslama Tarihi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="bitisTarihi"><span jhiTranslate="defterTakipApp.proje.bitisTarihi">Bitis Tarihi</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="aciklama"><span jhiTranslate="defterTakipApp.proje.aciklama">Aciklama</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="resim"><span jhiTranslate="defterTakipApp.proje.resim">Resim</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-
-                <th></th>
+            <th jhiSortBy="turu.ad"><span jhiTranslate="defterTakipApp.proje.turu">Turu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mudurluk.ad"><span jhiTranslate="defterTakipApp.proje.mudurluk">Mudurluk</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let proje of projes ;trackBy: trackId">
                 <td><a [routerLink]="['/proje', proje.id, 'view' ]">{{proje.id}}</a></td>
                 <td>{{proje.ad}}</td>
+                <td>{{proje.aciklama}}</td>
                 <td>{{proje.protokolNo}}</td>
+                <td jhiTranslate="{{'defterTakipApp.IsDurumu.' + proje.durumu}}">{{proje.durumu}}</td>
+                <td>{{proje.tarih | date:'mediumDate'}}</td>
+                <td>{{proje.detay}}</td>
+                <td>
+                    <a *ngIf="proje.resim" (click)="openFile(proje.resimContentType, proje.resim)">
+                        <img [src]="'data:' + proje.resimContentType + ';base64,' + proje.resim" style="max-height: 30px;" alt="proje image"/>
+                    </a>
+                    <span *ngIf="proje.resim">{{proje.resimContentType}}, {{byteSize(proje.resim)}}</span>
+                </td>
+                <td>
+                    <a *ngIf="proje.dosya" (click)="openFile(proje.dosyaContentType, proje.dosya)" jhiTranslate="entity.action.open">open</a>
+                    <span *ngIf="proje.dosya">{{proje.dosyaContentType}}, {{byteSize(proje.dosya)}}</span>
+                </td>
+                <td>{{proje.baslamaTarihi | date:'mediumDate'}}</td>
+                <td>{{proje.bitisTarihi | date:'mediumDate'}}</td>
                 <td>
                     <div *ngIf="proje.turu">
                         <a [routerLink]="['../proje-turu', proje.turu?.id, 'view' ]" >{{proje.turu?.ad}}</a>
@@ -43,17 +60,6 @@
                     <div *ngIf="proje.mudurluk">
                         <a [routerLink]="['../mudurluk', proje.mudurluk?.id, 'view' ]" >{{proje.mudurluk?.ad}}</a>
                     </div>
-                </td>
-                <td jhiTranslate="{{'defterTakipApp.IsDurumu.' + proje.durumu}}">{{proje.durumu}}</td>
-                <td>{{proje.tarih | date:'mediumDate'}}</td>
-                <td>{{proje.baslamaTarihi | date:'mediumDate'}}</td>
-                <td>{{proje.bitisTarihi | date:'mediumDate'}}</td>
-                <td>{{proje.aciklama}}</td>
-                <td>
-                    <a *ngIf="proje.resim" (click)="openFile(proje.resimContentType, proje.resim)">
-                        <img [src]="'data:' + proje.resimContentType + ';base64,' + proje.resim" style="max-height: 30px;" alt="proje image"/>
-                    </a>
-                    <span *ngIf="proje.resim">{{proje.resimContentType}}, {{byteSize(proje.resim)}}</span>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
